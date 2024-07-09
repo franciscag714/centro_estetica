@@ -24,7 +24,7 @@ public class ServiceData
 		try {
 			cn = db.getConnection();
 			stmt = cn.createStatement();
-			rs = stmt.executeQuery("SELECT services.id, services.description, services.updated_price, services_types.id, services_types.description "
+			rs = stmt.executeQuery("SELECT services.id, services.description, services.updated_price, service_types.id, service_types.description "
 					+ "FROM services INNER JOIN service_types ON services.service_type_id = service_types.id");
 			
 			while (rs.next()) {
