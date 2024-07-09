@@ -1,6 +1,8 @@
+CREATE DATABASE  IF NOT EXISTS `centro_estetica` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `centro_estetica`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: centro_estetica
+-- Host: localhost    Database: centro_estetica
 -- ------------------------------------------------------
 -- Server version	8.0.37
 
@@ -111,6 +113,7 @@ CREATE TABLE `employees` (
   `firstname` varchar(30) NOT NULL,
   `lastname` varchar(30) NOT NULL,
   `email` varchar(45) NOT NULL,
+  `is_admin` tinyint NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -186,4 +189,4 @@ UNLOCK TABLES;
 create user 'centro'@'%' identified by 'estetica2024';
 GRANT SELECT, INSERT, UPDATE, DELETE ON `centro_estetica`.* TO 'centro'@'%';
 
--- Dump completed on 2024-07-06 23:26:52
+-- Dump completed on 2024-07-09 19:22:54
