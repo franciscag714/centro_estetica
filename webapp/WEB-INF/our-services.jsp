@@ -1,13 +1,14 @@
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="entities.Service" %>
 <%@ page import="data.ServiceData" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="ISO-8859-1">
-	<title>Centro de Estética</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Centro de EstÃ©tica</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 <%
 	ServiceData data = new ServiceData();
@@ -21,7 +22,7 @@
 			</ul>
 			<ul>
 			    <li><a href="#">Nuestros servicios</a></li>
-			    <li><a href="//google.com.ar">Ubicación</a></li>
+			    <li><a href="//google.com.ar">UbicaciÃ³n</a></li>
 			</ul>
 		</nav>
 		<div>
