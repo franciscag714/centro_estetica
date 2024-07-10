@@ -21,6 +21,26 @@
   </welcome-file-list>
   <servlet>
     <description></description>
+    <display-name>tipos-servicios</display-name>
+    <servlet-name>tipos-servicios</servlet-name>
+    <servlet-class>servlets.ServiceTypesCrud</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>tipos-servicios</servlet-name>
+    <url-pattern>/tipos-servicios</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>abmc-servicios</display-name>
+    <servlet-name>abmc-servicios</servlet-name>
+    <servlet-class>servlets.ServicesCrud</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>abmc-servicios</servlet-name>
+    <url-pattern>/abmc-servicios</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
     <display-name>OurLocation</display-name>
     <servlet-name>OurLocation</servlet-name>
     <servlet-class>servlets.OurLocation</servlet-class>
