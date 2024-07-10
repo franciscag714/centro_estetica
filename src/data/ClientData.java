@@ -21,7 +21,7 @@ public class ClientData {
 		try {
 			conn = db.getConnection();
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT clients.id, clients.firstname, clients.lastname, clients.email FROM clients");
+			rs = stmt.executeQuery("SELECT id, firstname, lastname, email FROM clients");
 			
 			while (rs.next()) {
 				Client client = new Client();
@@ -58,7 +58,7 @@ public class ClientData {
 		
 		try {
 			conn = db.getConnection();
-			pstmt = conn.prepareStatement("SELECT clients.id, clients.firstname, clients.lastname, clients.email FROM clients WHERE clients.id=?");
+			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email FROM clients WHERE id=?");
 			
 			pstmt.setInt(1, cli.getId());
 			rs = pstmt.executeQuery();
@@ -88,6 +88,46 @@ public class ClientData {
 		}
 	}
 
+	public Client searchByUser(Client cli) {
+		DbConnector db = new DbConnector();
+		Connection conn;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = db.getConnection();
+			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email FROM clients WHERE user=? AND password=?");
+			
+			pstmt.setString(1, cli.getUser());
+			pstmt.setString(2, cli.getPassword());
+			
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				Client client = new Client();
+				
+				client.setId(rs.getInt(1));
+				client.setFirstname(rs.getString(2));
+				client.setLastname(rs.getString(3));
+				client.setEmail(rs.getString(4));
+				
+				return client;
+			}
+			return null;
+		}catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		} finally {
+			try {
+				if (rs != null) { rs.close(); }
+				if (pstmt != null) { pstmt.close(); }
+				db.releaseConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public Client add(Client cli) {
 		DbConnector db = new DbConnector();
 		Connection conn;

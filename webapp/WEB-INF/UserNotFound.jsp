@@ -1,11 +1,13 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="ISO-8859-1">
-	<title>Centro de Estética</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-</head>
-	<body>
+		<meta charset="ISO-8859-1">
+		<title>Centro de Estética</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css"/>
+<body>
 		<div class="container">
 					<nav>
 					  	<ul>
@@ -17,6 +19,7 @@
 						</ul>
 					</nav>
 				<h2>Ingrese su usuario</h2>
+				<small class="pico-color-red-500">El usuario ingresado no existe</small>
 					<form action="signin" method="post" style="width:50%">
 						<fieldset>
 						    <label>
@@ -32,5 +35,5 @@
 						<input type="submit">
 					</form>
 		</div>
-	</body>
+</body>
 </html>
