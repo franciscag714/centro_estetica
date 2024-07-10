@@ -39,4 +39,24 @@
     <servlet-name>abmc-servicios</servlet-name>
     <url-pattern>/abmc-servicios</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>OurLocation</display-name>
+    <servlet-name>OurLocation</servlet-name>
+    <servlet-class>servlets.OurLocation</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>OurLocation</servlet-name>
+    <url-pattern>/ourlocation</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SignIn</display-name>
+    <servlet-name>SignIn</servlet-name>
+    <servlet-class>servlets.SignIn</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SignIn</servlet-name>
+    <url-pattern>/signin</url-pattern>
+  </servlet-mapping>
 </web-app>
