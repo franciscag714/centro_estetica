@@ -1,5 +1,8 @@
 package entities;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class Service {
 	private int id;
 	private String description;
@@ -17,4 +20,8 @@ public class Service {
 	
 	public ServiceType getType() { return type; }
 	public void setType(ServiceType type) { this.type = type; }
+	
+	public String getFormatedPrice() {
+		return NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(this.getUpdatedPrice());
+	}
 }

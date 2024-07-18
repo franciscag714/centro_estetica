@@ -8,21 +8,15 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Centro de Estética</title>
+	<link rel="stylesheet" type="text/css" href="styles/main.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 <%
 	LinkedList<ServiceType> types = (LinkedList<ServiceType>) request.getAttribute("typesList");
 %>
 </head>
 	<body>
-		<nav>
-		  	<ul>
-		    	<li><strong>Logo del centro</strong></li>
-			</ul>
-			<ul>
-			    <li><a href="servicios">Nuestros servicios</a></li>
-			    <li><a href="//google.com.ar">Ubicación</a></li>
-			</ul>
-		</nav>
+		<jsp:include page="topbar.jsp"/>
+
 		<table>
 			<thead>
 				<tr>
@@ -53,7 +47,7 @@
 	  			<header>
 	    			<h2 id="typeModalTitle">tipo de servicio</h2>
 	    		</header>
-	    		<form method="post" action="//google.com">
+	    		<form method="post" action="tipos-servicios">
 	    			<input type="hidden" name="action" id="actionModal" value="">
 	    			<input type="hidden" name="id" id="typeModalId" value="">
 	    			<label for="desc">Descripción</label>

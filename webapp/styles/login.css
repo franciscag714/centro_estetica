@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+#login-form{
+	width: 25%; /*hacer breakpoints*/
+}
+
+.login-error{
+	color: red;
+}

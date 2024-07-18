@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+article{
+	background-color: #C8F0EE;
+	width: 300px;
+	text-align: center;
+	margin:10px;
+}
+
+article header{
+	background-color: #C8F0EE;
+	font-weight: bold;
+}
+
+#articles-div{
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: center;
+}

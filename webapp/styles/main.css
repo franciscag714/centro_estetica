@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+#btn-logo{
+	width: 100px;
+	height: 100px;
+}
+
+nav{
+	background-color: #E5E2E1;
+}
+
+.flex-container{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
