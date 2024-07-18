@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Centro de Estética</title>
-	<link rel="stylesheet" type="text/css" href="styles/main.css">   
+	<link rel="stylesheet" type="text/css" href="styles/main.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 	<link rel="stylesheet" type="text/css" href="styles/login.css">
 <%
@@ -17,7 +17,6 @@
     <div class="container">
 		<jsp:include page="topbar.jsp"/>
 		
-      	<a href="tipos-servicios">Sólo en desarrollo</a>
 		<div class="flex-container">
 		
 <% if (userNotFound != null) { %>

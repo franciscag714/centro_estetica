@@ -60,4 +60,14 @@
     <url-pattern></url-pattern>
     <url-pattern>/index</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>logout</display-name>
+    <servlet-name>logout</servlet-name>
+    <servlet-class>servlets.LogOut</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>logout</servlet-name>
+    <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
 </web-app>

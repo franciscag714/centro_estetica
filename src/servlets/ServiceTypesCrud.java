@@ -22,7 +22,7 @@ public class ServiceTypesCrud extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		if (request.getSession().getAttribute("user") == null)
-        	response.sendRedirect("index.html");
+        	response.sendRedirect("index");
         
         else if (request.getSession().getAttribute("user").getClass() == Employee.class)
 		{
@@ -32,11 +32,14 @@ public class ServiceTypesCrud extends HttpServlet {
 			request.getRequestDispatcher("WEB-INF/service-types-crud.jsp").forward(request, response);
 		}
 		else
-			response.sendRedirect("index.html");
+			response.sendRedirect("index");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		if (request.getSession().getAttribute("user") == null)
+        	response.sendRedirect("index");
+		
 		if (request.getSession().getAttribute("user").getClass() == Employee.class)
 		{
 			Employee emp = (Employee) request.getSession().getAttribute("user");
@@ -71,7 +74,7 @@ public class ServiceTypesCrud extends HttpServlet {
 				}
 			}
 		}
-		doGet(request, response);
+		response.sendRedirect("tipos-servicios");
 	}
 
 }

@@ -4,7 +4,7 @@ const dialog = document.getElementById("typeModal");
 const html = document.getElementsByTagName("html")[0];
 
 newTypeButton.addEventListener("click", () => {
-	document.getElementById('actionModal').value = 'insert';
+	document.getElementById('actionModal').value = 'create';
 	document.getElementById('typeModalId').value = '';
 	document.getElementById('typeModalTitle').textContent = "Nuevo Tipo de Servicio"
 	
