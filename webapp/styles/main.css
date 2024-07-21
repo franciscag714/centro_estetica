@@ -14,3 +14,23 @@ nav{
 	flex-direction: column;
 	align-items: center;
 }
+
+.deleteBtn{
+	background-color: red;
+}
+
+.selected-row{
+	background-color: grey;
+}
+
+.main-btn-modal{
+	
+}
+
+.delete-btn-modal{
+	
+}
+
+.modal-title{
+	text-align: center;
+}
