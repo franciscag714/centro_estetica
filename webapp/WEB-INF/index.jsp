@@ -14,29 +14,26 @@
 %>
 </head>
 <body>
-    <div class="container">
-		<jsp:include page="topbar.jsp"/>
-		
-		<div class="flex-container">
+	<jsp:include page="topbar.jsp"/>
+    <div class="container-fluid flex-container">
 		
 <% if (userNotFound != null) { %>
-			<small class="login-error">El usuario ingresado no existe</small>
+		<small class="login-error">El usuario ingresado no existe</small>
 <% } %>
-			<form action="#" method="post" id="login-form">
-				<fieldset>
-					<label>
-						Usuario
-						<input type="text" name="user" placeholder="Usuario" required autofocus="">
-					</label>
-					<label>
-						Contraseña
-						<input type="password" name="password" placeholder="Contraseña" required>
-					</label>
-				</fieldset>
-				
-				<input type="submit">
-			</form>
-		</div>
+		<form action="#" method="post" id="login-form">
+			<fieldset>
+				<label>
+					Usuario
+					<input type="text" name="user" placeholder="Usuario" required autofocus="">
+				</label>
+				<label>
+					Contraseña
+					<input type="password" name="password" placeholder="Contraseña" required>
+				</label>
+			</fieldset>
+			
+			<input type="submit">
+		</form>
 	</div>
 </body>
 </html>

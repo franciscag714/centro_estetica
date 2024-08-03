@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd" version="5.0">
+  <display-name>centro_estetica</display-name>
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
   <servlet>
     <description></description>
     <display-name>servicios</display-name>
@@ -10,35 +21,7 @@
     <servlet-name>servicios</servlet-name>
     <url-pattern>/servicios</url-pattern>
   </servlet-mapping>
-  <display-name>centro_estetica</display-name>
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
-  <servlet>
-    <description></description>
-    <display-name>tipos-servicios</display-name>
-    <servlet-name>tipos-servicios</servlet-name>
-    <servlet-class>servlets.ServiceTypesCrud</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>tipos-servicios</servlet-name>
-    <url-pattern>/tipos-servicios</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>abmc-servicios</display-name>
-    <servlet-name>abmc-servicios</servlet-name>
-    <servlet-class>servlets.ServicesCrud</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>abmc-servicios</servlet-name>
-    <url-pattern>/abmc-servicios</url-pattern>
-  </servlet-mapping>
+  
   <servlet>
     <description></description>
     <display-name>OurLocation</display-name>
@@ -49,6 +32,7 @@
     <servlet-name>OurLocation</servlet-name>
     <url-pattern>/ubicacion</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <description></description>
     <display-name>SignIn</display-name>
@@ -60,6 +44,7 @@
     <url-pattern></url-pattern>
     <url-pattern>/index</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <description></description>
     <display-name>logout</display-name>
@@ -70,4 +55,71 @@
     <servlet-name>logout</servlet-name>
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>tipos-servicios</display-name>
+    <servlet-name>tipos-servicios</servlet-name>
+    <servlet-class>servlets.cruds.ServiceTypesCrud</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>tipos-servicios</servlet-name>
+    <url-pattern>/tipos-servicios</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>abmc-servicios</display-name>
+    <servlet-name>abmc-servicios</servlet-name>
+    <servlet-class>servlets.cruds.ServicesCrud</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>abmc-servicios</servlet-name>
+    <url-pattern>/abmc-servicios</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>clientes</display-name>
+    <servlet-name>clientes</servlet-name>
+    <servlet-class>servlets.cruds.ClientsCrud</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>clientes</servlet-name>
+    <url-pattern>/clientes</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>turnos</display-name>
+    <servlet-name>turnos</servlet-name>
+    <servlet-class>servlets.cruds.AppointmentsCrud</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>turnos</servlet-name>
+    <url-pattern>/turnos</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>atenciones</display-name>
+    <servlet-name>atenciones</servlet-name>
+    <servlet-class>servlets.cruds.AttentiontsCrud</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>atenciones</servlet-name>
+    <url-pattern>/atenciones</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>empleados</display-name>
+    <servlet-name>empleados</servlet-name>
+    <servlet-class>servlets.cruds.EmployeesCrud</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>empleados</servlet-name>
+    <url-pattern>/empleados</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

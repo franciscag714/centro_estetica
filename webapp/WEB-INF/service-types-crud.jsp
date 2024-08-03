@@ -17,26 +17,31 @@
 	<body>
 		<jsp:include page="topbar.jsp"/>
 
-		<table>
-			<thead>
-				<tr>
-			    	<th scope="col">Descripción</th>
-			    </tr>
-			</thead>
-		  	<tbody>
-				    
+		<div class="container-fluid" style="display:flex;">
+			<jsp:include page="sidebar.jsp"/>
+			<div style="width:50%">
+				<table>
+					<thead>
+						<tr>
+					    	<th scope="col">Descripción</th>
+					    </tr>
+					</thead>
+				  	<tbody>
+						    
 <%	for (ServiceType t : types){ %>
-				<tr id="typeId:<%= t.getId() %>" onclick="changeSelectedRow(this.id)">
-			      	<td><%= t.getDescription() %></td>
-			    </tr>
+						<tr id="typeId:<%= t.getId() %>" onclick="changeSelectedRow(this.id)">
+					      	<td><%= t.getDescription() %></td>
+					    </tr>
 <%	}	%>
-			</tbody>
-		</table>
-		
-		<div>
-  			<button id="newType">Nuevo tipo</button>
-  			<button id="updateType">Modificar</button>
-  			<button id="deleteType">Eliminar</button>
+					</tbody>
+				</table>
+				
+				<div>
+		  			<button id="newType">Nuevo tipo</button>
+		  			<button id="updateType">Modificar</button>
+		  			<button id="deleteType">Eliminar</button>
+				</div>
+			</div>
 		</div>
 		
 		
@@ -77,6 +82,6 @@
 	  		</article>
 		</dialog>
 		
-		<script src="scripts/services-types-crud.js"></script>
+		<script src="scripts/service-types-crud.js"></script>
 	</body>
 </html>

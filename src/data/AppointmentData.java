@@ -11,8 +11,6 @@ import java.util.LinkedList;
 import entities.Appointment;
 import entities.Client;
 import entities.Employee;
-import entities.Service;
-import entities.ServiceType;
 
 public class AppointmentData
 {

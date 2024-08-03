@@ -1,4 +1,4 @@
-package servlets;
+package servlets.cruds;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;

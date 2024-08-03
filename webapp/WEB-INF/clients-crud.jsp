@@ -1,5 +1,5 @@
+<%@ page import="entities.Client" %>
 <%@ page import="java.util.LinkedList" %>
-<%@ page import="entities.Service" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
     
 <!DOCTYPE html>
@@ -11,7 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/main.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 <%
-	LinkedList<Service> services = (LinkedList<Service>) request.getAttribute("servicesList");
+	LinkedList<Client> clients = (LinkedList<Client>) request.getAttribute("clientsList");
 %>
 </head>
 	<body>
@@ -23,24 +23,27 @@
 				<table>
 					<thead>
 						<tr>
-					    	<th scope="col">Descripción</th>
-					      	<th scope="col">Tipo</th>
-					      	<th scope="col">Precio</th>
+					    	<th scope="col">Apellido</th>
+					      	<th scope="col">Nombre</th>
+					      	<th scope="col">Correo</th>
+					      	<th scope="col">Usuario</th>
 			    		</tr>
 					</thead>
 		  			<tbody>
 				    
-<%	for (Service s : services){ %>
-						<tr id="hola">
-					      	<td><%= s.getDescription() %></td>
-					      	<td><%= s.getType().getDescription() %></td>
-					      	<td><%= s.getUpdatedPrice() %></td>
+<%	for (Client c : clients){ %>
+						<tr id="clientId:<%= c.getId() %>">
+					      	<th><%= c.getLastname() %></th>
+					      	<th><%= c.getFirstname() %></th>
+					      	<th><%= c.getEmail() %></th>
+					      	<th><%= c.getUser() %></th>
 					    </tr>
 <%	}	%>
 					</tbody>
 				</table>
 				<div>
-		  			<button id="newService">Nuevo servicio</button>
+		  			<button id="newService">Nuevo cliente</button>
+		  			<button id="updateService">Cambiar contraseña</button>
 		  			<button id="updateService">Modificar</button>
 		  			<button id="deleteService">Eliminar</button>
 				</div>

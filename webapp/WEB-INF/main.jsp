@@ -10,12 +10,11 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 </head>
 <body>
-	<div class="container">
-		<jsp:include page="topbar.jsp"/>
+	<jsp:include page="topbar.jsp"/>
+	<div class="container-fluid" style="display:flex;">
 		<jsp:include page="sidebar.jsp"/>
-		
 		<div style="width:50%">
-			<h4>pagina</h4>
+			<img src="resources/obra-en-construccion.jpg">
 		</div>
 	</div>
 </body>
