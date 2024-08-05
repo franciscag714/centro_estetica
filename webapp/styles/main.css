@@ -13,7 +13,13 @@ td:hover{
 	cursor: pointer;
 }
 
-.flex-container{
+.flex-container-row{
+	display:flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.flex-container-column{
 	display: flex;
 	flex-direction: column;
 	align-items: center;

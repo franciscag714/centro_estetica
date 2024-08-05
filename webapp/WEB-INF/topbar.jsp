@@ -4,10 +4,10 @@
 <%	Employee e = (Employee) session.getAttribute("user"); %>
 
 <nav>
-	<ul>
+	<ul style="margin-left: 0px;">
 		<li><a href="index"><img id="btn-logo" src="resources/CE.jpg" alt="Logo Centro de Estética"></img></a></li>
 	</ul>
-	<ul>
+	<ul style="margin-right: 0px;">
 		<li><a href="servicios">Nuestros servicios</a></li>
 		<li><a href="ubicacion">Ubicación</a></li>
 <%	if (e != null) { %>
