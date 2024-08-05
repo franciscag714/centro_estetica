@@ -38,8 +38,55 @@ public class ClientsCrud extends HttpServlet {
 			response.sendRedirect("index");
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Próximamente");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		if (request.getSession().getAttribute("user") == null) {
+        	response.sendRedirect("index");
+        	return;
+		}
+		
+		if (request.getSession().getAttribute("user").getClass() == Employee.class)
+		{
+			Client client = new Client();
+			ClientLogic logic = new ClientLogic();
+			String action = request.getParameter("action");
+			
+			if (action.equals("create"))
+			{
+				try {
+					client.setFirstname(request.getParameter("firstname"));
+					client.setLastname(request.getParameter("lastname"));
+					client.setEmail(request.getParameter("email"));
+					client.setUser(request.getParameter("user"));
+					client.setPassword(request.getParameter("password"));
+					logic.create(client);
+				}
+				catch (Exception e) { }
+			}
+			else if (action.equals("update"))
+			{
+				try {
+					client.setId(Integer.parseInt(request.getParameter("id")));
+					client.setFirstname(request.getParameter("firstname"));
+					client.setLastname(request.getParameter("lastname"));
+					client.setEmail(request.getParameter("email"));
+					client.setUser(request.getParameter("user"));
+					client.setPassword(request.getParameter("password"));
+					logic.update(client);
+				}
+				catch (Exception e) { }
+				
+			}
+			else if (action.equals("delete"))
+			{
+				try {
+					client.setId(Integer.parseInt(request.getParameter("id")));
+					logic.delete(client);
+				}
+				catch (Exception e) { }
+			}
+		}
+		response.sendRedirect("clientes");
 	}
 
 }

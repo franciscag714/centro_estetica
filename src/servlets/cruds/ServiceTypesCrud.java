@@ -37,8 +37,10 @@ public class ServiceTypesCrud extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		if (request.getSession().getAttribute("user") == null)
+		if (request.getSession().getAttribute("user") == null) {
         	response.sendRedirect("index");
+        	return;
+		}
 		
 		if (request.getSession().getAttribute("user").getClass() == Employee.class)
 		{

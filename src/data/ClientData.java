@@ -21,7 +21,7 @@ public class ClientData {
 		try {
 			conn = db.getConnection();
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT id, firstname, lastname, email FROM clients");
+			rs = stmt.executeQuery("SELECT id, firstname, lastname, email, user FROM clients");
 			
 			while (rs.next()) {
 				Client client = new Client();
@@ -30,6 +30,7 @@ public class ClientData {
 				client.setFirstname(rs.getString(2));
 				client.setLastname(rs.getString(3));
 				client.setEmail(rs.getString(4));
+				client.setUser(rs.getString(5));
 				
 				clients.add(client);
 			}
@@ -58,7 +59,7 @@ public class ClientData {
 		
 		try {
 			conn = db.getConnection();
-			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email FROM clients WHERE id=?");
+			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email, user FROM clients WHERE id=?");
 			
 			pstmt.setInt(1, cli.getId());
 			rs = pstmt.executeQuery();
@@ -70,6 +71,7 @@ public class ClientData {
 				client.setFirstname(rs.getString(2));
 				client.setLastname(rs.getString(3));
 				client.setEmail(rs.getString(4));
+				client.setUser(rs.getString(5));
 				
 				return client;
 			}
@@ -136,16 +138,15 @@ public class ClientData {
 		
 		try {
 			conn = db.getConnection();
-			pstmt = conn.prepareStatement("INSERT INTO clients(id, user, password, firstname, lastname, email) VALUES (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			pstmt = conn.prepareStatement("INSERT INTO clients(user, password, firstname, lastname, email) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			
-			pstmt.setInt(1, cli.getId());
-			pstmt.setString(2, cli.getUser());
-			pstmt.setString(3, cli.getPassword());
-			pstmt.setString(4, cli.getFirstname());
-			pstmt.setString(5, cli.getLastname());
-			pstmt.setString(6, cli.getEmail());
+			pstmt.setString(1, cli.getUser());
+			pstmt.setString(2, cli.getPassword());
+			pstmt.setString(3, cli.getFirstname());
+			pstmt.setString(4, cli.getLastname());
+			pstmt.setString(5, cli.getEmail());
 			
-			rs = pstmt.executeQuery();
+			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			
 			if (rs != null && rs.next()) {

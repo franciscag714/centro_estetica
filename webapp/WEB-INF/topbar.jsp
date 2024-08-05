@@ -1,7 +1,7 @@
-<%@ page import="entities.Employee" %>
+<%@ page import="entities.Person" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%	Employee e = (Employee) session.getAttribute("user"); %>
+<%	Person p = (Person) session.getAttribute("user"); %>
 
 <nav>
 	<ul style="margin-left: 0px;">
@@ -10,10 +10,10 @@
 	<ul style="margin-right: 0px;">
 		<li><a href="servicios">Nuestros servicios</a></li>
 		<li><a href="ubicacion">Ubicación</a></li>
-<%	if (e != null) { %>
+<%	if (p != null) { %>
 		<li>
 			<details class="dropdown">
-				<summary role="button">Bienvenido <%= e.getFirstname() %></summary>
+				<summary role="button">Bienvenido <%= p.getFirstname() %></summary>
 				<ul>
 					<li><a href="logout">Salir</a></li>
 				</ul>

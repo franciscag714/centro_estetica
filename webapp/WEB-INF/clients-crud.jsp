@@ -32,23 +32,74 @@
 		  			<tbody>
 				    
 <%	for (Client c : clients){ %>
-						<tr id="clientId:<%= c.getId() %>">
-					      	<th><%= c.getLastname() %></th>
-					      	<th><%= c.getFirstname() %></th>
-					      	<th><%= c.getEmail() %></th>
-					      	<th><%= c.getUser() %></th>
+						<tr id="clientId:<%= c.getId() %>" onclick="changeSelectedRow(this.id)">
+					      	<td><%= c.getLastname() %></td>
+					      	<td><%= c.getFirstname() %></td>
+					      	<td><%= c.getEmail() %></td>
+					      	<td><%= c.getUser() %></td>
 					    </tr>
 <%	}	%>
 					</tbody>
 				</table>
 				<div>
-		  			<button id="newService">Nuevo cliente</button>
-		  			<button id="updateService">Cambiar contraseña</button>
-		  			<button id="updateService">Modificar</button>
-		  			<button id="deleteService">Eliminar</button>
+		  			<button id="newClient">Nuevo cliente</button>
+		  			<button id="updateClient">Cambiar contraseña</button>
+		  			<button id="updateClient">Modificar</button>
+		  			<button id="deleteClient">Eliminar</button>
 				</div>
 			</div>
 		</div>
 		
+		<!-- Modals -->
+		<dialog id="clientModal">
+	  		<article>
+	  			<header>
+	    			<h2 id="clientModalTitle" class="modal-title">Cliente</h2>
+	    		</header>
+	    		<form method="post" action="clientes">
+	    			<input type="hidden" name="action" id="actionModal" value="">
+	    			<input type="hidden" name="id" id="clientModalId" value="">
+	    				    			
+	    			<label for="firstname">Nombre</label>
+	    			<input type="text" name="firstname" id="firstname" required>
+					
+					<label for="lastname">Apellido</label>
+	    			<input type="text" name="lastname" id="lastname" required>
+	    			
+	    			<label for="email">Correo electrónico</label>
+	    			<input type="email" name="email" id="email" required>
+	    			
+	    			<label for="user">Usuario</label>
+	    			<input type="text" name="user" id="user" required>
+	    			
+	    			<label for="password">Contraseña</label>
+	    			<input type="password" name="password" id="password" required>		    		
+	    			
+	    			<footer>
+	      				<button type="button" id="closeClientModal" class="secondary">Cancelar</button>
+	      				<button type="submit" style="width:auto">Guardar</button>
+	    			</footer>
+	    		</form>
+	  		</article>
+		</dialog>
+		
+		<!--<dialog id="deleteModal">
+	  		<article>
+	  			<header>
+	    			<h2 class="modal-title">Atención</h2>
+	    		</header>
+	    		<form method="post" action="tipos-servicios">
+	    			<input type="hidden" name="action" value="delete">
+	    			<input type="hidden" name="id" id="deleteModalId" value="">
+	    			<p>¿Está seguro que desea eliminar el tipo de servicio?</p>
+	    			<footer>
+	      				<button type="button" id="closeDeleteModal" class="secondary">Cancelar</button>
+	      				<button type="submit" class="deleteBtn" style="width:auto">Eliminar</button>
+	    			</footer>
+	    		</form>
+	  		</article>
+		</dialog>-->
+		
+		<script src="scripts/clients-crud.js"></script>
 	</body>
 </html>
