@@ -33,6 +33,15 @@ newClientBtn.addEventListener('click', () => {
 	document.getElementById('actionModal').value = 'create';
 	document.getElementById('clientModalId').value = '';
 	document.getElementById('clientModalTitle').textContent = 'Nuevo Cliente';
+	
+	clientModal.querySelector("[name='lastname']").value = '';
+	clientModal.querySelector("[name='firstname']").value = '';
+	clientModal.querySelector("[name='email']").value = '';
+	clientModal.querySelector("[name='user']").value = '';
+		
+	document.getElementById('password').required = true;
+	document.getElementById('passwordDiv').style.display = 'block';
+	
     html.classList.add('modal-is-open');
 	html.classList.add('modal-is-opening');
 	clientModal.showModal();
@@ -45,12 +54,18 @@ updateBtn.addEventListener('click', () => {
 		document.getElementById('clientModalId').value = selectedId;
 		document.getElementById('clientModalTitle').textContent = 'Modificar Cliente';
 		
-		const description = document.getElementById('clientId:' + selectedId).getElementsByTagName('td')[0].textContent;
-		typeModal.querySelector("[name='description']").value = description;
+		const cells = document.getElementById('clientId:' + selectedId).getElementsByTagName('td');
+		clientModal.querySelector("[name='lastname']").value = cells[0].textContent;
+		clientModal.querySelector("[name='firstname']").value = cells[1].textContent;
+		clientModal.querySelector("[name='email']").value = cells[2].textContent;
+		clientModal.querySelector("[name='user']").value = cells[3].textContent;
+		
+		document.getElementById('password').required = false;
+		document.getElementById('passwordDiv').style.display = 'none';
 		
 	    html.classList.add('modal-is-open');
 		html.classList.add('modal-is-opening');
-		typeModal.showModal();
+		clientModal.showModal();
 		setTimeout(removeClass.bind(null, 'modal-is-opening'), 400);
   	}
   	else{

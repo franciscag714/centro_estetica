@@ -181,13 +181,14 @@ public class ClientData {
 		}
 		try {
 			conn= db.getConnection();
-			pstmt = conn.prepareStatement("UPDATE clients SET id=?, user=?, password=?, firstname=?, lastname=?, email=? WHERE id=?");
-			pstmt.setInt(1, cli.getId());
-			pstmt.setString(2, cli.getUser());
-			pstmt.setString(3, cli.getPassword());
-			pstmt.setString(4, cli.getFirstname());
-			pstmt.setString(5, cli.getLastname());
-			pstmt.setString(6, cli.getEmail());
+			pstmt = conn.prepareStatement("UPDATE clients SET user=?, password=?, firstname=?, lastname=?, email=? WHERE id=?");
+			
+			pstmt.setString(1, cli.getUser());
+			pstmt.setString(2, cli.getPassword());
+			pstmt.setString(3, cli.getFirstname());
+			pstmt.setString(4, cli.getLastname());
+			pstmt.setString(5, cli.getEmail());
+			pstmt.setInt(6, cli.getId());
 			
 			pstmt.executeUpdate();
 			return cli;
