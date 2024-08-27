@@ -27,4 +27,8 @@ public class ClientLogic {
 	public Client delete(Client c) {
 		return clientData.delete(c);
 	}
+	
+	public Client findById(int id) {
+		return clientData.findById(id);
+	}
 }
