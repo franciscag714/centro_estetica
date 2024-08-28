@@ -21,7 +21,7 @@ public class EmployeeData {
 		try {
 			conn = db.getConnection();
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT id, firstname, lastname, email, is_admin FROM employees");
+			rs = stmt.executeQuery("SELECT id, firstname, lastname, email, user, is_admin FROM employees");
 			
 			while (rs.next()) {
 				Employee employee = new Employee();
@@ -30,7 +30,8 @@ public class EmployeeData {
 				employee.setFirstname(rs.getString(2));
 				employee.setLastname(rs.getString(3));
 				employee.setEmail(rs.getString(4));
-				employee.setIsAdmin(rs.getBoolean(5));
+				employee.setUser(rs.getString(5));
+				employee.setIsAdmin(rs.getBoolean(6));
 					
 				employees.add(employee);
 			}
@@ -59,7 +60,7 @@ public class EmployeeData {
 		
 		try {
 			conn = db.getConnection();
-			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email, is_admin FROM employees WHERE id=?");
+			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email, user, is_admin FROM employees WHERE id=?");
 			
 			pstmt.setInt(1, emp.getId());
 			rs = pstmt.executeQuery();
@@ -71,7 +72,8 @@ public class EmployeeData {
 				employee.setFirstname(rs.getString(2));
 				employee.setLastname(rs.getString(3));
 				employee.setEmail(rs.getString(4));
-				employee.setIsAdmin(rs.getBoolean(5));
+				employee.setUser(rs.getString(5));
+				employee.setIsAdmin(rs.getBoolean(6));
 				
 				return employee;
 			}
@@ -139,17 +141,16 @@ public class EmployeeData {
 		
 		try {
 			conn = db.getConnection();
-			pstmt = conn.prepareStatement("INSERT INTO employees(id, user, password, firstname, lastname, email, is_admin) VALUES (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			pstmt = conn.prepareStatement("INSERT INTO employees(user, password, firstname, lastname, email, is_admin) VALUES (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			
-			pstmt.setInt(1, emp.getId());
-			pstmt.setString(2, emp.getUser());
-			pstmt.setString(3, emp.getPassword());
-			pstmt.setString(4, emp.getFirstname());
-			pstmt.setString(5, emp.getLastname());
-			pstmt.setString(6, emp.getEmail());
-			pstmt.setBoolean(7, emp.getIsAdmin());
+			pstmt.setString(1, emp.getUser());
+			pstmt.setString(2, emp.getPassword());
+			pstmt.setString(3, emp.getFirstname());
+			pstmt.setString(4, emp.getLastname());
+			pstmt.setString(5, emp.getEmail());
+			pstmt.setBoolean(6, emp.getIsAdmin());
 			
-			rs = pstmt.executeQuery();
+			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			
 			if (rs != null && rs.next()) {
@@ -184,14 +185,16 @@ public class EmployeeData {
 		}
 		try {
 			conn= db.getConnection();
-			pstmt = conn.prepareStatement("UPDATE employees SET id=?, user=?, password=?, firstname=?, lastname=?, email=?, is_admin=? WHERE id=?");
-			pstmt.setInt(1, emp.getId());
-			pstmt.setString(2, emp.getUser());
-			pstmt.setString(3, emp.getPassword());
-			pstmt.setString(4, emp.getFirstname());
-			pstmt.setString(5, emp.getLastname());
-			pstmt.setString(6, emp.getEmail());
-			pstmt.setBoolean(7, emp.getIsAdmin());
+			pstmt = conn.prepareStatement("UPDATE employees SET user=?, password=?, firstname=?, lastname=?, email=?, is_admin=? WHERE id=?");
+			
+			pstmt.setString(1, emp.getUser());
+			pstmt.setString(2, emp.getPassword());
+			pstmt.setString(3, emp.getFirstname());
+			pstmt.setString(4, emp.getLastname());
+			pstmt.setString(5, emp.getEmail());
+			pstmt.setBoolean(6, emp.getIsAdmin());
+			
+			pstmt.setInt(7, emp.getId());
 			
 			pstmt.executeUpdate();
 			return emp;
@@ -248,7 +251,7 @@ public class EmployeeData {
 		
 		try {
 			conn = db.getConnection();
-			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email, is_admin FROM employees WHERE id=?");
+			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email, user, is_admin FROM employees WHERE id=?");
 			
 			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
@@ -260,7 +263,8 @@ public class EmployeeData {
 				employee.setFirstname(rs.getString(2));
 				employee.setLastname(rs.getString(3));
 				employee.setEmail(rs.getString(4));
-				employee.setIsAdmin(rs.getBoolean(5));
+				employee.setUser(rs.getString(5));
+				employee.setIsAdmin(rs.getBoolean(6));
 				
 				return employee;
 			}
