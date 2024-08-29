@@ -35,12 +35,15 @@ public class AppointmentsCrud extends HttpServlet {
         	AppointmentLogic ctrl = new AppointmentLogic();
         	LinkedList<Appointment> appointments = ctrl.list();
         	request.setAttribute("appointmentsList", appointments);
-        	ClientLogic ctrl2 = new ClientLogic();
-			LinkedList<Client> clients = ctrl2.list();
+        	
+        	ClientLogic clientCtrl = new ClientLogic();
+			LinkedList<Client> clients = clientCtrl.list();
 			request.setAttribute("clientsList", clients);
-			EmployeeLogic ctrl3 = new EmployeeLogic();
-			LinkedList<Employee> employees = ctrl3.list();
+			
+			EmployeeLogic employeeCtrl = new EmployeeLogic();
+			LinkedList<Employee> employees = employeeCtrl.list();
 			request.setAttribute("employeesList", employees);
+			
 			request.getRequestDispatcher("WEB-INF/appointments-crud.jsp").forward(request, response);
         }
         else 
@@ -64,30 +67,36 @@ public class AppointmentsCrud extends HttpServlet {
 			{
 				try {
 					appointment.setDateTime(LocalDateTime.parse(request.getParameter("date_time")));
+					
 					int clientId = Integer.parseInt(request.getParameter("client"));
 					ClientLogic clientLogic = new ClientLogic();
 					Client client = clientLogic.findById(clientId);
 					appointment.setClient(client);
+					
 					int employeeId = Integer.parseInt(request.getParameter("employee"));
 					EmployeeLogic employeeLogic = new EmployeeLogic();
 					Employee employee = employeeLogic.findById(employeeId);
 					appointment.setEmployee(employee);
+					
 					logic.create(appointment);
 				} catch (Exception e) { }
 			} 
 			else if (action.equals("update"))
 			{
 				try {
-					appointment.setId(Integer.parseInt("id"));
+					appointment.setId(Integer.parseInt(request.getParameter("id")));
 					appointment.setDateTime(LocalDateTime.parse(request.getParameter("date_time")));
+					
 					int clientId = Integer.parseInt(request.getParameter("client"));
 					ClientLogic clientLogic = new ClientLogic();
 					Client client = clientLogic.findById(clientId);
 					appointment.setClient(client);
+					
 					int employeeId = Integer.parseInt(request.getParameter("employee"));
 					EmployeeLogic employeeLogic = new EmployeeLogic();
 					Employee employee = employeeLogic.findById(employeeId);
 					appointment.setEmployee(employee);
+					
 					logic.update(appointment);
 				} catch (Exception e) { }
 			} 

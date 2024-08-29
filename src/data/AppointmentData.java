@@ -74,6 +74,7 @@ public class AppointmentData
 			pstmt = cn.prepareStatement("SELECT appointments.id, appointments.date_time, CONCAT(clients.lastname, ' ', clients.firstname) as client, "
 					+ "CONCAT(employees.lastname, ' ', employees.firstname) as employee FROM appointments INNER JOIN clients ON appointments.client_id = clients.id "
 					+ "INNER JOIN employees ON appointments.employee_id = employees.id WHERE appointments.id=?");
+			
 			pstmt.setInt(1, appointParam.getId());
 			rs = pstmt.executeQuery();
 			
@@ -161,9 +162,11 @@ public class AppointmentData
 		try {
 			cn = db.getConnection();
 			pstmt = cn.prepareStatement("UPDATE appointments SET date_time=?, employee_id=?, client_id=? WHERE id=?");
-			pstmt.setObject(1, appointment.getDateTime());
-			pstmt.setInt(2, appointment.getEmployee().getId());
-			pstmt.setInt(3, appointment.getClient().getId());
+			pstmt.setObject(1, appointParam.getDateTime());
+			pstmt.setInt(2, appointParam.getEmployee().getId());
+			pstmt.setInt(3, appointParam.getClient().getId());
+			
+			pstmt.setInt(4, appointParam.getId());
 			
 			pstmt.executeUpdate();
 			return appointParam;
