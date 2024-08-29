@@ -62,7 +62,14 @@ public class AppointmentData
 		}
 	}
 	
-	public Appointment searchById(Appointment appointParam)
+	
+	/**
+	 * This method looks up an appointment by id.
+	 * Objects that are assigned to the attributes client and employee are not complete.
+	 * They only have the fullname attribute.
+	 * @param appointment It must have an id.
+	 */
+	public Appointment searchById(Appointment appointment)
 	{
 		DbConnector db = new DbConnector();
 		Connection cn;
@@ -74,23 +81,23 @@ public class AppointmentData
 			pstmt = cn.prepareStatement("SELECT appointments.id, appointments.date_time, CONCAT(clients.lastname, ' ', clients.firstname) as client, "
 					+ "CONCAT(employees.lastname, ' ', employees.firstname) as employee FROM appointments INNER JOIN clients ON appointments.client_id = clients.id "
 					+ "INNER JOIN employees ON appointments.employee_id = employees.id WHERE appointments.id=?");
-			pstmt.setInt(1, appointParam.getId());
+			pstmt.setInt(1, appointment.getId());
 			rs = pstmt.executeQuery();
-			
+						
 			if (rs.next()) {
-				Appointment appointment = new Appointment();
-				appointment.setId(rs.getInt(1));
-				appointment.setDateTime(rs.getObject(2, LocalDateTime.class));
+				Appointment appointReturn = new Appointment();
+				appointReturn.setId(rs.getInt(1));
+				appointReturn.setDateTime(rs.getObject(2, LocalDateTime.class));
 				
 				Client c = new Client();
 				c.setFullname(rs.getString(3));
-				appointment.setClient(c);
+				appointReturn.setClient(c);
 				
 				Employee e = new Employee();
 				e.setFullname(rs.getString(4));
-				appointment.setEmployee(e);
+				appointReturn.setEmployee(e);
 				
-				return appointment;
+				return appointReturn;
 			}
 			return null;
 			
@@ -147,16 +154,11 @@ public class AppointmentData
 		}
 	}
 	
-	public Appointment update(Appointment appointParam) {
+	public Appointment update(Appointment appointment) {
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
-		Appointment appointment = searchById(appointParam);
-		
-		if (appointment == null)
-			return null;
 		
 		try {
 			cn = db.getConnection();
@@ -164,9 +166,15 @@ public class AppointmentData
 			pstmt.setObject(1, appointment.getDateTime());
 			pstmt.setInt(2, appointment.getEmployee().getId());
 			pstmt.setInt(3, appointment.getClient().getId());
+			pstmt.setInt(4, appointment.getId());
 			
-			pstmt.executeUpdate();
-			return appointParam;
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were updated.");
+				return null;
+			}
+			else 
+				return appointment;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

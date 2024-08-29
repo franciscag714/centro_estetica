@@ -236,45 +236,4 @@ public class ClientData {
 			}
 		}
 	}
-	
-	public Client findById(int id){
-		DbConnector db = new DbConnector();
-		Connection conn;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		try {
-			conn = db.getConnection();
-			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email, user FROM clients WHERE id=?");
-			
-			pstmt.setInt(1, id);
-			rs = pstmt.executeQuery();
-			
-			if (rs.next()) {
-				Client client = new Client();
-				
-				client.setId(rs.getInt(1));
-				client.setFirstname(rs.getString(2));
-				client.setLastname(rs.getString(3));
-				client.setEmail(rs.getString(4));
-				client.setUser(rs.getString(5));
-				
-				return client;
-			}
-			return null;
-		}catch (SQLException e) {
-			System.out.println(e.getMessage());
-			return null;
-		} finally {
-			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
-				db.releaseConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-
 }

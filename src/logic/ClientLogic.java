@@ -28,7 +28,7 @@ public class ClientLogic {
 		return clientData.delete(c);
 	}
 	
-	public Client findById(int id) {
-		return clientData.findById(id);
+	public Client searchById(Client c) {
+		return clientData.searchById(c);
 	}
 }

@@ -32,15 +32,18 @@ public class AppointmentsCrud extends HttpServlet {
         
         else if (request.getSession().getAttribute("user").getClass() == Employee.class) 
         {
-        	AppointmentLogic ctrl = new AppointmentLogic();
-        	LinkedList<Appointment> appointments = ctrl.list();
+        	AppointmentLogic appointmentCtrl = new AppointmentLogic();
+        	LinkedList<Appointment> appointments = appointmentCtrl.list();
         	request.setAttribute("appointmentsList", appointments);
-        	ClientLogic ctrl2 = new ClientLogic();
-			LinkedList<Client> clients = ctrl2.list();
+        	
+        	ClientLogic clientCtrl = new ClientLogic();
+			LinkedList<Client> clients = clientCtrl.list();
 			request.setAttribute("clientsList", clients);
-			EmployeeLogic ctrl3 = new EmployeeLogic();
-			LinkedList<Employee> employees = ctrl3.list();
+			
+			EmployeeLogic empCtrl = new EmployeeLogic();
+			LinkedList<Employee> employees = empCtrl.list();
 			request.setAttribute("employeesList", employees);
+			
 			request.getRequestDispatcher("WEB-INF/appointments-crud.jsp").forward(request, response);
         }
         else 
@@ -64,32 +67,44 @@ public class AppointmentsCrud extends HttpServlet {
 			{
 				try {
 					appointment.setDateTime(LocalDateTime.parse(request.getParameter("date_time")));
-					int clientId = Integer.parseInt(request.getParameter("client"));
+					
+					Client c = new Client();
+					c.setId(Integer.parseInt(request.getParameter("client")));
 					ClientLogic clientLogic = new ClientLogic();
-					Client client = clientLogic.findById(clientId);
-					appointment.setClient(client);
-					int employeeId = Integer.parseInt(request.getParameter("employee"));
+					c = clientLogic.searchById(c);
+					appointment.setClient(c);
+					
+					Employee e = new Employee();
+					e.setId(Integer.parseInt(request.getParameter("employee")));
 					EmployeeLogic employeeLogic = new EmployeeLogic();
-					Employee employee = employeeLogic.findById(employeeId);
-					appointment.setEmployee(employee);
+					e = employeeLogic.searchById(e);
+					appointment.setEmployee(e);
+					
 					logic.create(appointment);
 				} catch (Exception e) { }
 			} 
 			else if (action.equals("update"))
 			{
 				try {
-					appointment.setId(Integer.parseInt("id"));
+					appointment.setId(Integer.parseInt(request.getParameter("id")));
 					appointment.setDateTime(LocalDateTime.parse(request.getParameter("date_time")));
-					int clientId = Integer.parseInt(request.getParameter("client"));
+					
+					Client c = new Client();
+					c.setId(Integer.parseInt(request.getParameter("client")));
 					ClientLogic clientLogic = new ClientLogic();
-					Client client = clientLogic.findById(clientId);
-					appointment.setClient(client);
-					int employeeId = Integer.parseInt(request.getParameter("employee"));
+					c = clientLogic.searchById(c);
+					appointment.setClient(c);
+					
+					Employee e = new Employee();
+					e.setId(Integer.parseInt(request.getParameter("employee")));
 					EmployeeLogic employeeLogic = new EmployeeLogic();
-					Employee employee = employeeLogic.findById(employeeId);
-					appointment.setEmployee(employee);
+					e = employeeLogic.searchById(e);
+					appointment.setEmployee(e);
+					
 					logic.update(appointment);
-				} catch (Exception e) { }
+				} catch (Exception e) { 
+					System.out.println(e.toString());
+				}
 			} 
 			else if (action.equals("delete"))
 			{

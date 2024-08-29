@@ -242,45 +242,4 @@ public class EmployeeData {
 			}
 		}
 	}
-	
-	public Employee findById(int id) {
-		DbConnector db = new DbConnector();
-		Connection conn;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		try {
-			conn = db.getConnection();
-			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email, user, is_admin FROM employees WHERE id=?");
-			
-			pstmt.setInt(1, id);
-			rs = pstmt.executeQuery();
-			
-			if (rs.next()) {
-				Employee employee = new Employee();
-				
-				employee.setId(rs.getInt(1));
-				employee.setFirstname(rs.getString(2));
-				employee.setLastname(rs.getString(3));
-				employee.setEmail(rs.getString(4));
-				employee.setUser(rs.getString(5));
-				employee.setIsAdmin(rs.getBoolean(6));
-				
-				return employee;
-			}
-			return null;
-		}catch (SQLException e) {
-			System.out.println(e.getMessage());
-			return null;
-		} finally {
-			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
-				db.releaseConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 }
