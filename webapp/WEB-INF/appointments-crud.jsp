@@ -38,7 +38,8 @@
 						<tr id="appointmentId:<%= a.getId() %>" onclick="changeSelectedRow(this.id)">
 							<td><%= a.getDateTime() %></td>
 							<td><%= a.getClient().getFullname() %></td>
-							<td><%= a.getEmployee().getFullname() %>
+							<td><%= a.getEmployee().getFullname() %></td>
+							
 						</tr>			
 					<% } %>		
 					</tbody>

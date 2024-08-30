@@ -6,7 +6,7 @@ const deleteModal = document.getElementById('deleteModal');
 
 const newAppointmentBtn = document.getElementById('newAppointment');
 const updateBtn = document.getElementById('updateAppointment');
-const deleteBtn =document.getElementById('deleteAppointment');
+const deleteBtn = document.getElementById('deleteAppointment');
 
 const closeAppointmentModalBtn = document.getElementById('closeAppointmentModal');
 const closeDeleteBtn = document.getElementById('closeDeleteModal');
@@ -26,7 +26,7 @@ function removeClass(className){
 function closeModal(modal){
 	modal.close();
 	removeClass('modal-is-closing');
-	removeClass('modal-id-open');
+	removeClass('modal-is-open');
 }
 
 newAppointmentBtn.addEventListener('click', () => {
@@ -64,7 +64,6 @@ updateBtn.addEventListener('click', () => {
 		alert('Primero seleccione un turno');
 	}
 });
-
 
 deleteBtn.addEventListener('click', () => {
 	if (selectedId){
