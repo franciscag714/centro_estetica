@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
+import javax.print.attribute.standard.DateTimeAtCompleted;
+
 import data.ClientData;
 import entities.Appointment;
 import entities.Client;
@@ -32,8 +34,8 @@ public class AppointmentsCrud extends HttpServlet {
         
         else if (request.getSession().getAttribute("user").getClass() == Employee.class) 
         {
-        	AppointmentLogic ctrl = new AppointmentLogic();
-        	LinkedList<Appointment> appointments = ctrl.list();
+        	AppointmentLogic appointmentCtrl = new AppointmentLogic();
+        	LinkedList<Appointment> appointments = appointmentCtrl.list();
         	request.setAttribute("appointmentsList", appointments);
         	
         	ClientLogic clientCtrl = new ClientLogic();
@@ -63,51 +65,48 @@ public class AppointmentsCrud extends HttpServlet {
 			AppointmentLogic logic = new AppointmentLogic();
 			String action = request.getParameter("action");
 			
-			if (action.equals("create"))
-			{
-				try {
-					appointment.setDateTime(LocalDateTime.parse(request.getParameter("date_time")));
-					
-					int clientId = Integer.parseInt(request.getParameter("client"));
-					ClientLogic clientLogic = new ClientLogic();
-					Client client = clientLogic.findById(clientId);
-					appointment.setClient(client);
-					
-					int employeeId = Integer.parseInt(request.getParameter("employee"));
-					EmployeeLogic employeeLogic = new EmployeeLogic();
-					Employee employee = employeeLogic.findById(employeeId);
-					appointment.setEmployee(employee);
-					
-					logic.create(appointment);
-				} catch (Exception e) { }
-			} 
-			else if (action.equals("update"))
-			{
-				try {
+			try {
+				if (action.equals("create"))
+				{
+					if (setData(request, response, appointment))
+						logic.create(appointment);			
+				} 
+				else if (action.equals("update"))
+				{
 					appointment.setId(Integer.parseInt(request.getParameter("id")));
-					appointment.setDateTime(LocalDateTime.parse(request.getParameter("date_time")));
-					
-					int clientId = Integer.parseInt(request.getParameter("client"));
-					ClientLogic clientLogic = new ClientLogic();
-					Client client = clientLogic.findById(clientId);
-					appointment.setClient(client);
-					
-					int employeeId = Integer.parseInt(request.getParameter("employee"));
-					EmployeeLogic employeeLogic = new EmployeeLogic();
-					Employee employee = employeeLogic.findById(employeeId);
-					appointment.setEmployee(employee);
-					
-					logic.update(appointment);
-				} catch (Exception e) { }
-			} 
-			else if (action.equals("delete"))
-			{
-				try {
+					if (setData(request, response, appointment))
+						logic.update(appointment);	
+				} 
+				else if (action.equals("delete"))
+				{
 					appointment.setId(Integer.parseInt(request.getParameter("id")));
-					logic.delete(appointment);
-				} catch (Exception e) { }
-			}
+					logic.delete(appointment);	
+				}
+			} catch (Exception e) { }
 		}
 		response.sendRedirect("turnos");
+	}
+	
+	private boolean setData(HttpServletRequest request, HttpServletResponse response, Appointment appointment) throws IOException
+	{
+		LocalDateTime dt = LocalDateTime.parse(request.getParameter("date_time"));
+		
+		if (dt.isBefore(LocalDateTime.now())) {
+			response.sendRedirect("turnos");
+			return false;
+		}
+		else
+			appointment.setDateTime(dt);
+		
+		Employee e = new Employee();
+		e.setId(Integer.parseInt(request.getParameter("employee")));
+		appointment.setEmployee(e);
+		
+		Client c = new Client();
+		if (request.getParameter("client") != null)
+			c.setId(Integer.parseInt(request.getParameter("client")));
+
+		appointment.setClient(c);
+		return true;
 	}
 }

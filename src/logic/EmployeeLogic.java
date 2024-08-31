@@ -4,7 +4,8 @@ import java.util.LinkedList;
 import data.EmployeeData;
 import entities.Employee;
 
-public class EmployeeLogic {
+public class EmployeeLogic
+{	
 	private EmployeeData employeeData;
 
 	public EmployeeLogic() {
@@ -27,8 +28,7 @@ public class EmployeeLogic {
 		return employeeData.delete(e);
 	}
 	
-	public Employee findById(int id) {
-		return employeeData.findById(id);
+	public Employee searchById(Employee e) {
+		return employeeData.searchById(e);
 	}
-
 }

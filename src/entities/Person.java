@@ -7,7 +7,6 @@ public abstract class Person {
 	private String firstname;
 	private String lastname;
 	private String email;
-	private String fullname;
 	
 	public int getId() { return id; }
 	public void setId(int id) { this.id = id; }
@@ -27,13 +26,14 @@ public abstract class Person {
 	public String getEmail() { return email; }
 	public void setEmail(String email) { this.email = email; }
 	
-	public String getFullname() { return fullname; }
-	public void setFullname(String fullname) { this.fullname = fullname; }
-	
-	@Override
-	public String toString() {
-		if (fullname == null)
-			return fullname;
-		return lastname + ' ' + firstname;
+	public String getFullname()
+	{	
+		if (this.getLastname() == null || this.getLastname().trim().isEmpty()) {
+			return this.getFirstname();
+		}
+		if (this.getFirstname() == null || this.getFirstname().trim().isEmpty())
+			return this.getLastname();
+		
+		return this.getLastname() + ' ' + this.getFirstname();
 	}
 }

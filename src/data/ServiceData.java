@@ -139,16 +139,11 @@ public class ServiceData
 		}
 	}
 	
-	public Service update(Service servParam) {
+	public Service update(Service service) {
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
-		Service service = searchById(servParam);
-		
-		if (service == null)
-			return null;
 		
 		try {
 			cn = db.getConnection();
@@ -158,8 +153,13 @@ public class ServiceData
 			pstmt.setInt(3, service.getType().getId());
 			pstmt.setInt(4, service.getId());
 			
-			pstmt.executeUpdate();
-			return servParam;
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were updated.");
+				return null;
+			}
+			else
+				return service;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
