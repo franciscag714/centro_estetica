@@ -1,6 +1,7 @@
 package entities;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Appointment {
 	private int id;
@@ -19,4 +20,9 @@ public class Appointment {
 	
 	public Client getClient() {	return client; }
 	public void setClient(Client client) { this.client = client; }
+	
+	public String getFormattedDateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return this.getDateTime().format(formatter);
+	}
 }

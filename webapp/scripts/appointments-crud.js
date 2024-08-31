@@ -51,9 +51,10 @@ updateBtn.addEventListener('click', () => {
 		document.getElementById('appointmentModalTitle').textContent = 'Modificar Turno';
 		
 		const cells = document.getElementById('appointmentId:' + selectedId).getElementsByTagName('td');
-		appointmentModal.querySelector("[name='date_time']").value = cells[0].textContent;
-		appointmentModal.querySelector("[name='client']").value = cells[1].textContent;
-		appointmentModal.querySelector("[name='employee']").value = cells[2].textContent;
+		
+		appointmentModal.querySelector("[name='date_time']").value = formatForDateTimeLocal(cells[0].textContent);
+		appointmentModal.querySelector("[name='employee']").value = cells[1].dataset.employeeid;
+		appointmentModal.querySelector("[name='client']").value = cells[2].dataset.clientid;
 		
 	    html.classList.add('modal-is-open');
 		html.classList.add('modal-is-opening');
@@ -87,3 +88,28 @@ closeDeleteBtn.addEventListener('click', () => {
 	html.classList.add('modal-is-closing');
 	setTimeout(closeModal.bind(null, deleteModal), 400);
 });
+
+appointmentModal.addEventListener('submit', 
+	function(event) {
+        const selectedDateTime = new Date(appointmentModal.querySelector("[name='date_time']").value);
+        const currentDateTime = new Date();
+        
+        if (selectedDateTime.getTime() < currentDateTime.getTime()) {
+            alert('La fecha y la hora para el turno no pueden ser anteriores a ahora.');
+            event.preventDefault();
+        }
+    }
+);
+
+function formatForDateTimeLocal(dateStr) {
+	const [datePart, timePart] = dateStr.split(' ');
+	let [day, month, year] = datePart.split('/');
+	let [hours, minutes] = timePart.split(':');
+	
+	month = month.padStart(2, '0');
+	day = day.padStart(2, '0');
+	hours = hours.padStart(2, '0');
+	minutes = minutes.padStart(2, '0');
+	
+	return `${year}-${month}-${day}T${hours}:${minutes}`;
+}

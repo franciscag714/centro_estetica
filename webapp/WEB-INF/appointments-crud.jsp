@@ -1,9 +1,10 @@
-<%@page import="entities.Employee"%>
-<%@page import="java.time.LocalDateTime"%>
-<%@page import="java.util.LinkedList"%>
-<%@page import="entities.Appointment" %>
-<%@page import="entities.Client" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@ page import="entities.Employee" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.util.LinkedList" %>
+<%@ page import="entities.Appointment" %>
+<%@ page import="entities.Client" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -28,18 +29,17 @@
 				<table>
 					<thead>
 						<tr>
-							<th scope="col">Horario</th>
-							<th scope="col">Cliente</th>
+							<th scope="col">Fecha y hora</th>
 							<th scope="col">Empleado</th>
+							<th scope="col">Cliente</th>
 						</tr>
 					</thead>
 					<tbody>
 					<% for (Appointment a: appointments){ %>
 						<tr id="appointmentId:<%= a.getId() %>" onclick="changeSelectedRow(this.id)">
-							<td><%= a.getDateTime() %></td>
-							<td><%= a.getClient().getFullname() %></td>
-							<td><%= a.getEmployee().getFullname() %></td>
-							
+							<td><%= a.getFormattedDateTime() %></td>
+							<td data-employeeid=<%= a.getEmployee().getId() %> ><%= a.getEmployee().getFullname() %></td>
+							<td data-clientid=<%= a.getClient().getId() %> ><%= a.getClient().getFullname() != null ? a.getClient().getFullname() : "--disponible--"%></td>
 						</tr>			
 					<% } %>		
 					</tbody>
@@ -65,19 +65,20 @@
 					<label for="date_time">Horario</label>
 					<input type="datetime-local" name="date_time" id="date_time" required>
 					
-					<label for="client">Seleccionar cliente</label>
-					<select id="client" name="client" required>	
-					<% for (Client c: clients){%>
-							<option value="<%= c.getId() %>"><%= c.getLastname()%>, <%= c.getFirstname() %></option>
-					<%}%>
-					</select>
-					
 					<label for="employee">Empleado</label>
 					<select id="employee" name="employee" required>	
 					<% for (Employee e: employees){%>
-							<option value="<%= e.getId() %>"><%= e.getLastname()%>, <%= e.getFirstname() %></option>
+							<option value="<%= e.getId() %>"><%= e.getFullname() %></option>
 					<%}%>
-					</select>				
+					</select>
+					
+					<label for="client" style="color:gray">Cliente (opcional)</label>
+					<select id="client" name="client">
+					<% for (Client c: clients){%>
+							<option value="<%= c.getId() %>"><%= c.getFullname() %></option>
+					<%}%>
+					</select>
+					
 					<footer>
 						<button type="button" id="closeAppointmentModal" class="secondary">Cancelar</button>
 						<button type="submit" style="width:auto">Guardar</button>

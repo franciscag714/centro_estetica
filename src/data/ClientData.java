@@ -21,7 +21,7 @@ public class ClientData {
 		try {
 			conn = db.getConnection();
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT id, firstname, lastname, email, user FROM clients");
+			rs = stmt.executeQuery("SELECT id, firstname, lastname, email, user FROM clients ORDER BY lastname");
 			
 			while (rs.next()) {
 				Client client = new Client();
