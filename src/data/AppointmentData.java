@@ -15,7 +15,7 @@ import entities.Employee;
 public class AppointmentData
 {
 	/**
-	 * This method returns all appointments.
+	 * This method returns all appointments with DateTime after the current DateTime.
 	 * Their clients and employees are not complete.
 	 * They only have id, lastname and firstname attributes.
 	 */
@@ -40,6 +40,7 @@ public class AppointmentData
 					+ "		ON app.employee_id = emp.id "
 					+ "LEFT JOIN clients cli"
 					+ "		ON app.client_id = cli.id "
+					+ "WHERE app.date_time > NOW() "
 					+ "ORDER BY app.date_time;");
 			
 			while (rs.next()) {
@@ -197,7 +198,12 @@ public class AppointmentData
 			pstmt = cn.prepareStatement("UPDATE appointments SET date_time=?, employee_id=?, client_id=? WHERE id=?");
 			pstmt.setObject(1, appointment.getDateTime());
 			pstmt.setInt(2, appointment.getEmployee().getId());
-			pstmt.setInt(3, appointment.getClient().getId());
+
+			if (appointment.getClient().getId() == 0)
+				pstmt.setNull(3, java.sql.Types.BIGINT);
+			else
+				pstmt.setInt(3, appointment.getClient().getId());
+			
 			pstmt.setInt(4, appointment.getId());
 			
 			if (pstmt.executeUpdate() == 0)

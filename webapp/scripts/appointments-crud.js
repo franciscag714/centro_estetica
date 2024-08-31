@@ -16,6 +16,12 @@ function changeSelectedRow(id){
 		document.getElementById('appointmentId:' + selectedId).classList.remove('selected-row');
 	
 	document.getElementById(id).classList.add('selected-row');
+	
+	if(document.getElementById(id).dataset.ismodifiable === 'true')
+		showButtons();
+	else
+		hideButtons();
+	
 	selectedId = id.replace('appointmentId:', '');
 }
 
@@ -112,4 +118,14 @@ function formatForDateTimeLocal(dateStr) {
 	minutes = minutes.padStart(2, '0');
 	
 	return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+function hideButtons(){
+	updateBtn.style.display = 'none';
+	deleteBtn.style.display = 'none';
+}
+
+function showButtons(){
+	updateBtn.style.display = 'inline';
+	deleteBtn.style.display = 'inline';
 }

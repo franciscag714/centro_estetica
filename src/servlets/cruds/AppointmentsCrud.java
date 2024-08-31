@@ -65,64 +65,48 @@ public class AppointmentsCrud extends HttpServlet {
 			AppointmentLogic logic = new AppointmentLogic();
 			String action = request.getParameter("action");
 			
-			if (action.equals("create"))
-			{
-				try {
-					LocalDateTime dt = LocalDateTime.parse(request.getParameter("date_time"));
-					
-					if (dt.isBefore(LocalDateTime.now())) {
-						response.sendRedirect("turnos");
-						return;
-					}
-					else
-						appointment.setDateTime(dt);
-					
-					Employee e = new Employee();
-					e.setId(Integer.parseInt(request.getParameter("employee")));
-					appointment.setEmployee(e);
-					
-					Client c = new Client();
-					if (request.getParameter("client") != null)
-						c.setId(Integer.parseInt(request.getParameter("client")));
-
-					appointment.setClient(c);
-					
-					logic.create(appointment);
-				} catch (Exception e) { }
-			} 
-			else if (action.equals("update"))
-			{
-				try {
+			try {
+				if (action.equals("create"))
+				{
+					if (setData(request, response, appointment))
+						logic.create(appointment);			
+				} 
+				else if (action.equals("update"))
+				{
 					appointment.setId(Integer.parseInt(request.getParameter("id")));
-					LocalDateTime dt = LocalDateTime.parse(request.getParameter("date_time"));
-					
-					if (dt.isBefore(LocalDateTime.now())) {
-						response.sendRedirect("turnos");
-						return;
-					}
-					else
-						appointment.setDateTime(dt);
-					
-					Employee e = new Employee();
-					e.setId(Integer.parseInt(request.getParameter("employee")));
-					appointment.setEmployee(e);
-					
-					Client c = new Client();
-					if (request.getParameter("client") != null)
-						c.setId(Integer.parseInt(request.getParameter("client")));
-
-					appointment.setClient(c);
-					logic.update(appointment);
-				} catch (Exception e) { }
-			} 
-			else if (action.equals("delete"))
-			{
-				try {
+					if (setData(request, response, appointment))
+						logic.update(appointment);	
+				} 
+				else if (action.equals("delete"))
+				{
 					appointment.setId(Integer.parseInt(request.getParameter("id")));
-					logic.delete(appointment);
-				} catch (Exception e) { }
-			}
+					logic.delete(appointment);	
+				}
+			} catch (Exception e) { }
 		}
 		response.sendRedirect("turnos");
+	}
+	
+	private boolean setData(HttpServletRequest request, HttpServletResponse response, Appointment appointment) throws IOException
+	{
+		LocalDateTime dt = LocalDateTime.parse(request.getParameter("date_time"));
+		
+		if (dt.isBefore(LocalDateTime.now())) {
+			response.sendRedirect("turnos");
+			return false;
+		}
+		else
+			appointment.setDateTime(dt);
+		
+		Employee e = new Employee();
+		e.setId(Integer.parseInt(request.getParameter("employee")));
+		appointment.setEmployee(e);
+		
+		Client c = new Client();
+		if (request.getParameter("client") != null)
+			c.setId(Integer.parseInt(request.getParameter("client")));
+
+		appointment.setClient(c);
+		return true;
 	}
 }

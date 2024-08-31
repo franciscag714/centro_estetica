@@ -36,12 +36,12 @@
 					</thead>
 					<tbody>
 					<% for (Appointment a: appointments){ %>
-						<tr id="appointmentId:<%= a.getId() %>" onclick="changeSelectedRow(this.id)">
+						<tr id="appointmentId:<%= a.getId() %>" data-ismodifiable="<%= a.isModifiable() %>" onclick="changeSelectedRow(this.id)">
 							<td><%= a.getFormattedDateTime() %></td>
 							<td data-employeeid=<%= a.getEmployee().getId() %> ><%= a.getEmployee().getFullname() %></td>
 							<td data-clientid=<%= a.getClient().getId() %> ><%= a.getClient().getFullname() != null ? a.getClient().getFullname() : "--disponible--"%></td>
-						</tr>			
-					<% } %>		
+						</tr>
+					<% } %>
 					</tbody>
 				</table>
 				<div>

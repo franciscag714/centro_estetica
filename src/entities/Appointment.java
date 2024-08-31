@@ -8,6 +8,7 @@ public class Appointment {
 	private LocalDateTime dateTime;
 	private Employee employee;
 	private Client client;
+	private Boolean isModifiable = true; //dependerá de los permisos del usuario
 	
 	public int getId() { return id;	}
 	public void setId(int id) { this.id = id; }
@@ -20,6 +21,8 @@ public class Appointment {
 	
 	public Client getClient() {	return client; }
 	public void setClient(Client client) { this.client = client; }
+	
+	public Boolean isModifiable() { return isModifiable; }
 	
 	public String getFormattedDateTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
