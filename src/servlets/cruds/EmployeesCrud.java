@@ -29,7 +29,7 @@ public class EmployeesCrud extends HttpServlet {
         	EmployeeLogic ctrl = new EmployeeLogic();
 			LinkedList<Employee> employees = ctrl.list();
 			request.setAttribute("employeesList", employees);
-			request.getRequestDispatcher("WEB-INF/employees-crud.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/crud/employees-crud.jsp").forward(request, response);
         }
         else 
         	response.sendRedirect("index");

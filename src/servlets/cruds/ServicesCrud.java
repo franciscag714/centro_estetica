@@ -28,7 +28,7 @@ public class ServicesCrud extends HttpServlet {
 			ServiceLogic ctrl = new ServiceLogic();
 			LinkedList<Service> services = ctrl.list();
 			request.setAttribute("servicesList", services);
-			request.getRequestDispatcher("WEB-INF/services-crud.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/crud/services-crud.jsp").forward(request, response);
 		}
 		else
 			response.sendRedirect("index.html");

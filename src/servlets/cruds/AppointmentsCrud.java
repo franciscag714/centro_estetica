@@ -46,7 +46,7 @@ public class AppointmentsCrud extends HttpServlet {
 			LinkedList<Employee> employees = employeeCtrl.list();
 			request.setAttribute("employeesList", employees);
 			
-			request.getRequestDispatcher("WEB-INF/appointments-crud.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/crud/appointments-crud.jsp").forward(request, response);
         }
         else 
         	response.sendRedirect("index");
