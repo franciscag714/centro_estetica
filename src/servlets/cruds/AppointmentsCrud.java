@@ -91,10 +91,8 @@ public class AppointmentsCrud extends HttpServlet {
 	{
 		LocalDateTime dt = LocalDateTime.parse(request.getParameter("date_time"));
 		
-		if (dt.isBefore(LocalDateTime.now())) {
-			response.sendRedirect("turnos");
+		if (dt.isBefore(LocalDateTime.now()))
 			return false;
-		}
 		else
 			appointment.setDateTime(dt);
 		

@@ -24,8 +24,12 @@ public class ServiceData
 		try {
 			cn = db.getConnection();
 			stmt = cn.createStatement();
-			rs = stmt.executeQuery("SELECT services.id, services.description, services.updated_price, service_types.id, service_types.description "
-					+ "FROM services INNER JOIN service_types ON services.service_type_id = service_types.id");
+			rs = stmt.executeQuery(""
+					+ "SELECT serv.id, serv.description, serv.updated_price"
+					+ "		, type.id, type.description "
+					+ "FROM services serv "
+					+ "INNER JOIN service_types type "
+					+ "		ON serv.service_type_id = type.id");
 			
 			while (rs.next()) {
 				Service service = new Service();
@@ -66,8 +70,14 @@ public class ServiceData
 		
 		try {
 			cn = db.getConnection();
-			pstmt = cn.prepareStatement("SELECT services.id, services.description, services.updated_price, services_types.id, services_types.description "
-					+ "FROM services INNER JOIN service_types ON services.service_type_id = service_types.id WHERE id=?");
+			pstmt = cn.prepareStatement(""
+					+ "SELECT serv.id, serv.description, serv.updated_price"
+					+ "		, type.id, type.description "
+					+ "FROM services serv "
+					+ "INNER JOIN service_types type "
+					+ "		ON serv.service_type_id = type.id "
+					+ "WHERE serv.id=?");
+			
 			pstmt.setInt(1, servParam.getId());
 			rs = pstmt.executeQuery();
 			
@@ -176,20 +186,21 @@ public class ServiceData
 		}
 	}
 	
-	public Service delete(Service servParam) {
+	public Service delete(Service service) {
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
-		
-		Service service = searchById(servParam);
-		if (service == null)
-			return null;
 		
 		try {
 			cn = db.getConnection();
 			pstmt = cn.prepareStatement("DELETE FROM services WHERE id=?");
 			pstmt.setInt(1, service.getId());
-			pstmt.executeUpdate();
+			
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were deleted.");
+				return null;
+			}
 			return service;
 			
 		} catch (SQLException e) {
