@@ -33,7 +33,8 @@ newTypeBtn.addEventListener('click', () => {
 	document.getElementById('actionModal').value = 'create';
 	document.getElementById('typeModalId').value = '';
 	document.getElementById('typeModalTitle').textContent = 'Nuevo Tipo de Servicio';
-	
+	typeModal.querySelector("[name='description']").value = '';
+
     html.classList.add('modal-is-open');
 	html.classList.add('modal-is-opening');
 	typeModal.showModal();

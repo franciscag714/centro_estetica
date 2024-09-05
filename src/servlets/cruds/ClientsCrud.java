@@ -32,7 +32,7 @@ public class ClientsCrud extends HttpServlet {
         	ClientLogic ctrl = new ClientLogic();
 			LinkedList<Client> clients = ctrl.list();
 			request.setAttribute("clientsList", clients);
-			request.getRequestDispatcher("WEB-INF/clients-crud.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/crud/clients-crud.jsp").forward(request, response);
 		}
 		else
 			response.sendRedirect("index");
