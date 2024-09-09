@@ -35,8 +35,8 @@ public class EmployeeData {
 					
 				employees.add(employee);
 			}
-				
 			return employees;
+
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
@@ -78,6 +78,7 @@ public class EmployeeData {
 				return employee;
 			}
 			return null;
+
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
@@ -119,6 +120,7 @@ public class EmployeeData {
 				return employee;
 			}
 			return null;
+
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
@@ -158,6 +160,7 @@ public class EmployeeData {
 				return emp;
 			}
 			return null;
+			
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
@@ -178,11 +181,6 @@ public class EmployeeData {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		Employee employee = searchById(emp);
-		
-		if (employee == null) {
-			return null;
-		}
 		try {
 			conn= db.getConnection();
 			pstmt = conn.prepareStatement("UPDATE employees SET user=?, password=?, firstname=?, lastname=?, email=?, is_admin=? WHERE id=?");
@@ -193,11 +191,15 @@ public class EmployeeData {
 			pstmt.setString(4, emp.getLastname());
 			pstmt.setString(5, emp.getEmail());
 			pstmt.setBoolean(6, emp.getIsAdmin());
-			
 			pstmt.setInt(7, emp.getId());
 			
-			pstmt.executeUpdate();
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were updated.");
+				return null;
+			}
 			return emp;
+
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
@@ -218,16 +220,17 @@ public class EmployeeData {
 		Connection conn;
 		PreparedStatement pstmt = null;
 		
-		Employee employee = searchById(emp);
-		if (employee == null) {
-			return null;
-		}
 		try {
 			conn = db.getConnection();
 			pstmt = conn.prepareStatement("DELETE FROM employees WHERE id=?");
-			pstmt.setInt(1, employee.getId());
-			pstmt.executeUpdate();
-			return employee;
+			pstmt.setInt(1, emp.getId());
+			
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were deleted.");
+				return null;
+			}
+			return emp;
 			
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());

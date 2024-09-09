@@ -132,8 +132,8 @@ public class ServiceData
 				service.setId(rs.getInt(1));
 				return service;
 			}
-			
 			return null;
+
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
@@ -168,8 +168,7 @@ public class ServiceData
 				System.out.println("No rows were updated.");
 				return null;
 			}
-			else
-				return service;
+			return service;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

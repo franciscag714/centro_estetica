@@ -168,30 +168,30 @@ public class ClientData {
 		}
 	}
 
-	public Client update(Client cli) {
+	public Client update(Client client) {
 		DbConnector db = new DbConnector();
 		Connection conn;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		Client client = searchById(cli);
-		
-		if (client == null) {
-			return null;
-		}
 		try {
 			conn= db.getConnection();
 			pstmt = conn.prepareStatement("UPDATE clients SET user=?, password=?, firstname=?, lastname=?, email=? WHERE id=?");
 			
-			pstmt.setString(1, cli.getUser());
-			pstmt.setString(2, cli.getPassword());
-			pstmt.setString(3, cli.getFirstname());
-			pstmt.setString(4, cli.getLastname());
-			pstmt.setString(5, cli.getEmail());
-			pstmt.setInt(6, cli.getId());
+			pstmt.setString(1, client.getUser());
+			pstmt.setString(2, client.getPassword());
+			pstmt.setString(3, client.getFirstname());
+			pstmt.setString(4, client.getLastname());
+			pstmt.setString(5, client.getEmail());
+			pstmt.setInt(6, client.getId());
 			
-			pstmt.executeUpdate();
-			return cli;
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were updated.");
+				return null;
+			}
+			return client;
+
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
@@ -207,20 +207,21 @@ public class ClientData {
 		}
 	}
 	
-	public Client delete(Client cli) {
+	public Client delete(Client client) {
 		DbConnector db = new DbConnector();
 		Connection conn;
 		PreparedStatement pstmt = null;
 		
-		Client client = searchById(cli);
-		if (client == null) {
-			return null;
-		}
 		try {
 			conn = db.getConnection();
 			pstmt = conn.prepareStatement("DELETE FROM clients WHERE id=?");
 			pstmt.setInt(1, client.getId());
-			pstmt.executeUpdate();
+			
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were deleted.");
+				return null;
+			}
 			return client;
 			
 		}catch (SQLException e) {

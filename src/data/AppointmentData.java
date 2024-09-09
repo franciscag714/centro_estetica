@@ -170,8 +170,8 @@ public class AppointmentData
 				appointment.setId(rs.getInt(1));
 				return appointment;
 			}
-			
 			return null;
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
@@ -211,8 +211,7 @@ public class AppointmentData
 				System.out.println("No rows were updated.");
 				return null;
 			}
-			else 
-				return appointment;
+			return appointment;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -241,11 +240,10 @@ public class AppointmentData
 
 			if (pstmt.executeUpdate() == 0)
 			{
-				System.out.println("No rows were updated.");
+				System.out.println("No rows were deleted.");
 				return null;
 			}
-			else 
-				return appointment;
+			return appointment;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

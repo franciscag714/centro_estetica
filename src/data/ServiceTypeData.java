@@ -18,7 +18,7 @@ public class ServiceTypeData
 		try {
 			cn = db.getConnection();
 			stmt = cn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM service_types");
+			rs = stmt.executeQuery("SELECT id, description FROM service_types ORDER BY description;");
 			
 			while (rs.next()) {
 				ServiceType servType = new ServiceType();
@@ -53,7 +53,7 @@ public class ServiceTypeData
 		
 		try {
 			cn = db.getConnection();
-			pstmt = cn.prepareStatement("SELECT * FROM service_types WHERE id=?");
+			pstmt = cn.prepareStatement("SELECT id, description FROM service_types WHERE id=?");
 			pstmt.setInt(1, stParam.getId());
 			
 			rs = pstmt.executeQuery();
@@ -117,23 +117,25 @@ public class ServiceTypeData
 		}
 	}
 	
-	public ServiceType update(ServiceType stParam) {
+	public ServiceType update(ServiceType servType) {
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		ServiceType servType = searchById(stParam);
-		if (servType == null)
-			return null;
 		
 		try {
 			cn = db.getConnection();
 			pstmt = cn.prepareStatement("UPDATE service_types SET description=? WHERE id=?");
-			pstmt.setString(1, stParam.getDescription());
-			pstmt.setInt(2, stParam.getId());
-			pstmt.executeUpdate();
-			return stParam;
+			pstmt.setString(1, servType.getDescription());
+			pstmt.setInt(2, servType.getId());
 			
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were updated.");
+				return null;
+			}
+			return servType;
+
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
@@ -149,19 +151,21 @@ public class ServiceTypeData
 		}
 	}
 	
-	public ServiceType delete(ServiceType stParam) {
+	public ServiceType delete(ServiceType servType) {
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
-		ServiceType servType = searchById(stParam);
-		if (servType == null)
-			return null;
 		
 		try {
 			cn = db.getConnection();
 			pstmt = cn.prepareStatement("DELETE FROM service_types WHERE id=?");
-			pstmt.setInt(1, stParam.getId());
-			pstmt.executeUpdate();
+			pstmt.setInt(1, servType.getId());
+			
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were deleted.");
+				return null;
+			}
 			return servType;
 			
 		} catch (SQLException e) {

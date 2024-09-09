@@ -17,10 +17,22 @@ public class AppointmentLogic {
 	}
 	
 	public Appointment create(Appointment a) {
+
+		/*if (dt.isBefore(LocalDateTime.now()))
+			return false;
+		else
+			appointment.setDateTime(dt);
+		*/
 		return appointmentData.add(a);
 	}
 	
 	public Appointment update(Appointment a) {
+
+		/*if (dt.isBefore(LocalDateTime.now()))
+			return false;
+		else
+			appointment.setDateTime(dt);
+		*/
 		return appointmentData.update(a);
 	}
 	
