@@ -6,7 +6,7 @@ import entities.ServiceType;
 
 public class ServiceTypeData
 {
-	public LinkedList<ServiceType> list()
+	public LinkedList<ServiceType> list(Boolean populateServices)
 	{
 		DbConnector db = new DbConnector();
 		Connection cn;
@@ -14,7 +14,8 @@ public class ServiceTypeData
 		ResultSet rs = null;
 		
 		LinkedList<ServiceType> servTypes = new LinkedList<ServiceType>();
-		
+		ServiceData serviceData = new ServiceData();
+
 		try {
 			cn = db.getConnection();
 			stmt = cn.createStatement();
@@ -24,6 +25,11 @@ public class ServiceTypeData
 				ServiceType servType = new ServiceType();
 				servType.setId(rs.getInt("id"));
 				servType.setDescription(rs.getString("description"));
+				
+				if (populateServices) {
+					servType.setServices(serviceData.searchByType(servType));
+				}
+				
 				servTypes.add(servType);
 			}
 			return servTypes;

@@ -32,7 +32,7 @@ public class ServicesCrud extends HttpServlet {
 			request.setAttribute("servicesList", services);
 			
 			ServiceTypeLogic typeLogic = new ServiceTypeLogic();
-			LinkedList<ServiceType> types = typeLogic.list();
+			LinkedList<ServiceType> types = typeLogic.list(false);
 			request.setAttribute("typesList", types);			
 			
 			request.getRequestDispatcher("WEB-INF/crud/services-crud.jsp").forward(request, response);

@@ -1,14 +1,33 @@
 @charset "UTF-8";
 
+.div-h3{
+	margin: 20px;
+	background-image: url('../resources/flowers.jpg');
+	background-repeat: repeat-x;
+	background-size: auto 100%;
+}
+
+h3{
+	text-align: center;
+	padding: 20px;
+	margin: 0px;
+}
+
+h3 span{
+	background-color: white;
+	padding: 20px;
+	font-family: monospace;
+}
+
 article{
-	background-color: #C8F0EE;
+	background-color: #f7d6ef;
 	width: 300px;
 	text-align: center;
 	margin:10px;
 }
 
 article header{
-	background-color: #C8F0EE;
+	border: 5px solid #f7d6ef;
 	font-weight: bold;
 }
 
