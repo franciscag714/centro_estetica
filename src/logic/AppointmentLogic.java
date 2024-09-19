@@ -1,9 +1,9 @@
 package logic;
 
 import java.util.LinkedList;
-
 import data.AppointmentData;
 import entities.Appointment;
+import entities.AppointmentFilter;
 
 public class AppointmentLogic {
 	private AppointmentData appointmentData;
@@ -12,8 +12,12 @@ public class AppointmentLogic {
 		appointmentData = new AppointmentData();
 	}
 	
-	public LinkedList<Appointment> list(){
+	public LinkedList<Appointment> list() {
 		return appointmentData.list();
+	}
+	
+	public LinkedList<Appointment> listAvailable(AppointmentFilter filter) {
+		return appointmentData.listAvailable(filter);
 	}
 	
 	public Appointment create(Appointment a) {

@@ -1,14 +1,17 @@
 package data;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import entities.Appointment;
+import entities.AppointmentFilter;
 import entities.Client;
 import entities.Employee;
 
@@ -72,6 +75,71 @@ public class AppointmentData
 			try {
 				if (rs != null) { rs.close(); }
 				if (stmt != null) { stmt.close(); }
+				db.releaseConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public LinkedList<Appointment> listAvailable(AppointmentFilter appointFilter)
+	{
+		StringBuilder filter = new StringBuilder();
+		
+		if (appointFilter.getDate() != null)
+			filter.append("AND DATE(date_time) = ? ");
+		
+		if (appointFilter.getStartTime() != null)
+			filter.append("AND TIME(date_time) >= ? ");
+		
+		if (appointFilter.getEndTime() != null)
+			filter.append("AND TIME(date_time) <= ? ");	//analizar si puedo evitar usar función en el where ya que no aprovecha índices...
+		
+		//chequear si no envia fecha desde, que muestre solo los posteriores a la fechahora actual
+		
+		DbConnector db = new DbConnector();
+		Connection cn;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;	
+		LinkedList<Appointment> appointments = new LinkedList<Appointment>();
+		
+		try {
+			cn = db.getConnection();
+			pstmt = cn.prepareStatement(""
+					+ "SELECT app.id, app.date_time "
+					+ "FROM appointments app "
+					+ "WHERE app.client_id IS NULL "
+					+ filter
+					+ "ORDER BY app.date_time;");
+			
+			int i = 1;
+			if (appointFilter.getDate() != null)
+				pstmt.setDate(i++, Date.valueOf(appointFilter.getDate()));
+			
+			if (appointFilter.getStartTime() != null)
+				pstmt.setTime(i++, Time.valueOf(appointFilter.getStartTime()));
+			
+			if (appointFilter.getEndTime() != null)
+				pstmt.setTime(i++, Time.valueOf(appointFilter.getEndTime()));
+			
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				Appointment appointment = new Appointment();
+				appointment.setId(rs.getInt(1));
+				appointment.setDateTime(rs.getObject(2, LocalDateTime.class));
+				appointments.add(appointment);
+			}
+			return appointments;
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		finally {
+			try {
+				if (rs != null) { rs.close(); }
+				if (pstmt != null) { pstmt.close(); }
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();

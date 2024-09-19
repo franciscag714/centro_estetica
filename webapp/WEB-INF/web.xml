@@ -120,4 +120,14 @@
     <servlet-name>preguntas</servlet-name>
     <url-pattern>/preguntas</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>reservar-turno</display-name>
+    <servlet-name>reservar-turno</servlet-name>
+    <servlet-class>servlets.BookAppointment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>reservar-turno</servlet-name>
+    <url-pattern>/reservar-turno</url-pattern>
+  </servlet-mapping>
 </web-app>

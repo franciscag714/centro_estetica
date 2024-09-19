@@ -1,7 +1,6 @@
 package servlets.cruds;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,9 +12,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
-import javax.print.attribute.standard.DateTimeAtCompleted;
-
-import data.ClientData;
 import entities.Appointment;
 import entities.Client;
 import entities.Employee;
@@ -34,16 +30,16 @@ public class AppointmentsCrud extends HttpServlet {
         
         else if (request.getSession().getAttribute("user").getClass() == Employee.class) 
         {
-        	AppointmentLogic appointmentCtrl = new AppointmentLogic();
-        	LinkedList<Appointment> appointments = appointmentCtrl.list();
+        	AppointmentLogic appointmentLogic = new AppointmentLogic();
+        	LinkedList<Appointment> appointments = appointmentLogic.list();
         	request.setAttribute("appointmentsList", appointments);
         	
-        	ClientLogic clientCtrl = new ClientLogic();
-			LinkedList<Client> clients = clientCtrl.list();
+        	ClientLogic clientLogic = new ClientLogic();
+			LinkedList<Client> clients = clientLogic.list();
 			request.setAttribute("clientsList", clients);
 			
-			EmployeeLogic employeeCtrl = new EmployeeLogic();
-			LinkedList<Employee> employees = employeeCtrl.list();
+			EmployeeLogic employeeLogic = new EmployeeLogic();
+			LinkedList<Employee> employees = employeeLogic.list();
 			request.setAttribute("employeesList", employees);
 			
 			request.getRequestDispatcher("WEB-INF/crud/appointments-crud.jsp").forward(request, response);
