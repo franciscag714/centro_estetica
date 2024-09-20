@@ -79,6 +79,70 @@ public class AppointmentData
 		}
 	}
 	
+	/**
+	 * This method returns all appointments with DateTime before or equal the current DateTime.
+	 * Their clients and employees are not complete.
+	 * They only have id, lastname and firstname attributes.
+	 */
+	public LinkedList<Appointment> list2()
+	{
+		DbConnector db = new DbConnector();
+		Connection cn;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		LinkedList<Appointment> appointments = new LinkedList<Appointment>();
+		
+		try {
+			cn = db.getConnection();
+			stmt = cn.createStatement();
+			rs = stmt.executeQuery(""
+					+ "SELECT app.id, app.date_time, "
+					+ "		cli.id, cli.lastname, cli.firstname, "
+					+ "		emp.id, emp.lastname, emp.firstname "
+					+ "FROM appointments app "
+					+ "INNER JOIN employees emp"
+					+ "		ON app.employee_id = emp.id "
+					+ "LEFT JOIN clients cli"
+					+ "		ON app.client_id = cli.id "
+					+ "WHERE app.date_time <= NOW() "
+					+ "ORDER BY app.date_time;");
+			
+			while (rs.next()) {
+				Appointment appointment = new Appointment();
+				appointment.setId(rs.getInt(1));
+				appointment.setDateTime(rs.getObject(2, LocalDateTime.class));
+				
+				Client c = new Client();
+				c.setId(rs.getInt(3));
+				c.setLastname(rs.getString(4));
+				c.setFirstname(rs.getString(5));
+				appointment.setClient(c);
+				
+				Employee e = new Employee();
+				e.setId(rs.getInt(6));
+				e.setLastname(rs.getString(7));
+				e.setFirstname(rs.getString(8));
+				appointment.setEmployee(e);
+				
+				appointments.add(appointment);
+			}
+			return appointments;
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		finally {
+			try {
+				if (rs != null) { rs.close(); }
+				if (stmt != null) { stmt.close(); }
+				db.releaseConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	/**
 	 * This method looks up an appointment by id.

@@ -6,7 +6,7 @@
 
 <body>
 	<jsp:include page="common/topbar.jsp"/>
-    <div class="container-fluid flex-container-column">
+    <div class="container-fluid flex-container-column" style="margin: 20px">
 		
 <% if (userNotFound != null) { %>
 		<small class="login-error">El usuario ingresado no existe</small>

@@ -4,9 +4,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%	Person user = (Person) session.getAttribute("user");	%>
-<aside style="width:30%">
-  	<nav>
-    	<ul>
+<aside style="display:auto;">
+  	<nav style="width: 100%;">
+    	<ul style="padding:15px;" >
 <%	if (user != null && user.getClass() == Employee.class) {	%>
       		<li><a href="atenciones">Atenciones</a></li>
       		<li><a href="turnos">Turnos</a></li>

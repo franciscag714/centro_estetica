@@ -16,6 +16,10 @@ public class AppointmentLogic {
 		return appointmentData.list();
 	}
 	
+	public LinkedList<Appointment> list2(){
+		return appointmentData.list2();
+	}
+	
 	public Appointment create(Appointment a) {
 		return appointmentData.add(a);
 	}
@@ -26,5 +30,9 @@ public class AppointmentLogic {
 	
 	public Appointment delete(Appointment a) {
 		return appointmentData.delete(a);
+	}
+	
+	public Appointment searchById(Appointment a) {
+		return appointmentData.searchById(a);
 	}
 }

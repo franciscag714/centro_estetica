@@ -94,7 +94,7 @@
     <description></description>
     <display-name>atenciones</display-name>
     <servlet-name>atenciones</servlet-name>
-    <servlet-class>servlets.cruds.AttentiontsCrud</servlet-class>
+    <servlet-class>servlets.cruds.AttentionsCrud</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>atenciones</servlet-name>
