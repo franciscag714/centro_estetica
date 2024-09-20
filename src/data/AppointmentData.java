@@ -95,8 +95,6 @@ public class AppointmentData
 		if (appointFilter.getEndTime() != null)
 			filter.append("AND TIME(date_time) <= ? ");	//analizar si puedo evitar usar función en el where ya que no aprovecha índices...
 		
-		//chequear si no envia fecha desde, que muestre solo los posteriores a la fechahora actual
-		
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
@@ -109,6 +107,7 @@ public class AppointmentData
 					+ "SELECT app.id, app.date_time "
 					+ "FROM appointments app "
 					+ "WHERE app.client_id IS NULL "
+					+ "AND app.date_time > NOW() "
 					+ filter
 					+ "ORDER BY app.date_time;");
 			
@@ -131,6 +130,51 @@ public class AppointmentData
 				appointments.add(appointment);
 			}
 			return appointments;
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		finally {
+			try {
+				if (rs != null) { rs.close(); }
+				if (pstmt != null) { pstmt.close(); }
+				db.releaseConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * This method books an appointment.
+	 * To book, the client_id in the database must be null.
+	 * Returns the parameter sent if has been booked, otherwise returns null.
+	 * @param appointment It must have id and clientId.
+	 */
+	public Appointment book(Appointment appointment)
+	{
+		DbConnector db = new DbConnector();
+		Connection cn;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;	
+		
+		try {
+			cn = db.getConnection();
+			pstmt = cn.prepareStatement(""
+					+ "UPDATE appointments "
+					+ "SET client_id = ? "
+					+ "WHERE id = ? "
+					+ "AND client_id IS NULL "
+					+ "AND date_time > NOW()");
+			
+			pstmt.setInt(1, appointment.getClient().getId());
+			pstmt.setInt(2, appointment.getId());
+			
+			if (pstmt.executeUpdate() != 0)
+				return appointment;
+			else
+				return null;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

@@ -3,17 +3,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="common/head.jsp" %>
 
-<%= generateHead(true, null, null) %>
+<%= generateHead(true, null, "<link rel='stylesheet' type='text/css' href='styles/book-appointment.css'>") %>
 <% 	LinkedList<Appointment> appointments = (LinkedList<Appointment>) request.getAttribute("availableAppointments"); %>
 
 <body>
 	<jsp:include page="common/topbar.jsp"/>
-    
 	<div class="container-fluid" style="display:flex;">
 		<jsp:include page="common/sidebar.jsp"/>
 		
-		<form action="reservar-turno" method="get">
-			<button type="submit" onclick="function()">Borrar filtros - mejorar</button>
+		<form action="reservar-turno" method="get" id="filter-form">
+			<button type="button" id="clear-filters-btn">Borrar filtros - mejorar</button>
 		
 			<label for="date">Fecha deseada</label>
 			<input type="date" name="date" id="date" <%= request.getParameter("date") != null ? "value=" + request.getParameter("date") : "" %>>
@@ -29,7 +28,7 @@
 		
 <% 
 if (appointments.isEmpty()) {
-	
+	out.println("<p>No hay turnos disponibles :(</p>");
 }
 else {
 %>
@@ -37,15 +36,20 @@ else {
 		    <ul>
 <%
 	for (Appointment a : appointments) {
-		out.println("<li>" + a.getFormattedDateTime() + "</li>");
+		out.println(String.format(""
+			+ "<li class='appointment-li'><label>"
+		    + "<input type='radio' name='appointment-id' value='%s' required> %s"
+			+ "</label></li>",
+	        a.getId(), a.getFormattedDateTime()));
 	}
 %>
 			</ul>
+			<button type="submit">Reservar</button>
 		</form>
 <% } %>
-		
-		
-		<!--esto lo debería usar para mostrar mis turnos depues-->
+
+
 	</div>
+	<jsp:include page="common/show-alert.jsp"/>
 </body>
 </html>

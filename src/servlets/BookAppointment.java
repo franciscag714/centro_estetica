@@ -1,18 +1,19 @@
 package servlets;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import logic.AppointmentLogic;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
 
+import entities.Alert;
 import entities.Appointment;
 import entities.AppointmentFilter;
 import entities.Client;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import logic.AppointmentLogic;
 
 public class BookAppointment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -50,15 +51,6 @@ public class BookAppointment extends HttpServlet {
         			        	
 	        	LinkedList<Appointment> appointments = appointmentLogic.listAvailable(filter);
 	        	request.setAttribute("availableAppointments", appointments);
-	        	
-	        	/*ClientLogic clientCtrl = new ClientLogic();
-				LinkedList<Client> clients = clientCtrl.list();
-				request.setAttribute("clientsList", clients);
-				
-				EmployeeLogic employeeCtrl = new EmployeeLogic();
-				LinkedList<Employee> employees = employeeCtrl.list();
-				request.setAttribute("employeesList", employees);
-				*/
         	}
         	catch (Exception e) {
         		System.out.println(e.toString());
@@ -72,7 +64,40 @@ public class BookAppointment extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		doGet(request, response);
+		//NEVER IN PRODUCTION
+		Client c = new Client();
+		c.setId(4);
+		request.getSession().setAttribute("user", c); //never in production
+		
+		
+		
+		if (request.getSession().getAttribute("user") == null)
+        	response.sendRedirect("index");
+        
+        else if (request.getSession().getAttribute("user").getClass() == Client.class) 
+        {
+        	AppointmentLogic appointmentLogic = new AppointmentLogic();
+        	Appointment appointment = new Appointment();
+        	Alert alert = new Alert("error", "No se pudo reservar el turno.");
+        	
+        	try {
+        		appointment.setId(Integer.parseInt(request.getParameter("appointment-id")));
+        		appointment.setClient((Client) request.getSession().getAttribute("user"));
+        		
+        			        	
+	        	appointment = appointmentLogic.book(appointment);
+	        	if (appointment != null)
+	        		alert = new Alert("success", "Turno reservado con éxito.");	//se pueden mostrar detalles y enviar mail confimración
+        	}
+        	catch (Exception e) {
+        		System.out.println(e.toString());
+        	}
+			
+        	request.setAttribute("alert", alert);
+        	doGet(request, response);
+        }
+        else
+        	response.sendRedirect("index");
 	}
 
 }

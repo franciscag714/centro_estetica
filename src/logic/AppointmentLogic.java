@@ -20,6 +20,10 @@ public class AppointmentLogic {
 		return appointmentData.listAvailable(filter);
 	}
 	
+	public Appointment book(Appointment a) {
+		return appointmentData.book(a);
+	}
+	
 	public Appointment create(Appointment a) {
 		return appointmentData.add(a);
 	}
