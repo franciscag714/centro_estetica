@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import entities.Client;
 
 public class ClientData {
@@ -90,7 +92,7 @@ public class ClientData {
 		}
 	}
 	
-	public Client searchByUser(Client cli) {
+	public Client searchByUserAndPassword(Client cli) {
 		DbConnector db = new DbConnector();
 		Connection conn;
 		PreparedStatement pstmt = null;
@@ -98,20 +100,20 @@ public class ClientData {
 		
 		try {
 			conn = db.getConnection();
-			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email FROM clients WHERE user=? AND password=?");
-			
+			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email, user, password FROM clients WHERE user = ?");
 			pstmt.setString(1, cli.getUser());
-			pstmt.setString(2, cli.getPassword());
 			
 			rs = pstmt.executeQuery();
 			
-			if (rs.next()) {
+			if (rs.next() && BCrypt.checkpw(cli.getPassword(), rs.getString(6)))
+			{
 				Client client = new Client();
 				
 				client.setId(rs.getInt(1));
 				client.setFirstname(rs.getString(2));
 				client.setLastname(rs.getString(3));
 				client.setEmail(rs.getString(4));
+				client.setUser(rs.getString(5));
 				
 				return client;
 			}
@@ -141,7 +143,7 @@ public class ClientData {
 			pstmt = conn.prepareStatement("INSERT INTO clients(user, password, firstname, lastname, email) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			
 			pstmt.setString(1, cli.getUser());
-			pstmt.setString(2, cli.getPassword());
+			pstmt.setString(2, BCrypt.hashpw(cli.getPassword(), BCrypt.gensalt()));
 			pstmt.setString(3, cli.getFirstname());
 			pstmt.setString(4, cli.getLastname());
 			pstmt.setString(5, cli.getEmail());
@@ -180,15 +182,26 @@ public class ClientData {
 			return null;
 		}
 		try {
-			conn= db.getConnection();
-			pstmt = conn.prepareStatement("UPDATE clients SET user=?, password=?, firstname=?, lastname=?, email=? WHERE id=?");
+			StringBuilder query = new StringBuilder("UPDATE clients SET user=?, firstname=?, lastname=?, email=? ");
+			if (cli.getPassword() != "")
+				query.append(", password=? ");
+			
+			query.append("WHERE id = ?");
+			
+			conn = db.getConnection();
+			pstmt = conn.prepareStatement(query.toString());
 			
 			pstmt.setString(1, cli.getUser());
-			pstmt.setString(2, cli.getPassword());
-			pstmt.setString(3, cli.getFirstname());
-			pstmt.setString(4, cli.getLastname());
-			pstmt.setString(5, cli.getEmail());
-			pstmt.setInt(6, cli.getId());
+			pstmt.setString(2, cli.getFirstname());
+			pstmt.setString(3, cli.getLastname());
+			pstmt.setString(4, cli.getEmail());
+			
+			if (cli.getPassword() != "") {
+				pstmt.setString(5, cli.getPassword());
+				pstmt.setInt(6, cli.getId());	
+			}
+			else
+				pstmt.setInt(5, cli.getId());
 			
 			pstmt.executeUpdate();
 			return cli;

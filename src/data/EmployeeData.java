@@ -7,7 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import entities.Employee;
+
 
 public class EmployeeData {
 	public LinkedList<Employee> list(){
@@ -92,7 +95,7 @@ public class EmployeeData {
 		}
 	}
 
-	public Employee searchByUser(Employee emp) {
+	public Employee searchByUserAndPassword(Employee emp) {
 		DbConnector db = new DbConnector();
 		Connection conn;
 		PreparedStatement pstmt = null;
@@ -100,21 +103,21 @@ public class EmployeeData {
 		
 		try {
 			conn = db.getConnection();
-			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email, is_admin FROM employees WHERE user=? AND password=?");
-			
+			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email, user, password, is_admin FROM employees WHERE user = ?");
 			pstmt.setString(1, emp.getUser());
-			pstmt.setString(2, emp.getPassword());
 			
 			rs = pstmt.executeQuery();
 			
-			if (rs.next()) {
+			if (rs.next() && BCrypt.checkpw(emp.getPassword(), rs.getString(6)))
+			{	
 				Employee employee = new Employee();
 				
 				employee.setId(rs.getInt(1));
 				employee.setFirstname(rs.getString(2));
 				employee.setLastname(rs.getString(3));
 				employee.setEmail(rs.getString(4));
-				employee.setIsAdmin(rs.getBoolean(5));
+				employee.setUser(rs.getString(5));
+				employee.setIsAdmin(rs.getBoolean(7));
 				
 				return employee;
 			}
@@ -144,7 +147,7 @@ public class EmployeeData {
 			pstmt = conn.prepareStatement("INSERT INTO employees(user, password, firstname, lastname, email, is_admin) VALUES (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			
 			pstmt.setString(1, emp.getUser());
-			pstmt.setString(2, emp.getPassword());
+			pstmt.setString(2, BCrypt.hashpw(emp.getPassword(), BCrypt.gensalt()));
 			pstmt.setString(3, emp.getFirstname());
 			pstmt.setString(4, emp.getLastname());
 			pstmt.setString(5, emp.getEmail());
@@ -184,17 +187,27 @@ public class EmployeeData {
 			return null;
 		}
 		try {
+			StringBuilder query = new StringBuilder("UPDATE employees SET user=?, firstname=?, lastname=?, email=?, is_admin=? ");
+			if (emp.getPassword() != "")
+				query.append(", password=? ");
+			
+			query.append("WHERE id = ?");
+			
 			conn= db.getConnection();
-			pstmt = conn.prepareStatement("UPDATE employees SET user=?, password=?, firstname=?, lastname=?, email=?, is_admin=? WHERE id=?");
+			pstmt = conn.prepareStatement(query.toString());
 			
 			pstmt.setString(1, emp.getUser());
-			pstmt.setString(2, emp.getPassword());
-			pstmt.setString(3, emp.getFirstname());
-			pstmt.setString(4, emp.getLastname());
-			pstmt.setString(5, emp.getEmail());
-			pstmt.setBoolean(6, emp.getIsAdmin());
+			pstmt.setString(2, emp.getFirstname());
+			pstmt.setString(3, emp.getLastname());
+			pstmt.setString(4, emp.getEmail());
+			pstmt.setBoolean(5, emp.getIsAdmin());
 			
-			pstmt.setInt(7, emp.getId());
+			if (emp.getPassword() != "") {
+				pstmt.setString(6, emp.getPassword());
+				pstmt.setInt(7, emp.getId());	
+			}
+			else
+				pstmt.setInt(6, emp.getId());
 			
 			pstmt.executeUpdate();
 			return emp;
