@@ -205,7 +205,7 @@ public class ClientData {
 			pstmt.setString(4, cli.getEmail());
 			
 			if (cli.getPassword() != "") {
-				pstmt.setString(5, cli.getPassword());
+				pstmt.setString(5, BCrypt.hashpw(cli.getPassword(), BCrypt.gensalt()));
 				pstmt.setInt(6, cli.getId());
 			}
 			else

@@ -26,18 +26,19 @@
 					</tr>
 				</thead>
 				<tbody>
-				<%for (Employee e: employees) {%>
+<% for (Employee e: employees) { %>
 					<tr id="employeeId:<%= e.getId() %>" onclick="changeSelectedRow(this.id)">
 						<td><%= e.getLastname() %></td>
 						<td><%= e.getFirstname() %></td>
 						<td><%= e.getEmail() %></td>
 						<td><%= e.getUser() %></td>
-						<%String tipo=""; 
-						if (e.getIsAdmin()) 
-							tipo="administrador";
-						else 
-							tipo="empleado";
-						%>
+<%
+	String tipo = ""; 
+	if (e.getIsAdmin()) 
+		tipo = "administrador";
+	else 
+		tipo = "empleado";
+%>
 						<td><%= tipo %></td>
 					</tr>
 				<% } %>
@@ -45,7 +46,6 @@
 			</table>
 			<div>
 				<button id="newEmployee">Nuevo empleado</button>
-				<button id="updatePassword">Cambiar contraseña</button>
 				<button id="updateEmployee">Modificar</button>
 				<button id="deleteEmployee">Eliminar</button>
 			</div>
@@ -74,16 +74,14 @@
 				<label for="user">Usuario</label>
 				<input type="text" name="user" id="user" required>
 				
+				<label for="password">Contraseña</label>
+				<input type="password" name="password" id="password" required>
+				
 				<label for="is_admin">Tipo empleado</label>
 				<select id="is_admin" name="is_admin" required>
 					<option value="empleado">Empleado</option>
 					<option value="administrador">Administrador</option>
 				</select>
-				
-				<div id="passwordDiv">
-					<label for="password">Contraseña</label>
-					<input type="password" name="password" id="password" required>
-				</div>
 				
 				<footer>
 					<button type="button" id="closeEmployeeModal" class="secondary">Cancelar</button>

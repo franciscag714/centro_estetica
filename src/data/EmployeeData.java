@@ -211,7 +211,7 @@ public class EmployeeData {
 			pstmt.setBoolean(5, emp.getIsAdmin());
 			
 			if (emp.getPassword() != "") {
-				pstmt.setString(6, emp.getPassword());
+				pstmt.setString(6, BCrypt.hashpw(emp.getPassword(), BCrypt.gensalt()));
 				pstmt.setInt(7, emp.getId());
 			}
 			else
