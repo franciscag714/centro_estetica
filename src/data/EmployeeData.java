@@ -19,7 +19,7 @@ public class EmployeeData {
 		Statement stmt = null;
 		ResultSet rs = null;
 		
-		LinkedList<Employee> employees = new LinkedList<Employee>();
+		LinkedList<Employee> employees = new LinkedList<>();
 		
 		try {
 			conn = db.getConnection();
@@ -38,16 +38,18 @@ public class EmployeeData {
 					
 				employees.add(employee);
 			}
-				
 			return employees;
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (stmt != null) { stmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -80,14 +82,18 @@ public class EmployeeData {
 				
 				return employee;
 			}
+			
 			return null;
+			
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		} finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -109,7 +115,7 @@ public class EmployeeData {
 			rs = pstmt.executeQuery();
 			
 			if (rs.next() && BCrypt.checkpw(emp.getPassword(), rs.getString(6)))
-			{	
+			{
 				Employee employee = new Employee();
 				
 				employee.setId(rs.getInt(1));
@@ -121,14 +127,18 @@ public class EmployeeData {
 				
 				return employee;
 			}
+			
 			return null;
+			
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		} finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -160,14 +170,18 @@ public class EmployeeData {
 				emp.setId(rs.getInt(1));
 				return emp;
 			}
+			
 			return null;
+			
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		} finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -179,13 +193,7 @@ public class EmployeeData {
 		DbConnector db = new DbConnector();
 		Connection conn;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		
-		Employee employee = searchById(emp);
-		
-		if (employee == null) {
-			return null;
-		}
 		try {
 			StringBuilder query = new StringBuilder("UPDATE employees SET user=?, firstname=?, lastname=?, email=?, is_admin=? ");
 			if (emp.getPassword() != "")
@@ -204,21 +212,27 @@ public class EmployeeData {
 			
 			if (emp.getPassword() != "") {
 				pstmt.setString(6, emp.getPassword());
-				pstmt.setInt(7, emp.getId());	
+				pstmt.setInt(7, emp.getId());
 			}
 			else
 				pstmt.setInt(6, emp.getId());
 			
-			pstmt.executeUpdate();
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were updated.");
+				return null;
+			}
+			
 			return emp;
+			
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -231,16 +245,19 @@ public class EmployeeData {
 		Connection conn;
 		PreparedStatement pstmt = null;
 		
-		Employee employee = searchById(emp);
-		if (employee == null) {
-			return null;
-		}
 		try {
 			conn = db.getConnection();
-			pstmt = conn.prepareStatement("DELETE FROM employees WHERE id=?");
-			pstmt.setInt(1, employee.getId());
+			pstmt = conn.prepareStatement("DELETE FROM employees WHERE id = ?");
+			pstmt.setInt(1, emp.getId());
 			pstmt.executeUpdate();
-			return employee;
+			
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were deleted.");
+				return null;
+			}
+			
+			return emp;
 			
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -248,7 +265,8 @@ public class EmployeeData {
 		}
 		finally {
 			try {
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();

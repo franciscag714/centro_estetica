@@ -15,7 +15,7 @@
 			<fieldset>
 				<label>
 					Usuario
-					<input type="text" name="user" placeholder="Usuario" required autofocus="">
+					<input type="text" name="user" placeholder="Usuario" required autofocus>
 				</label>
 				<label>
 					Contraseña

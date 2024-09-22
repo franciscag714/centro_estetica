@@ -8,8 +8,11 @@
 
 <%= generateHead(true, null, null) %>
 <%
+	@SuppressWarnings("unchecked")
 	LinkedList<Appointment> appointments = (LinkedList<Appointment>) request.getAttribute("appointmentsList");
+	@SuppressWarnings("unchecked")	
 	LinkedList<Client> clients = (LinkedList<Client>) request.getAttribute("clientsList");
+	@SuppressWarnings("unchecked")
 	LinkedList<Employee> employees = (LinkedList<Employee>) request.getAttribute("employeesList");
 %>
 

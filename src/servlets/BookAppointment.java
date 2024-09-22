@@ -22,6 +22,7 @@ public class BookAppointment extends HttpServlet {
         super();
     }
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		//NEVER IN PRODUCTION
@@ -32,7 +33,7 @@ public class BookAppointment extends HttpServlet {
 		if (request.getSession().getAttribute("user") == null)
         	response.sendRedirect("index");
         
-        else if (request.getSession().getAttribute("user").getClass() == Client.class) 
+        else if (request.getSession().getAttribute("user").getClass() == Client.class)
         {
         	AppointmentLogic appointmentLogic = new AppointmentLogic();
         	
@@ -62,6 +63,7 @@ public class BookAppointment extends HttpServlet {
         	response.sendRedirect("index");
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		//NEVER IN PRODUCTION
@@ -74,7 +76,7 @@ public class BookAppointment extends HttpServlet {
 		if (request.getSession().getAttribute("user") == null)
         	response.sendRedirect("index");
         
-        else if (request.getSession().getAttribute("user").getClass() == Client.class) 
+        else if (request.getSession().getAttribute("user").getClass() == Client.class)
         {
         	AppointmentLogic appointmentLogic = new AppointmentLogic();
         	Appointment appointment = new Appointment();

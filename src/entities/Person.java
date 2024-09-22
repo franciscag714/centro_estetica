@@ -27,10 +27,9 @@ public class Person {
 	public void setEmail(String email) { this.email = email; }
 	
 	public String getFullname()
-	{	
-		if (this.getLastname() == null || this.getLastname().trim().isEmpty()) {
+	{
+		if (this.getLastname() == null || this.getLastname().trim().isEmpty())
 			return this.getFirstname();
-		}
 		if (this.getFirstname() == null || this.getFirstname().trim().isEmpty())
 			return this.getLastname();
 		

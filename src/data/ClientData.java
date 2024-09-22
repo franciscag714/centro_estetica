@@ -18,7 +18,7 @@ public class ClientData {
 		Statement stmt = null;
 		ResultSet rs = null;
 		
-		LinkedList<Client> clients = new LinkedList<Client>();
+		LinkedList<Client> clients = new LinkedList<>();
 		
 		try {
 			conn = db.getConnection();
@@ -36,16 +36,18 @@ public class ClientData {
 				
 				clients.add(client);
 			}
-			
 			return clients;
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (stmt != null) { stmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -77,14 +79,18 @@ public class ClientData {
 				
 				return client;
 			}
+			
 			return null;
+			
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		} finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -117,14 +123,18 @@ public class ClientData {
 				
 				return client;
 			}
+			
 			return null;
+			
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		} finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -155,14 +165,18 @@ public class ClientData {
 				cli.setId(rs.getInt(1));
 				return cli;
 			}
+			
 			return null;
+			
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		} finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -174,13 +188,7 @@ public class ClientData {
 		DbConnector db = new DbConnector();
 		Connection conn;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		
-		Client client = searchById(cli);
-		
-		if (client == null) {
-			return null;
-		}
 		try {
 			StringBuilder query = new StringBuilder("UPDATE clients SET user=?, firstname=?, lastname=?, email=? ");
 			if (cli.getPassword() != "")
@@ -198,21 +206,27 @@ public class ClientData {
 			
 			if (cli.getPassword() != "") {
 				pstmt.setString(5, cli.getPassword());
-				pstmt.setInt(6, cli.getId());	
+				pstmt.setInt(6, cli.getId());
 			}
 			else
 				pstmt.setInt(5, cli.getId());
 			
-			pstmt.executeUpdate();
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were updated.");
+				return null;
+			}
+			
 			return cli;
+			
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -225,16 +239,19 @@ public class ClientData {
 		Connection conn;
 		PreparedStatement pstmt = null;
 		
-		Client client = searchById(cli);
-		if (client == null) {
-			return null;
-		}
 		try {
 			conn = db.getConnection();
 			pstmt = conn.prepareStatement("DELETE FROM clients WHERE id=?");
-			pstmt.setInt(1, client.getId());
+			pstmt.setInt(1, cli.getId());
 			pstmt.executeUpdate();
-			return client;
+			
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were deleted.");
+				return null;
+			}
+			
+			return cli;
 			
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -242,7 +259,8 @@ public class ClientData {
 		}
 		finally {
 			try {
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();

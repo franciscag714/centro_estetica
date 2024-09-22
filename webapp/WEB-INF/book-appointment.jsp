@@ -4,7 +4,10 @@
 <%@ include file="common/head.jsp" %>
 
 <%= generateHead(true, null, "<link rel='stylesheet' type='text/css' href='styles/book-appointment.css'>") %>
-<% 	LinkedList<Appointment> appointments = (LinkedList<Appointment>) request.getAttribute("availableAppointments"); %>
+<% 
+	@SuppressWarnings("unchecked")
+	LinkedList<Appointment> appointments = (LinkedList<Appointment>) request.getAttribute("availableAppointments");
+%>
 
 <body>
 	<jsp:include page="common/topbar.jsp"/>

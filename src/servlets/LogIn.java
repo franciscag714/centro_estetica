@@ -17,6 +17,7 @@ public class LogIn extends HttpServlet {
         super();
     }
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		Person p = (Person) request.getSession().getAttribute("user");
@@ -28,6 +29,7 @@ public class LogIn extends HttpServlet {
 			request.getRequestDispatcher("WEB-INF/book-appointment.jsp").forward(request, response);
 	}
 	
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		Person p = new Person();

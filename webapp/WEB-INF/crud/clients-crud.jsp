@@ -5,6 +5,7 @@
 
 <%= generateHead(true, null, null) %>	
 <%
+	@SuppressWarnings("unchecked")
 	LinkedList<Client> clients = (LinkedList<Client>) request.getAttribute("clientsList");
 %>
 

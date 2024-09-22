@@ -29,7 +29,7 @@ public class AppointmentData
 		Statement stmt = null;
 		ResultSet rs = null;
 		
-		LinkedList<Appointment> appointments = new LinkedList<Appointment>();
+		LinkedList<Appointment> appointments = new LinkedList<>();
 		
 		try {
 			cn = db.getConnection();
@@ -73,8 +73,10 @@ public class AppointmentData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (stmt != null) { stmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -98,8 +100,8 @@ public class AppointmentData
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;	
-		LinkedList<Appointment> appointments = new LinkedList<Appointment>();
+		ResultSet rs = null;
+		LinkedList<Appointment> appointments = new LinkedList<>();
 		
 		try {
 			cn = db.getConnection();
@@ -137,8 +139,10 @@ public class AppointmentData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -157,7 +161,7 @@ public class AppointmentData
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;	
+		ResultSet rs = null;
 		
 		try {
 			cn = db.getConnection();
@@ -171,10 +175,10 @@ public class AppointmentData
 			pstmt.setInt(1, appointment.getClient().getId());
 			pstmt.setInt(2, appointment.getId());
 			
-			if (pstmt.executeUpdate() != 0)
-				return appointment;
-			else
+			if (pstmt.executeUpdate() == 0)
 				return null;
+			
+			return appointment;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -182,8 +186,10 @@ public class AppointmentData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -240,6 +246,7 @@ public class AppointmentData
 				
 				return appointReturn;
 			}
+			
 			return null;
 			
 		} catch (SQLException e) {
@@ -248,8 +255,10 @@ public class AppointmentData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -284,14 +293,17 @@ public class AppointmentData
 			}
 			
 			return null;
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -303,7 +315,6 @@ public class AppointmentData
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		
 		try {
 			cn = db.getConnection();
@@ -323,8 +334,8 @@ public class AppointmentData
 				System.out.println("No rows were updated.");
 				return null;
 			}
-			else 
-				return appointment;
+			
+			return appointment;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -332,8 +343,8 @@ public class AppointmentData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -356,8 +367,8 @@ public class AppointmentData
 				System.out.println("No rows were updated.");
 				return null;
 			}
-			else 
-				return appointment;
+			
+			return appointment;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -365,7 +376,8 @@ public class AppointmentData
 		}
 		finally {
 			try {
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();

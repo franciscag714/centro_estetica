@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.LinkedList;
+
 import data.AppointmentData;
 import entities.Appointment;
 import entities.AppointmentFilter;
