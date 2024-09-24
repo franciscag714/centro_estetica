@@ -34,7 +34,7 @@ CREATE TABLE `appointments` (
   KEY `FK_clients_appointments_idx` (`client_id`),
   CONSTRAINT `FK_clients_appointments` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
   CONSTRAINT `FK_employees_appointments` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,33 +43,36 @@ CREATE TABLE `appointments` (
 
 LOCK TABLES `appointments` WRITE;
 /*!40000 ALTER TABLE `appointments` DISABLE KEYS */;
+INSERT INTO `appointments` VALUES (7,'2024-08-30 09:54:00',1,1),(8,'2024-08-30 10:47:00',1,1),(11,'2035-01-16 19:24:00',1,1),(12,'2037-02-16 20:33:00',1,NULL);
 /*!40000 ALTER TABLE `appointments` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `attentionts`
+-- Table structure for table `attentions`
 --
 
-DROP TABLE IF EXISTS `attentionts`;
+DROP TABLE IF EXISTS `attentions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `attentionts` (
+CREATE TABLE `attentions` (
   `appointment_id` int unsigned NOT NULL,
   `service_id` int unsigned NOT NULL,
   PRIMARY KEY (`appointment_id`,`service_id`),
   KEY `FK_services_attentionts_idx` (`service_id`),
+  KEY `FK_appointment_attentionts_idx` (`appointment_id`),
   CONSTRAINT `FK_appointments_attentionts` FOREIGN KEY (`appointment_id`) REFERENCES `appointments` (`id`),
   CONSTRAINT `FK_services_attentionts` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `attentionts`
+-- Dumping data for table `attentions`
 --
 
-LOCK TABLES `attentionts` WRITE;
-/*!40000 ALTER TABLE `attentionts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `attentionts` ENABLE KEYS */;
+LOCK TABLES `attentions` WRITE;
+/*!40000 ALTER TABLE `attentions` DISABLE KEYS */;
+INSERT INTO `attentions` VALUES (11,1),(8,2);
+/*!40000 ALTER TABLE `attentions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -87,7 +90,7 @@ CREATE TABLE `clients` (
   `lastname` varchar(30) NOT NULL,
   `email` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,6 +99,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
+INSERT INTO `clients` VALUES (1,'renag','1234','Renata','Gramaglia','renugramaglia27@gmail.com'),(2,'santi','12345','Santiago','Spini','spini@gmail.com');
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,7 +119,7 @@ CREATE TABLE `employees` (
   `email` varchar(45) NOT NULL,
   `is_admin` tinyint NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,6 +128,7 @@ CREATE TABLE `employees` (
 
 LOCK TABLES `employees` WRITE;
 /*!40000 ALTER TABLE `employees` DISABLE KEYS */;
+INSERT INTO `employees` VALUES (1,'frang','1234','Francisca','Gramaglia','franciscagramaglia714@gmail.com',1);
 /*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +143,7 @@ CREATE TABLE `service_types` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `description` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,6 +152,7 @@ CREATE TABLE `service_types` (
 
 LOCK TABLES `service_types` WRITE;
 /*!40000 ALTER TABLE `service_types` DISABLE KEYS */;
+INSERT INTO `service_types` VALUES (1,'Manicura'),(2,'maquillaje');
 /*!40000 ALTER TABLE `service_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,7 +171,7 @@ CREATE TABLE `services` (
   PRIMARY KEY (`id`),
   KEY `FK_types_services_idx` (`service_type_id`),
   CONSTRAINT `FK_types_services` FOREIGN KEY (`service_type_id`) REFERENCES `service_types` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -174,6 +180,7 @@ CREATE TABLE `services` (
 
 LOCK TABLES `services` WRITE;
 /*!40000 ALTER TABLE `services` DISABLE KEYS */;
+INSERT INTO `services` VALUES (1,'Todos los dedos',2500.00,1),(2,'Dedos pulgares',1000.00,1);
 /*!40000 ALTER TABLE `services` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -188,5 +195,4 @@ UNLOCK TABLES;
 
 create user 'centro'@'%' identified by 'estetica2024';
 GRANT SELECT, INSERT, UPDATE, DELETE ON `centro_estetica`.* TO 'centro'@'%';
-
--- Dump completed on 2024-07-09 19:22:54
+-- Dump completed on 2024-09-23 18:56:02
