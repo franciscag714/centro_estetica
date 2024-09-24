@@ -53,13 +53,14 @@ public class ClientData {
 
 	public Client searchById(Client cli){
 		DbConnector db = new DbConnector();
-		Connection conn;
+		Connection cn;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
 		try {
-			conn = db.getConnection();
-			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email, user FROM clients WHERE id=?");
+			cn = db.getConnection();
+			pstmt = cn.prepareStatement("SELECT id, firstname, lastname, email, user, password "
+										+ "FROM clients WHERE id=?");
 			
 			pstmt.setInt(1, cli.getId());
 			rs = pstmt.executeQuery();
@@ -72,6 +73,7 @@ public class ClientData {
 				client.setLastname(rs.getString(3));
 				client.setEmail(rs.getString(4));
 				client.setUser(rs.getString(5));
+				client.setPassword(rs.getString(6));
 				
 				return client;
 			}
@@ -98,7 +100,7 @@ public class ClientData {
 		
 		try {
 			conn = db.getConnection();
-			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email FROM clients WHERE user=? AND password=?");
+			pstmt = conn.prepareStatement("SELECT id, firstname, lastname, email, user, password FROM clients WHERE user=? AND password=?");
 			
 			pstmt.setString(1, cli.getUser());
 			pstmt.setString(2, cli.getPassword());
@@ -112,6 +114,8 @@ public class ClientData {
 				client.setFirstname(rs.getString(2));
 				client.setLastname(rs.getString(3));
 				client.setEmail(rs.getString(4));
+				client.setUser(rs.getString(5));
+				client.setPassword(rs.getString(6));
 				
 				return client;
 			}
@@ -174,7 +178,7 @@ public class ClientData {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		Client client = searchById(cli);
+		Client client = searchByUser(cli);
 		
 		if (client == null) {
 			return null;
