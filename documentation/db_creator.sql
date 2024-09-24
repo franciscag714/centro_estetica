@@ -38,16 +38,6 @@ CREATE TABLE `appointments` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `appointments`
---
-
-LOCK TABLES `appointments` WRITE;
-/*!40000 ALTER TABLE `appointments` DISABLE KEYS */;
-INSERT INTO `appointments` VALUES (7,'2024-08-30 09:54:00',1,1),(8,'2024-08-30 10:47:00',1,1),(11,'2035-01-16 19:24:00',1,1),(12,'2037-02-16 20:33:00',1,NULL);
-/*!40000 ALTER TABLE `appointments` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `attentions`
 --
 
@@ -66,16 +56,6 @@ CREATE TABLE `attentions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `attentions`
---
-
-LOCK TABLES `attentions` WRITE;
-/*!40000 ALTER TABLE `attentions` DISABLE KEYS */;
-INSERT INTO `attentions` VALUES (11,1),(8,2);
-/*!40000 ALTER TABLE `attentions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `clients`
 --
 
@@ -92,16 +72,6 @@ CREATE TABLE `clients` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `clients`
---
-
-LOCK TABLES `clients` WRITE;
-/*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'renag','1234','Renata','Gramaglia','renugramaglia27@gmail.com'),(2,'santi','12345','Santiago','Spini','spini@gmail.com');
-/*!40000 ALTER TABLE `clients` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `employees`
@@ -123,16 +93,6 @@ CREATE TABLE `employees` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `employees`
---
-
-LOCK TABLES `employees` WRITE;
-/*!40000 ALTER TABLE `employees` DISABLE KEYS */;
-INSERT INTO `employees` VALUES (1,'frang','1234','Francisca','Gramaglia','franciscagramaglia714@gmail.com',1);
-/*!40000 ALTER TABLE `employees` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `service_types`
 --
 
@@ -145,16 +105,6 @@ CREATE TABLE `service_types` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `service_types`
---
-
-LOCK TABLES `service_types` WRITE;
-/*!40000 ALTER TABLE `service_types` DISABLE KEYS */;
-INSERT INTO `service_types` VALUES (1,'Manicura'),(2,'maquillaje');
-/*!40000 ALTER TABLE `service_types` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `services`
@@ -173,16 +123,6 @@ CREATE TABLE `services` (
   CONSTRAINT `FK_types_services` FOREIGN KEY (`service_type_id`) REFERENCES `service_types` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `services`
---
-
-LOCK TABLES `services` WRITE;
-/*!40000 ALTER TABLE `services` DISABLE KEYS */;
-INSERT INTO `services` VALUES (1,'Todos los dedos',2500.00,1),(2,'Dedos pulgares',1000.00,1);
-/*!40000 ALTER TABLE `services` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -195,4 +135,5 @@ UNLOCK TABLES;
 
 create user 'centro'@'%' identified by 'estetica2024';
 GRANT SELECT, INSERT, UPDATE, DELETE ON `centro_estetica`.* TO 'centro'@'%';
--- Dump completed on 2024-09-23 18:56:02
+
+-- Dump completed on 2024-09-24 19:04:24
