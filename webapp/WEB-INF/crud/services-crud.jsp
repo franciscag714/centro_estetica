@@ -6,7 +6,9 @@
 
 <%= generateHead(true, null, null) %>
 <%
+	@SuppressWarnings("unchecked")
 	LinkedList<Service> services = (LinkedList<Service>) request.getAttribute("servicesList");
+	@SuppressWarnings("unchecked")	
 	LinkedList<ServiceType> types = (LinkedList<ServiceType>) request.getAttribute("typesList");
 %>
 

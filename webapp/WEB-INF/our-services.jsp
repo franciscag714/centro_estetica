@@ -6,6 +6,7 @@
 <%= generateHead(true, null, "<link rel='stylesheet' type='text/css' href='styles/our-services.css'>") %>
 	
 <%
+	@SuppressWarnings("unchecked")
 	LinkedList<Service> services = (LinkedList<Service>) request.getAttribute("servicesList");
 %>
 
