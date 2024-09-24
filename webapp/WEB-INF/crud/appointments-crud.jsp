@@ -70,9 +70,12 @@
 				
 				<label for="client" style="color:gray">Cliente (opcional)</label>
 				<select id="client" name="client">
-				<% for (Client c: clients){%>
-						<option value="<%= c.getId() %>"><%= c.getFullname() %></option>
-				<%}%>
+					<option value="0">--disponible--</option>
+					
+<% for (Client c: clients){%>
+					<option value="<%= c.getId() %>"><%= c.getFullname() %></option>
+<%}%>
+
 				</select>
 				
 				<footer>

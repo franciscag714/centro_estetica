@@ -57,7 +57,7 @@ public class BookAppointment extends HttpServlet {
         		System.out.println(e.toString());
         	}
 			
-        	request.getRequestDispatcher("WEB-INF/book-appointment.jsp").forward(request, response);
+        	request.getRequestDispatcher("WEB-INF/client/book-appointment.jsp").forward(request, response);
         }
         else
         	response.sendRedirect("index");

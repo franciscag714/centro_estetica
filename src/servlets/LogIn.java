@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 
+import entities.Alert;
 import entities.Employee;
 import entities.Person;
 import jakarta.servlet.ServletException;
@@ -26,7 +27,7 @@ public class LogIn extends HttpServlet {
 		else if (p.getClass() == Employee.class)
 			request.getRequestDispatcher("WEB-INF/main.jsp").forward(request, response);
 		else
-			request.getRequestDispatcher("WEB-INF/book-appointment.jsp").forward(request, response);
+			response.sendRedirect("reservar-turno");
 	}
 	
 	@Override
@@ -40,12 +41,11 @@ public class LogIn extends HttpServlet {
 		p = loginLogic.validate(p);
 		
 		if (p == null) {
-			request.setAttribute("userNotFound", true);
-			this.doGet(request, response);
+			request.setAttribute("alert", new Alert("error", "Usuario y/o contraseña incorrectos"));
 		}
-		else {
+		else
 			request.getSession().setAttribute("user", p);
-			request.getRequestDispatcher("WEB-INF/main.jsp").forward(request, response);
-		}
+		
+		this.doGet(request, response);
 	}
 }
