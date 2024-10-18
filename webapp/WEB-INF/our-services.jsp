@@ -8,7 +8,7 @@
 	
 <%
 	@SuppressWarnings("unchecked")
-	LinkedList<Service> serviceTypes = (LinkedList<Service>) request.getAttribute("servicesList");
+	LinkedList<ServiceType> serviceTypes = (LinkedList<ServiceType>) request.getAttribute("serviceTypesList");
 %>
 
 <body>

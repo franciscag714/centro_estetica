@@ -184,7 +184,7 @@ public class ClientData {
 		}
 	}
 
-	public Client update(Client client) {
+	public Client update(Client cli) {
 		DbConnector db = new DbConnector();
 		Connection conn;
 		PreparedStatement pstmt = null;
@@ -234,7 +234,7 @@ public class ClientData {
 		}
 	}
 	
-	public Client delete(Client client) {
+	public Client delete(Client cli) {
 		DbConnector db = new DbConnector();
 		Connection conn;
 		PreparedStatement pstmt = null;

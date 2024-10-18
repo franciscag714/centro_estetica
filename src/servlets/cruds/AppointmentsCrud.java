@@ -65,14 +65,14 @@ public class AppointmentsCrud extends HttpServlet {
 			try {
 				if (action.equals("create"))
 				{
-					if (setData(request, response, appointment))
-						logic.create(appointment);
+					setData(request, appointment);
+					logic.create(appointment);
 				}
 				else if (action.equals("update"))
 				{
 					appointment.setId(Integer.parseInt(request.getParameter("id")));
-					if (setData(request, response, appointment))
-						logic.update(appointment);
+					setData(request, appointment);
+					logic.update(appointment);
 				}
 				else if (action.equals("delete"))
 				{

@@ -19,6 +19,7 @@ public class ServiceTypeData
 		ResultSet rs = null;
 		
 		LinkedList<ServiceType> servTypes = new LinkedList<>();
+		ServiceData serviceData = new ServiceData();
 		
 		try {
 			cn = db.getConnection();
@@ -117,13 +118,6 @@ public class ServiceTypeData
 			}
 			
 			return null;
-			
-			if (pstmt.executeUpdate() == 0)
-			{
-				System.out.println("No rows were updated.");
-				return null;
-			}
-			return servType;
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
