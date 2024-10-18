@@ -291,7 +291,6 @@ public class AppointmentData
 				appointment.setId(rs.getInt(1));
 				return appointment;
 			}
-			
 			return null;
 			
 		} catch (SQLException e) {
@@ -364,7 +363,7 @@ public class AppointmentData
 
 			if (pstmt.executeUpdate() == 0)
 			{
-				System.out.println("No rows were updated.");
+				System.out.println("No rows were deleted.");
 				return null;
 			}
 			

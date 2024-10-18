@@ -243,7 +243,6 @@ public class ClientData {
 			conn = db.getConnection();
 			pstmt = conn.prepareStatement("DELETE FROM clients WHERE id=?");
 			pstmt.setInt(1, cli.getId());
-			pstmt.executeUpdate();
 			
 			if (pstmt.executeUpdate() == 0)
 			{

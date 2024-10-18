@@ -63,6 +63,50 @@ public class ServiceData
 		}
 	}
 	
+	public LinkedList<Service> searchByType(ServiceType type)
+	{
+		DbConnector db = new DbConnector();
+		Connection cn;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		LinkedList<Service> services = new LinkedList<Service>();
+		
+		try {
+			cn = db.getConnection();
+			stmt = cn.prepareStatement(""
+					+ "SELECT id, description, updated_price "
+					+ "FROM services "
+					+ "WHERE services.service_type_id=? "
+					+ "ORDER BY description;");
+			stmt.setInt(1, type.getId());
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				Service service = new Service();
+				service.setId(rs.getInt(1));
+				service.setDescription(rs.getString(2));
+				service.setUpdatedPrice(rs.getDouble(3));
+				
+				services.add(service);
+			}
+			return services;
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		finally {
+			try {
+				if (rs != null) { rs.close(); }
+				if (stmt != null) { stmt.close(); }
+				db.releaseConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public Service searchById(Service servParam)
 	{
 		DbConnector db = new DbConnector();

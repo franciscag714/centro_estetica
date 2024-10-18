@@ -38,6 +38,7 @@ public class EmployeeData {
 					
 				employees.add(employee);
 			}
+			
 			return employees;
 			
 		} catch (SQLException e) {
@@ -249,7 +250,6 @@ public class EmployeeData {
 			conn = db.getConnection();
 			pstmt = conn.prepareStatement("DELETE FROM employees WHERE id = ?");
 			pstmt.setInt(1, emp.getId());
-			pstmt.executeUpdate();
 			
 			if (pstmt.executeUpdate() == 0)
 			{

@@ -65,14 +65,14 @@ public class AppointmentsCrud extends HttpServlet {
 			try {
 				if (action.equals("create"))
 				{
-					if (setData(request, response, appointment))
-						logic.create(appointment);
+					setData(request, appointment);
+					logic.create(appointment);
 				}
 				else if (action.equals("update"))
 				{
 					appointment.setId(Integer.parseInt(request.getParameter("id")));
-					if (setData(request, response, appointment))
-						logic.update(appointment);
+					setData(request, appointment);
+					logic.update(appointment);
 				}
 				else if (action.equals("delete"))
 				{
@@ -84,24 +84,18 @@ public class AppointmentsCrud extends HttpServlet {
 		response.sendRedirect("turnos");
 	}
 	
-	private boolean setData(HttpServletRequest request, HttpServletResponse response, Appointment appointment) throws IOException
+	private void setData(HttpServletRequest request, Appointment appointment)
 	{
-		LocalDateTime dt = LocalDateTime.parse(request.getParameter("date_time"));
-		
-		if (dt.isBefore(LocalDateTime.now()))
-			return false;
-		else
-			appointment.setDateTime(dt);
+		appointment.setDateTime(LocalDateTime.parse(request.getParameter("date_time")));
 		
 		Employee e = new Employee();
 		e.setId(Integer.parseInt(request.getParameter("employee")));
 		appointment.setEmployee(e);
-		
+
 		Client c = new Client();
 		if (request.getParameter("client") != null)
 			c.setId(Integer.parseInt(request.getParameter("client")));
 
 		appointment.setClient(c);
-		return true;
 	}
 }

@@ -11,7 +11,7 @@ import entities.ServiceType;
 
 public class ServiceTypeData
 {
-	public LinkedList<ServiceType> list()
+	public LinkedList<ServiceType> list(Boolean populateServices)
 	{
 		DbConnector db = new DbConnector();
 		Connection cn;
@@ -19,16 +19,22 @@ public class ServiceTypeData
 		ResultSet rs = null;
 		
 		LinkedList<ServiceType> servTypes = new LinkedList<>();
+		ServiceData serviceData = new ServiceData();
 		
 		try {
 			cn = db.getConnection();
 			stmt = cn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM service_types");
+			rs = stmt.executeQuery("SELECT id, description FROM service_types ORDER BY description;");
 			
 			while (rs.next()) {
 				ServiceType servType = new ServiceType();
 				servType.setId(rs.getInt("id"));
 				servType.setDescription(rs.getString("description"));
+				
+				if (populateServices) {
+					servType.setServices(serviceData.searchByType(servType));
+				}
+				
 				servTypes.add(servType);
 			}
 			return servTypes;
@@ -60,7 +66,7 @@ public class ServiceTypeData
 		
 		try {
 			cn = db.getConnection();
-			pstmt = cn.prepareStatement("SELECT * FROM service_types WHERE id=?");
+			pstmt = cn.prepareStatement("SELECT id, description FROM service_types WHERE id=?");
 			pstmt.setInt(1, stParam.getId());
 			
 			rs = pstmt.executeQuery();
@@ -112,7 +118,7 @@ public class ServiceTypeData
 			}
 			
 			return null;
-			
+
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;

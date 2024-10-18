@@ -27,7 +27,7 @@ public class ServiceTypesCrud extends HttpServlet {
         else if (request.getSession().getAttribute("user").getClass() == Employee.class)
 		{
         	ServiceTypeLogic ctrl = new ServiceTypeLogic();
-			LinkedList<ServiceType> types = ctrl.list();
+			LinkedList<ServiceType> types = ctrl.list(false);
 			request.setAttribute("typesList", types);
 			request.getRequestDispatcher("WEB-INF/crud/service-types-crud.jsp").forward(request, response);
 		}

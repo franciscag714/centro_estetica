@@ -1,46 +1,49 @@
 @charset "UTF-8";
 
-#btn-logo{
-	width: 100px;
-	height: 100px;
+#btn-logo {
+  width: 100px;
+  height: 100px;
 }
 
-nav{
-	background-color: #E5E2E1;
+nav {
+  background-color: #e5e2e1;
 }
 
-td:hover{
-	cursor: pointer;
+.tob-bar-item a {
+  color: #ff4687;
+  --pico-primary-hover-underline: #ff4687;
 }
 
-.flex-container-row{
-	display:flex;
-	flex-direction: row;
-	justify-content: space-around;
+td:hover {
+  cursor: pointer;
 }
 
-.flex-container-column{
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+.flex-container-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
-.deleteBtn{
-	background-color: red;
+.flex-container-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.selected-row{
-	--pico-background-color: #b8bdbc;
+.deleteBtn {
+  background-color: red;
 }
 
-.main-btn-modal{
-	
+.selected-row {
+  --pico-background-color: #b8bdbc;
 }
 
-.delete-btn-modal{
-	
+.main-btn-modal {
 }
 
-.modal-title{
-	text-align: center;
+.delete-btn-modal {
+}
+
+.modal-title {
+  text-align: center;
 }
