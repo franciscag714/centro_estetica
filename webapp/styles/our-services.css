@@ -1,39 +1,39 @@
 @charset "UTF-8";
 
-.div-h3{
-	margin: 20px;
-	background-image: url('../resources/flowers.jpg');
-	background-repeat: repeat-x;
-	background-size: auto 100%;
+.div-h3 {
+  margin: 20px;
+  background-image: url("../resources/flowers.jpg");
+  background-repeat: repeat-x;
+  background-size: auto 100%;
 }
 
-h3{
-	text-align: center;
-	padding: 20px;
-	margin: 0px;
+h3 {
+  text-align: center;
+  padding: 20px;
+  margin: 0px;
 }
 
-h3 span{
-	background-color: white;
-	padding: 20px;
-	font-family: monospace;
+h3 span {
+  background-color: white;
+  padding: 20px;
+  font-family: monospace;
 }
 
-article{
-	background-color: #f7d6ef;
-	width: 300px;
-	text-align: center;
-	margin:10px;
+article {
+  background-color: #e2dada;
+  width: 300px;
+  text-align: center;
+  margin: 10px;
 }
 
-article header{
-	border: 5px solid #f7d6ef;
-	font-weight: bold;
+article header {
+  border: 5px solid #e2dada;
+  font-weight: bold;
 }
 
-#articles-div{
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: row;
-	justify-content: center;
+#articles-div {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
 }
