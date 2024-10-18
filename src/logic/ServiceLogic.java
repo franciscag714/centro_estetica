@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.LinkedList;
+
 import data.ServiceData;
 import entities.Service;
 
@@ -17,22 +18,16 @@ public class ServiceLogic
 	}
 	
 	public Service create(Service service)
-	{	
-		if (service.getDescription().trim().isEmpty())
-			return null;
-		
-		if (service.getUpdatedPrice() < 0)
+	{
+		if (service.getDescription().trim().isEmpty() || (service.getUpdatedPrice() < 0))
 			return null;
 		
 		return servData.add(service);
 	}
 	
 	public Service update(Service service)
-	{	
-		if (service.getDescription().trim().isEmpty())
-			return null;
-		
-		if (service.getUpdatedPrice() < 0)
+	{
+		if (service.getDescription().trim().isEmpty() || (service.getUpdatedPrice() < 0))
 			return null;
 		
 		return servData.update(service);

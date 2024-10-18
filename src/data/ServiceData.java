@@ -19,7 +19,7 @@ public class ServiceData
 		Statement stmt = null;
 		ResultSet rs = null;
 		
-		LinkedList<Service> services = new LinkedList<Service>();
+		LinkedList<Service> services = new LinkedList<>();
 		
 		try {
 			cn = db.getConnection();
@@ -52,8 +52,10 @@ public class ServiceData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (stmt != null) { stmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -138,6 +140,7 @@ public class ServiceData
 				
 				return service;
 			}
+			
 			return null;
 			
 		} catch (SQLException e) {
@@ -146,8 +149,10 @@ public class ServiceData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -176,16 +181,19 @@ public class ServiceData
 				service.setId(rs.getInt(1));
 				return service;
 			}
+			
 			return null;
-
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -197,7 +205,6 @@ public class ServiceData
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		
 		try {
 			cn = db.getConnection();
@@ -212,6 +219,7 @@ public class ServiceData
 				System.out.println("No rows were updated.");
 				return null;
 			}
+			
 			return service;
 			
 		} catch (SQLException e) {
@@ -220,8 +228,8 @@ public class ServiceData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -252,7 +260,8 @@ public class ServiceData
 		}
 		finally {
 			try {
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();

@@ -8,5 +8,5 @@ public class Attention {
 	public void setAppointment(Appointment appointment) { this.appointment = appointment; }
 	
 	public Service getService() { return service; }
-	public void setService(Service service) { this.service = service; }	
+	public void setService(Service service) { this.service = service; }
 }
