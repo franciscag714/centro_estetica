@@ -18,7 +18,7 @@
 	}
 	else if (user != null && user.getClass() == Client.class) {
 %>
-      		<li><a href="#">Mis turnos</a></li>
+      		<li><a href="reservar-turno">Reservar turno</a></li>
       		<li><a href="#">Mis datos</a></li>
 <%	}	%>
     	</ul>

@@ -1,14 +1,17 @@
 package data;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import entities.Appointment;
+import entities.AppointmentFilter;
 import entities.Client;
 import entities.Employee;
 
@@ -26,7 +29,7 @@ public class AppointmentData
 		Statement stmt = null;
 		ResultSet rs = null;
 		
-		LinkedList<Appointment> appointments = new LinkedList<Appointment>();
+		LinkedList<Appointment> appointments = new LinkedList<>();
 		
 		try {
 			cn = db.getConnection();
@@ -70,8 +73,123 @@ public class AppointmentData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (stmt != null) { stmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				db.releaseConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public LinkedList<Appointment> listAvailable(AppointmentFilter appointFilter)
+	{
+		StringBuilder filter = new StringBuilder();
+		
+		if (appointFilter.getDate() != null)
+			filter.append("AND DATE(date_time) = ? ");
+		
+		if (appointFilter.getStartTime() != null)
+			filter.append("AND TIME(date_time) >= ? ");
+		
+		if (appointFilter.getEndTime() != null)
+			filter.append("AND TIME(date_time) <= ? ");	//analizar si puedo evitar usar función en el where ya que no aprovecha índices...
+		
+		DbConnector db = new DbConnector();
+		Connection cn;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		LinkedList<Appointment> appointments = new LinkedList<>();
+		
+		try {
+			cn = db.getConnection();
+			pstmt = cn.prepareStatement(""
+					+ "SELECT app.id, app.date_time "
+					+ "FROM appointments app "
+					+ "WHERE app.client_id IS NULL "
+					+ "AND app.date_time > NOW() "
+					+ filter
+					+ "ORDER BY app.date_time;");
+			
+			int i = 1;
+			if (appointFilter.getDate() != null)
+				pstmt.setDate(i++, Date.valueOf(appointFilter.getDate()));
+			
+			if (appointFilter.getStartTime() != null)
+				pstmt.setTime(i++, Time.valueOf(appointFilter.getStartTime()));
+			
+			if (appointFilter.getEndTime() != null)
+				pstmt.setTime(i++, Time.valueOf(appointFilter.getEndTime()));
+			
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				Appointment appointment = new Appointment();
+				appointment.setId(rs.getInt(1));
+				appointment.setDateTime(rs.getObject(2, LocalDateTime.class));
+				appointments.add(appointment);
+			}
+			return appointments;
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				db.releaseConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * This method books an appointment.
+	 * To book, the client_id in the database must be null.
+	 * Returns the parameter sent if has been booked, otherwise returns null.
+	 * @param appointment It must have id and clientId.
+	 */
+	public Appointment book(Appointment appointment)
+	{
+		DbConnector db = new DbConnector();
+		Connection cn;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			cn = db.getConnection();
+			pstmt = cn.prepareStatement(""
+					+ "UPDATE appointments "
+					+ "SET client_id = ? "
+					+ "WHERE id = ? "
+					+ "AND client_id IS NULL "
+					+ "AND date_time > NOW()");
+			
+			pstmt.setInt(1, appointment.getClient().getId());
+			pstmt.setInt(2, appointment.getId());
+			
+			if (pstmt.executeUpdate() == 0)
+				return null;
+			
+			return appointment;
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -192,6 +310,7 @@ public class AppointmentData
 				
 				return appointReturn;
 			}
+			
 			return null;
 			
 		} catch (SQLException e) {
@@ -200,8 +319,10 @@ public class AppointmentData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -234,16 +355,18 @@ public class AppointmentData
 				appointment.setId(rs.getInt(1));
 				return appointment;
 			}
-			
 			return null;
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -255,7 +378,6 @@ public class AppointmentData
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		
 		try {
 			cn = db.getConnection();
@@ -275,8 +397,8 @@ public class AppointmentData
 				System.out.println("No rows were updated.");
 				return null;
 			}
-			else 
-				return appointment;
+			
+			return appointment;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -284,8 +406,8 @@ public class AppointmentData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -305,11 +427,11 @@ public class AppointmentData
 
 			if (pstmt.executeUpdate() == 0)
 			{
-				System.out.println("No rows were updated.");
+				System.out.println("No rows were deleted.");
 				return null;
 			}
-			else 
-				return appointment;
+			
+			return appointment;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -317,7 +439,8 @@ public class AppointmentData
 		}
 		finally {
 			try {
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();

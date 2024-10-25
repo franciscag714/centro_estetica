@@ -19,7 +19,7 @@ public class ServiceData
 		Statement stmt = null;
 		ResultSet rs = null;
 		
-		LinkedList<Service> services = new LinkedList<Service>();
+		LinkedList<Service> services = new LinkedList<>();
 		
 		try {
 			cn = db.getConnection();
@@ -41,6 +41,52 @@ public class ServiceData
 				servType.setId(rs.getInt(4));
 				servType.setDescription(rs.getString(5));
 				service.setType(servType);
+				
+				services.add(service);
+			}
+			return services;
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				db.releaseConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public LinkedList<Service> searchByType(ServiceType type)
+	{
+		DbConnector db = new DbConnector();
+		Connection cn;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		LinkedList<Service> services = new LinkedList<Service>();
+		
+		try {
+			cn = db.getConnection();
+			stmt = cn.prepareStatement(""
+					+ "SELECT id, description, updated_price "
+					+ "FROM services "
+					+ "WHERE services.service_type_id=? "
+					+ "ORDER BY description;");
+			stmt.setInt(1, type.getId());
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				Service service = new Service();
+				service.setId(rs.getInt(1));
+				service.setDescription(rs.getString(2));
+				service.setUpdatedPrice(rs.getDouble(3));
 				
 				services.add(service);
 			}
@@ -94,6 +140,7 @@ public class ServiceData
 				
 				return service;
 			}
+			
 			return null;
 			
 		} catch (SQLException e) {
@@ -102,8 +149,10 @@ public class ServiceData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -134,14 +183,17 @@ public class ServiceData
 			}
 			
 			return null;
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -153,7 +205,6 @@ public class ServiceData
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		
 		try {
 			cn = db.getConnection();
@@ -168,8 +219,8 @@ public class ServiceData
 				System.out.println("No rows were updated.");
 				return null;
 			}
-			else
-				return service;
+			
+			return service;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -177,8 +228,8 @@ public class ServiceData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -209,7 +260,8 @@ public class ServiceData
 		}
 		finally {
 			try {
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();

@@ -1,29 +1,40 @@
 package data;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
+
 import entities.ServiceType;
 
 public class ServiceTypeData
 {
-	public LinkedList<ServiceType> list()
+	public LinkedList<ServiceType> list(Boolean populateServices)
 	{
 		DbConnector db = new DbConnector();
 		Connection cn;
 		Statement stmt = null;
 		ResultSet rs = null;
 		
-		LinkedList<ServiceType> servTypes = new LinkedList<ServiceType>();
+		LinkedList<ServiceType> servTypes = new LinkedList<>();
+		ServiceData serviceData = new ServiceData();
 		
 		try {
 			cn = db.getConnection();
 			stmt = cn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM service_types");
+			rs = stmt.executeQuery("SELECT id, description FROM service_types ORDER BY description;");
 			
 			while (rs.next()) {
 				ServiceType servType = new ServiceType();
 				servType.setId(rs.getInt("id"));
 				servType.setDescription(rs.getString("description"));
+				
+				if (populateServices) {
+					servType.setServices(serviceData.searchByType(servType));
+				}
+				
 				servTypes.add(servType);
 			}
 			return servTypes;
@@ -34,8 +45,10 @@ public class ServiceTypeData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (stmt != null) { stmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -53,7 +66,7 @@ public class ServiceTypeData
 		
 		try {
 			cn = db.getConnection();
-			pstmt = cn.prepareStatement("SELECT * FROM service_types WHERE id=?");
+			pstmt = cn.prepareStatement("SELECT id, description FROM service_types WHERE id=?");
 			pstmt.setInt(1, stParam.getId());
 			
 			rs = pstmt.executeQuery();
@@ -64,6 +77,7 @@ public class ServiceTypeData
 				servType.setDescription(rs.getString("description"));
 				return servType;
 			}
+			
 			return null;
 			
 		} catch (SQLException e) {
@@ -72,8 +86,10 @@ public class ServiceTypeData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -102,14 +118,17 @@ public class ServiceTypeData
 			}
 			
 			return null;
+
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -117,51 +136,23 @@ public class ServiceTypeData
 		}
 	}
 	
-	public ServiceType update(ServiceType stParam) {
+	public ServiceType update(ServiceType servType) {
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ServiceType servType = searchById(stParam);
-		if (servType == null)
-			return null;
 		
 		try {
 			cn = db.getConnection();
-			pstmt = cn.prepareStatement("UPDATE service_types SET description=? WHERE id=?");
-			pstmt.setString(1, stParam.getDescription());
-			pstmt.setInt(2, stParam.getId());
-			pstmt.executeUpdate();
-			return stParam;
+			pstmt = cn.prepareStatement("UPDATE service_types SET description=? WHERE id = ?");
+			pstmt.setString(1, servType.getDescription());
+			pstmt.setInt(2, servType.getId());
 			
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
-		finally {
-			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
-				db.releaseConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were updated.");
+				return null;
 			}
-		}
-	}
-	
-	public ServiceType delete(ServiceType stParam) {
-		DbConnector db = new DbConnector();
-		Connection cn;
-		PreparedStatement pstmt = null;
-		ServiceType servType = searchById(stParam);
-		if (servType == null)
-			return null;
-		
-		try {
-			cn = db.getConnection();
-			pstmt = cn.prepareStatement("DELETE FROM service_types WHERE id=?");
-			pstmt.setInt(1, stParam.getId());
-			pstmt.executeUpdate();
+			
 			return servType;
 			
 		} catch (SQLException e) {
@@ -170,11 +161,46 @@ public class ServiceTypeData
 		}
 		finally {
 			try {
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-	}	
+	}
+	
+	public ServiceType delete(ServiceType servType) {
+		DbConnector db = new DbConnector();
+		Connection cn;
+		PreparedStatement pstmt = null;
+		
+		try {
+			cn = db.getConnection();
+			pstmt = cn.prepareStatement("DELETE FROM service_types WHERE id = ?");
+			pstmt.setInt(1, servType.getId());
+			pstmt.executeUpdate();
+			
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were deleted.");
+				return null;
+			}
+			
+			return servType;
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				db.releaseConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
