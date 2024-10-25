@@ -41,16 +41,16 @@ CREATE TABLE `appointments` (
 -- Table structure for table `attentionts`
 --
 
-DROP TABLE IF EXISTS `attentionts`;
+DROP TABLE IF EXISTS `attentions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `attentionts` (
+CREATE TABLE `attentions` (
   `appointment_id` int unsigned NOT NULL,
   `service_id` int unsigned NOT NULL,
   PRIMARY KEY (`appointment_id`,`service_id`),
   KEY `FK_services_attentionts_idx` (`service_id`),
-  CONSTRAINT `FK_appointments_attentionts` FOREIGN KEY (`appointment_id`) REFERENCES `appointments` (`id`),
-  CONSTRAINT `FK_services_attentionts` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`)
+  CONSTRAINT `FK_appointments_attentions` FOREIGN KEY (`appointment_id`) REFERENCES `appointments` (`id`),
+  CONSTRAINT `FK_services_attentions` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -135,4 +135,4 @@ CREATE TABLE `services` (
 create user 'centro'@'%' identified by 'estetica2024';
 GRANT SELECT, INSERT, UPDATE, DELETE ON `centro_estetica`.* TO 'centro'@'%';
 
--- Dump completed on 2024-09-21 21:25:14
+-- Dump completed on 2024-10-25 10:30:00
