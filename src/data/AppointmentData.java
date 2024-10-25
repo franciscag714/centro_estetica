@@ -169,8 +169,9 @@ public class AppointmentData
 					+ "UPDATE appointments "
 					+ "SET client_id = ? "
 					+ "WHERE id = ? "
-					+ "AND client_id IS NULL "
-					+ "AND date_time > NOW()");
+					+ "		AND client_id IS NULL "
+					+ "		AND date_time > NOW()"
+					+ "ORDER BY date_time;");
 			
 			pstmt.setInt(1, appointment.getClient().getId());
 			pstmt.setInt(2, appointment.getId());
@@ -198,18 +199,18 @@ public class AppointmentData
 	}
 	
 	/**
-	 * This method returns all appointments with DateTime before or equal the current DateTime.
+	 * This method returns all appointments with DateTime less than or equal to the current DateTime plus 1 hour where Client is not null.
 	 * Their clients and employees are not complete.
 	 * They only have id, lastname and firstname attributes.
 	 */
-	public LinkedList<Appointment> list2()
+	public LinkedList<Appointment> listPast()
 	{
 		DbConnector db = new DbConnector();
 		Connection cn;
 		Statement stmt = null;
 		ResultSet rs = null;
 		
-		LinkedList<Appointment> appointments = new LinkedList<Appointment>();
+		LinkedList<Appointment> appointments = new LinkedList<>();
 		
 		try {
 			cn = db.getConnection();
@@ -221,10 +222,10 @@ public class AppointmentData
 					+ "FROM appointments app "
 					+ "INNER JOIN employees emp"
 					+ "		ON app.employee_id = emp.id "
-					+ "LEFT JOIN clients cli"
+					+ "INNER JOIN clients cli"
 					+ "		ON app.client_id = cli.id "
-					+ "WHERE app.date_time <= NOW() "
-					+ "ORDER BY app.date_time;");
+					+ "WHERE app.date_time <= ADDDATE(NOW(), INTERVAL 1 HOUR) "
+					+ "ORDER BY app.date_time DESC;");
 			
 			while (rs.next()) {
 				Appointment appointment = new Appointment();
@@ -253,8 +254,10 @@ public class AppointmentData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (stmt != null) { stmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();

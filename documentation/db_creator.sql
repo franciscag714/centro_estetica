@@ -47,6 +47,7 @@ DROP TABLE IF EXISTS `attentions`;
 CREATE TABLE `attentions` (
   `appointment_id` int unsigned NOT NULL,
   `service_id` int unsigned NOT NULL,
+  `price` decimal(10,2) NOT NULL,
   PRIMARY KEY (`appointment_id`,`service_id`),
   KEY `FK_services_attentionts_idx` (`service_id`),
   CONSTRAINT `FK_appointments_attentions` FOREIGN KEY (`appointment_id`) REFERENCES `appointments` (`id`),

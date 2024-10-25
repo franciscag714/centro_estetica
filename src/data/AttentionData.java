@@ -13,7 +13,6 @@ import entities.Attention;
 import entities.Client;
 import entities.Employee;
 import entities.Service;
-import entities.ServiceType;
 
 public class AttentionData {
 	
@@ -23,18 +22,17 @@ public class AttentionData {
 		Statement stmt = null;
 		ResultSet rs = null;
 		
-		LinkedList<Attention> attentions = new LinkedList<Attention>();
+		LinkedList<Attention> attentions = new LinkedList<>();
 		
 		try {
 			cn = db.getConnection();
 			stmt = cn.createStatement();
 			rs = stmt.executeQuery(""
-					+ "SELECT att.appointment_id, att.service_id "
-					+ "		, app.date_time "
+					+ "SELECT att.price"
+					+ "		, att.appointment_id, app.date_time "
 					+ "		, cli.id, cli.firstname, cli.lastname "
 					+ "	    , emp.id, emp.firstname, emp.lastname "
-					+ "	    , serv.description , serv.updated_price, serv.service_type_id "
-					+ "     , st.description "
+					+ "		, att.service_id, serv.description"
 					+ "FROM attentions att "
 					+ "INNER JOIN appointments app "
 					+ "		ON att.appointment_id = app.id "
@@ -44,16 +42,14 @@ public class AttentionData {
 					+ "		ON app.employee_id = emp.id "
 					+ "INNER JOIN services serv "
 					+ "		ON  att.service_id = serv.id "
-					+ "INNER JOIN service_types st "
-					+ "		ON serv.service_type_id = st.id "
-					+ "WHERE app.date_time <= NOW() "
-					+ "ORDER BY app.date_time ");
+					+ "ORDER BY app.date_time;");
 			 
 			while (rs.next()) {
 				Attention attention = new Attention();
+				attention.setPrice(rs.getDouble(1));
 				
 				Appointment app = new Appointment();
-				app.setId(rs.getInt(1));
+				app.setId(rs.getInt(2));
 				app.setDateTime(rs.getObject(3, LocalDateTime.class));
 				
 				Client c = new Client();
@@ -68,21 +64,13 @@ public class AttentionData {
 				e.setLastname(rs.getString(9));
 				app.setEmployee(e);
 				
-				attention.setAppointment(app);
-				
 				Service s = new Service();
-				s.setId(rs.getInt(2));
-				s.setDescription(rs.getString(10));
-				s.setUpdatedPrice(rs.getDouble(11));
+				s.setId(rs.getInt(10));
+				s.setDescription(rs.getString(11));
 				
-				ServiceType st = new ServiceType();
-				st.setId(rs.getInt(12));
-				st.setDescription(rs.getString(13));
-				s.setType(st);
-				
+				attention.setAppointment(app);
 				attention.setService(s);
-				
-				attentions.add(attention);				
+				attentions.add(attention);
 			}
 			return attentions;
 			
@@ -92,16 +80,17 @@ public class AttentionData {
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (stmt != null) { stmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-	} 
+	}
 	
-	//mmm no se
 	public LinkedList<Attention> searchByAppointment(Appointment appointment)
 	{
 		DbConnector db = new DbConnector();
@@ -109,67 +98,35 @@ public class AttentionData {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		LinkedList<Attention> attentions = new LinkedList<Attention>();
+		LinkedList<Attention> attentions = new LinkedList<>();
 		
 		try {
 			cn = db.getConnection();
 			pstmt = cn.prepareStatement(""
-					+ "SELECT att.appointment_id, att.service_id "
-					+ "		, app.date_time "
-					+ "		, cli.id, cli.firstname, cli.lastname "
-					+ "	    , emp.id, emp.firstname, emp.lastname "
-					+ "	    , serv.description , serv.updated_price, serv.service_type_id "
-					+ "     , st.description "
+					+ "SELECT att.price, att.appointment_id"
+					+ "		, att.service_id, serv.description "
 					+ "FROM attentions att "
-					+ "INNER JOIN appointments app "
-					+ "		ON att.appointment_id = app.id "
-					+ "INNER JOIN clients cli "
-					+ "		ON app.client_id = cli.id "
-					+ "INNER JOIN employees emp "
-					+ "		ON app.employee_id = emp.id "
 					+ "INNER JOIN services serv "
 					+ "		ON  att.service_id = serv.id "
-					+ "INNER JOIN service_types st "
-					+ "		ON serv.service_type_id = st.id "
-					+ "WHERE app.id = ?; ");
+					+ "WHERE att.appointment_id = ?;");
 			
 			pstmt.setInt(1, appointment.getId());
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				Attention attentionReturn = new Attention();
+				Attention att = new Attention();
+				att.setPrice(rs.getDouble(1));
 				
 				Appointment app = new Appointment();
-				app.setId(rs.getInt(1));
-				app.setDateTime(rs.getObject(3, LocalDateTime.class));
-				
-				Client c = new Client();
-				c.setId(rs.getInt(4));
-				c.setFirstname(rs.getString(5));
-				c.setLastname(rs.getString(6));
-				app.setClient(c);
-				
-				Employee e = new Employee();
-				e.setId(rs.getInt(7));
-				e.setFirstname(rs.getString(8));
-				e.setLastname(rs.getString(9));
-				app.setEmployee(e);
-				
-				attentionReturn.setAppointment(app);
+				app.setId(rs.getInt(2));
+				att.setAppointment(app);
 				
 				Service s = new Service();
-				s.setId(rs.getInt(2));
-				s.setDescription(rs.getString(10));
-				s.setUpdatedPrice(rs.getDouble(11));
+				s.setId(rs.getInt(3));
+				s.setDescription(rs.getString(4));
+				att.setService(s);
 				
-				ServiceType st = new ServiceType();
-				st.setId(rs.getInt(12));
-				st.setDescription(rs.getString(13));
-				s.setType(st);
-				
-				attentionReturn.setService(s);
-				
-				attentions.add(attentionReturn);
+				attentions.add(att);
 			}
 			return attentions;
 			
@@ -179,8 +136,10 @@ public class AttentionData {
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -188,23 +147,24 @@ public class AttentionData {
 		
 		}
 	}
-	
-	//add, update y delete no se si estan bien, me confuncde que no tenga el atributo id :'(
-	
-	//no se si esta bien
+		
 	public Attention add(Attention attention) {
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		
 		try {
 			cn = db.getConnection();
 			pstmt = cn.prepareStatement("INSERT INTO attentions(appointment_id, service_id) VALUES (?, ?)");
+			
 			pstmt.setInt(1, attention.getAppointment().getId());
 			pstmt.setInt(2, attention.getService().getId());
 			
-			pstmt.executeUpdate();
+			if (pstmt.executeUpdate() == 0)
+			{
+				System.out.println("No rows were added.");
+				return null;
+			}
 			
 			return attention;
 			
@@ -214,8 +174,8 @@ public class AttentionData {
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -224,12 +184,10 @@ public class AttentionData {
 		}
 	}
 	
-	//no se si esta bien
 	public Attention update(Attention attention) {
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		
 		try {
 			cn = db.getConnection();
@@ -242,9 +200,8 @@ public class AttentionData {
 				System.out.println("No rows were updated. ");
 				return null;
 			}
-			else
-				return attention;
 			
+			return attention;
 					
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -252,8 +209,8 @@ public class AttentionData {
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -262,12 +219,10 @@ public class AttentionData {
 		}
 	}
 	
-	//no se si esta bien
 	public Attention delete(Attention attention) {
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		
 		try {
 			cn = db.getConnection();
@@ -277,11 +232,11 @@ public class AttentionData {
 			
 			if (pstmt.executeUpdate() == 0)
 			{
-				System.out.println("No rows were updates. ");
+				System.out.println("No rows were deleted. ");
 				return null;
 			}
-			else
-				return attention;
+			
+			return attention;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -289,8 +244,8 @@ public class AttentionData {
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (pstmt != null) { pstmt.close(); }
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();

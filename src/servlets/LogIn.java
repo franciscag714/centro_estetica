@@ -40,9 +40,8 @@ public class LogIn extends HttpServlet {
 		LoginLogic loginLogic = new LoginLogic();
 		p = loginLogic.validate(p);
 		
-		if (p == null) {
+		if (p == null)
 			request.setAttribute("alert", new Alert("error", "Usuario y/o contraseña incorrectos"));
-		}
 		else
 			request.getSession().setAttribute("user", p);
 		

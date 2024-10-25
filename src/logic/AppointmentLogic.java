@@ -17,8 +17,8 @@ public class AppointmentLogic {
 		return appointmentData.list();
 	}
 	
-	public LinkedList<Appointment> list2(){
-		return appointmentData.list2();
+	public LinkedList<Appointment> listPast(){
+		return appointmentData.listPast();
 	}
 	
 	public LinkedList<Appointment> listAvailable(AppointmentFilter filter) {

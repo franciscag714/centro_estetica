@@ -29,3 +29,6 @@ ADD CONSTRAINT `FK_appointments_attentions`
 ADD CONSTRAINT `FK_services_attentions`
   FOREIGN KEY (`service_id`)
   REFERENCES `centro_estetica`.`services` (`id`);
+
+ALTER TABLE `centro_estetica`.`attentions` 
+ADD COLUMN `price` DECIMAL(10,2) NOT NULL AFTER `service_id`;
