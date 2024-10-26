@@ -155,10 +155,14 @@ public class AttentionData {
 		
 		try {
 			cn = db.getConnection();
-			pstmt = cn.prepareStatement("INSERT INTO attentions(appointment_id, service_id) VALUES (?, ?)");
+			pstmt = cn.prepareStatement(""
+					+ "	INSERT INTO attentions(appointment_id, service_id, price) "
+					+ "		SELECT ?, ?, updated_price "
+					+ "		FROM services WHERE id=?;");
 			
 			pstmt.setInt(1, attention.getAppointment().getId());
 			pstmt.setInt(2, attention.getService().getId());
+			pstmt.setInt(3, attention.getService().getId());
 			
 			if (pstmt.executeUpdate() == 0)
 			{
@@ -184,6 +188,7 @@ public class AttentionData {
 		}
 	}
 	
+	//at the moment this method is not used
 	public Attention update(Attention attention) {
 		DbConnector db = new DbConnector();
 		Connection cn;

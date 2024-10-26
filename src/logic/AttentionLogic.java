@@ -21,7 +21,6 @@ public class AttentionLogic {
 		return attentionData.searchByAppointment(app);
 	}
 	
-	/*
 	public Attention create(Attention a){
 	 	return attentionData.add(a);
 	}
@@ -33,7 +32,4 @@ public class AttentionLogic {
 	public Attention delete(Attention a){
 	 	return attentionData.delete(a);
 	}
-	  
-	*/
-	
 }
