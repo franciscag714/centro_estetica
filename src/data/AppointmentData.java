@@ -169,8 +169,9 @@ public class AppointmentData
 					+ "UPDATE appointments "
 					+ "SET client_id = ? "
 					+ "WHERE id = ? "
-					+ "AND client_id IS NULL "
-					+ "AND date_time > NOW()");
+					+ "		AND client_id IS NULL "
+					+ "		AND date_time > NOW()"
+					+ "ORDER BY date_time;");
 			
 			pstmt.setInt(1, appointment.getClient().getId());
 			pstmt.setInt(2, appointment.getId());
@@ -197,6 +198,77 @@ public class AppointmentData
 		}
 	}
 	
+	/**
+	 * This method returns all appointments with DateTime less than or equal to the current DateTime plus 1 hour where Client is not null.
+	 * Their clients and employees are not complete.
+	 * They only have id, lastname and firstname attributes.
+	 */
+	public LinkedList<Appointment> listPast()
+	{
+		DbConnector db = new DbConnector();
+		Connection cn;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		LinkedList<Appointment> appointments = new LinkedList<>();
+		
+		try {
+			cn = db.getConnection();
+			stmt = cn.createStatement();
+			rs = stmt.executeQuery(""
+					+ "	SELECT app.id, app.date_time"
+					+ "		, cli.id, cli.lastname, cli.firstname"
+					+ "		, emp.id, emp.lastname, emp.firstname"
+					+ "		, SUM(att.price)"
+					+ "	FROM appointments app"
+					+ "	INNER JOIN employees emp"
+					+ "		ON app.employee_id = emp.id"
+					+ "	INNER JOIN clients cli"
+					+ "		ON app.client_id = cli.id"
+					+ "	LEFT JOIN attentions att"
+					+ "		ON att.appointment_id = app.id"
+					+ "	WHERE app.date_time <= ADDDATE(NOW(), INTERVAL 1 HOUR)"
+					+ "	GROUP BY app.id, cli.id, emp.id"
+					+ "	ORDER BY app.date_time DESC;");
+			
+			while (rs.next()) {
+				Appointment appointment = new Appointment();
+				appointment.setId(rs.getInt(1));
+				appointment.setDateTime(rs.getObject(2, LocalDateTime.class));
+				
+				Client c = new Client();
+				c.setId(rs.getInt(3));
+				c.setLastname(rs.getString(4));
+				c.setFirstname(rs.getString(5));
+				appointment.setClient(c);
+				
+				Employee e = new Employee();
+				e.setId(rs.getInt(6));
+				e.setLastname(rs.getString(7));
+				e.setFirstname(rs.getString(8));
+				appointment.setEmployee(e);
+				
+				appointment.setTotalIncome(rs.getDouble(9));
+				appointments.add(appointment);
+			}
+			return appointments;
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				db.releaseConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	/**
 	 * This method looks up an appointment by id.

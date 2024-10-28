@@ -70,7 +70,7 @@ public class ServiceData
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
-		LinkedList<Service> services = new LinkedList<Service>();
+		LinkedList<Service> services = new LinkedList<>();
 		
 		try {
 			cn = db.getConnection();
@@ -98,8 +98,10 @@ public class ServiceData
 		}
 		finally {
 			try {
-				if (rs != null) { rs.close(); }
-				if (stmt != null) { stmt.close(); }
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();

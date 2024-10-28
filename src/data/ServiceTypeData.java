@@ -31,9 +31,8 @@ public class ServiceTypeData
 				servType.setId(rs.getInt("id"));
 				servType.setDescription(rs.getString("description"));
 				
-				if (populateServices) {
+				if (populateServices)
 					servType.setServices(serviceData.searchByType(servType));
-				}
 				
 				servTypes.add(servType);
 			}

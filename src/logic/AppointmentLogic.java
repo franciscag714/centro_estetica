@@ -17,6 +17,10 @@ public class AppointmentLogic {
 		return appointmentData.list();
 	}
 	
+	public LinkedList<Appointment> listPast(){
+		return appointmentData.listPast();
+	}
+	
 	public LinkedList<Appointment> listAvailable(AppointmentFilter filter) {
 		return appointmentData.listAvailable(filter);
 	}
@@ -47,5 +51,9 @@ public class AppointmentLogic {
 	
 	public Appointment delete(Appointment a) {
 		return appointmentData.delete(a);
+	}
+	
+	public Appointment searchById(Appointment a) {
+		return appointmentData.searchById(a);
 	}
 }
