@@ -27,6 +27,7 @@ public class Service {
 	
 	@JsonIgnore
 	public String getFormatedPrice() {
-		return NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(this.getUpdatedPrice());
+		Locale locale = Locale.forLanguageTag("es-AR");
+		return NumberFormat.getCurrencyInstance(locale).format(this.getUpdatedPrice());
 	}
 }

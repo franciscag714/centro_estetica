@@ -4,10 +4,11 @@ const baseUrl =
     ? "http://localhost:8080/centroestetica"
     : "https://centroestetica.com";
 
-let selectedAttention = { appointmentId: null, serviceId: null };
+const selectedAttention = { appointmentId: null, serviceId: null };
 
-const attentionsDiv = document.getElementById("attentionsDiv");
-const attentionsList = document.getElementById("attentionsList");
+const attentionsTable = document.getElementById("attentionsTable");
+const attentionsActions = document.getElementById("attentionsActions");
+const attentionsMessage = document.getElementById("attentionsMessage");
 
 const createAttModal = document.getElementById("createAttentionModal");
 const deleteModal = document.getElementById("deleteModal");
@@ -25,34 +26,47 @@ function changeSelAppointment(appointmentId) {
     .getElementById("appointmentId:" + appointmentId)
     .classList.add("selected-row");
 
-  selectedAttention = { appointmentId: appointmentId, serviceId: null };
+  selectedAttention.appointmentId = appointmentId;
+  selectedAttention.serviceId = null;
   loadAttentionsTable();
 }
 
 async function loadAttentionsTable() {
   try {
-    attentionsDiv.style.display = "block";
     const response = await fetch(
       `${baseUrl}/lista-atenciones/${selectedAttention.appointmentId}`
     );
     if (!response.ok) throw new Error("Network response was not OK");
 
     const attentions = await response.json();
-    attentionsList.innerHTML = "";
+    tableBody = attentionsTable.querySelector("tbody");
+    tableBody.innerHTML = "";
 
-    attentions.forEach((attention) => {
-      const row = document.createElement("tr");
-      row.addEventListener("click", () =>
-        changeSelAttention(attention.service.id)
-      );
+    if (attentions.length != 0) {
+      attentions.forEach((attention) => {
+        const row = document.createElement("tr");
+        row.addEventListener("click", () =>
+          changeSelAttention(attention.service.id)
+        );
 
-      row.id = `serviceId:${attention.service.id}`;
-      row.innerHTML = `
+        row.id = `serviceId:${attention.service.id}`;
+        row.innerHTML = `
         <td>${attention.service.description}</td>
-        <td>${attention.price}</td>`;
+        <td>${attention.formatedPrice}</td>`;
 
-      attentionsList.appendChild(row);
-    });
+        tableBody.appendChild(row);
+
+        deleteBtn.style.display = "";
+        attentionsMessage.style.display = "none";
+        attentionsTable.style.display = "";
+      });
+    } else {
+      deleteBtn.style.display = "none";
+      attentionsMessage.textContent = "No se brindó ninguna atención.";
+      attentionsMessage.style.display = "";
+      attentionsTable.style.display = "none";
+    }
+    attentionsActions.style.display = "";
   } catch (error) {
     console.error("Error al cargar atenciones: ", error); //poner sweetalert
   }
@@ -89,10 +103,20 @@ function closeModal(modalId) {
 createAttBtn.addEventListener("click", () => {
   document.getElementById("appointment").value =
     selectedAttention.appointmentId;
-  document.getElementById("appointmentLabel").textContent = "Cliente: ";
-  document.getElementById("clientLabel").textContent = "Cliente: ";
+  const row = document
+    .getElementById("appointmentId:" + selectedAttention.appointmentId)
+    .querySelectorAll("td");
+
+  document.getElementById(
+    "appointmentLabel"
+  ).innerHTML = `Fecha y hora turno: <b>${row[0].textContent}</b>`;
+
+  document.getElementById(
+    "clientLabel"
+  ).innerHTML = `Cliente: <b>${row[2].textContent}</b>`;
+
   document.getElementById("service").value = "";
-  document.getElementById("price").textContent = "";
+  document.getElementById("price").textContent = "Precio: ---";
 
   html.classList.add("modal-is-open");
   html.classList.add("modal-is-opening");
@@ -112,6 +136,17 @@ deleteBtn.addEventListener("click", () => {
     deleteModal.showModal();
     setTimeout(removeClass.bind(null, "modal-is-opening"), 400);
   } else {
-    alert("Primero seleccione una atención."); //utilizar SweetAlert
+    Swal.fire({
+      title: "Primero seleccione una atención.",
+      icon: "error",
+      confirmButtonColor: "#f0ad4e",
+    });
   }
+});
+
+document.getElementById("service").addEventListener("change", (event) => {
+  const selectedService = event.target.options[event.target.selectedIndex];
+  document.getElementById(
+    "price"
+  ).innerHTML = `Precio: <b>${selectedService.getAttribute("data-price")}</b>`;
 });

@@ -216,16 +216,20 @@ public class AppointmentData
 			cn = db.getConnection();
 			stmt = cn.createStatement();
 			rs = stmt.executeQuery(""
-					+ "SELECT app.id, app.date_time, "
-					+ "		cli.id, cli.lastname, cli.firstname, "
-					+ "		emp.id, emp.lastname, emp.firstname "
-					+ "FROM appointments app "
-					+ "INNER JOIN employees emp"
-					+ "		ON app.employee_id = emp.id "
-					+ "INNER JOIN clients cli"
-					+ "		ON app.client_id = cli.id "
-					+ "WHERE app.date_time <= ADDDATE(NOW(), INTERVAL 1 HOUR) "
-					+ "ORDER BY app.date_time DESC;");
+					+ "	SELECT app.id, app.date_time"
+					+ "		, cli.id, cli.lastname, cli.firstname"
+					+ "		, emp.id, emp.lastname, emp.firstname"
+					+ "		, SUM(att.price)"
+					+ "	FROM appointments app"
+					+ "	INNER JOIN employees emp"
+					+ "		ON app.employee_id = emp.id"
+					+ "	INNER JOIN clients cli"
+					+ "		ON app.client_id = cli.id"
+					+ "	LEFT JOIN attentions att"
+					+ "		ON att.appointment_id = app.id"
+					+ "	WHERE app.date_time <= ADDDATE(NOW(), INTERVAL 1 HOUR)"
+					+ "	GROUP BY app.id, cli.id, emp.id"
+					+ "	ORDER BY app.date_time DESC;");
 			
 			while (rs.next()) {
 				Appointment appointment = new Appointment();
@@ -244,6 +248,7 @@ public class AppointmentData
 				e.setFirstname(rs.getString(8));
 				appointment.setEmployee(e);
 				
+				appointment.setTotalIncome(rs.getDouble(9));
 				appointments.add(appointment);
 			}
 			return appointments;

@@ -21,42 +21,43 @@ junto con los botones de agregar, mod y eliminar, los cuales abren modal -->
 	<div class="container-fluid" style="display:flex;">
 		<jsp:include page="../common/sidebar.jsp"/>
 					
-		<div style="width: 45%; margin: 10px;">
+		<div style="width: 65%; margin: 10px;">
 			<table style="width: 100%; border-collapse: collapse;">
 				<thead>
 					<tr>
 						<th scope="col">Fecha y hora</th>
 						<th scope="col">Empleado</th>
 						<th scope="col">Cliente</th>
-						<th scope="col">Total</th>
+						<th scope="col">Ingresos</th>
 					</tr>
-				</thead>				
+				</thead>
 				<tbody>
 <% 	for (Appointment a : appointments){	%>
 		
 					<tr id="appointmentId:<%= a.getId() %>" onclick="changeSelAppointment(<%= a.getId() %>)">
 						<td><%= a.getFormattedDateTime() %></td>
-						<td data-employeeid=<%= a.getEmployee().getId() %> ><%= a.getEmployee().getFullname() %></td>
-						<td data-clientid=<%= a.getClient().getId() %>> <%= a.getClient().getFullname() %></td>
-						<td>$----</td>
+						<td><%= a.getEmployee().getFullname() %></td>
+						<td><%= a.getClient().getFullname() %></td>
+						<td><%= a.getTotalIncome() %></td>
 					</tr>
 <%	}	%>
-
 				</tbody>	
 			</table>
 		</div>
 		
-		<div id="attentionsDiv" style="display:none; width: 45%; margin: 10px; border-left: 1px solid #ccc;">						
-			<table style="width: 100%; border-collapse: collapse;">
+		<div style="width: 35%; margin: 10px; border-left: 1px solid #ccc;">
+			<p id="attentionsMessage" style="text-align: center; margin-top: 10px;">Seleccione un turno para ver los servicios brindados.</p><!-- poner mensaje de que no hay servicios también y ocultar tabla -->
+			
+			<table id="attentionsTable" style="display: none; width: 100%; border-collapse: collapse;">
 				<thead>
 					<tr>
 						<th scope="col">Servicio</th>
 						<th scope="col">Precio</th>
 					</tr>
 				</thead>
-				<tbody id="attentionsList"></tbody>
+				<tbody></tbody>
 			</table>
-			<div>
+			<div id="attentionsActions" style="display: none;">
 				<button id="createAttention">Nueva atención</button>
 				<button id="deleteAttention">Eliminar</button>
 			</div>
@@ -75,15 +76,20 @@ junto con los botones de agregar, mod y eliminar, los cuales abren modal -->
 				
 				<label id="appointmentLabel">Turno: dd/MM/yyyy</label>
 				<label id="clientLabel">Ciente: nombre-apellido</label>
-				
+				<label id="price">Servicio</label>
 				<label for="service">Servicio</label>
 				<select id="service" name="service" required>
 <%	for (Service s : services){	%>
-					<option value=<%= s.getId() %>><%= s.getDescription() %></option>
+					<option
+						value="<%= s.getId() %>"
+						data-price="<%= s.getFormatedPrice() %>"
+					>
+						<%= s.getDescription() %>
+					</option>
 <%	}	%>
 				</select>
 
-				<label id="price">Servicio</label>
+				
 				
 				<footer>
 					<button type="button" class="secondary" onclick="closeModal('createAttentionModal')">Cancelar</button>
@@ -111,6 +117,7 @@ junto con los botones de agregar, mod y eliminar, los cuales abren modal -->
 		</article>
 	</dialog>
 	
+	<jsp:include page="../common/show-alert.jsp"/>
 	<script src="scripts/attentions-crud.js"></script>
 </body>
 </html>

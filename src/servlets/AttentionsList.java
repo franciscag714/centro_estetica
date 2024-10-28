@@ -16,28 +16,32 @@ import logic.AttentionLogic;
 
 public class AttentionsList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public AttentionsList() {
-        super();
-    }
+
+	public AttentionsList() {
+		super();
+	}
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-		ObjectMapper objectMapper = new ObjectMapper();
-        PrintWriter out = response.getWriter();
-        AttentionLogic logic = new AttentionLogic();
-                
-        response.setContentType("application/json");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        //poner try para protegerse de petición sin parámetro o de que el mismo no sea integer
-        Appointment app = new Appointment();
-        app.setId(Integer.parseInt(request.getPathInfo().substring(1)));
-                
-        LinkedList<Attention> attentions = logic.searchByAppointment(app);
-        String jsonResponse = objectMapper.writeValueAsString(attentions);
-        
-        out.print(jsonResponse);
-        out.flush();
+		ObjectMapper objectMapper = new ObjectMapper();
+		PrintWriter out = response.getWriter();
+		AttentionLogic logic = new AttentionLogic();
+
+		response.setContentType("application/json");
+
+		Appointment app = new Appointment();
+		try {
+			app.setId(Integer.parseInt(request.getPathInfo().substring(1)));
+		} catch (Exception e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		
+		LinkedList<Attention> attentions = logic.searchByAppointment(app);
+		String jsonResponse = objectMapper.writeValueAsString(attentions);
+		out.print(jsonResponse);
+		out.flush();
 	}
 }

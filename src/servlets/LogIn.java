@@ -41,7 +41,7 @@ public class LogIn extends HttpServlet {
 		p = loginLogic.validate(p);
 		
 		if (p == null)
-			request.setAttribute("alert", new Alert("error", "Usuario y/o contraseña incorrectos"));
+			request.setAttribute("alert", new Alert("error", "Usuario y/o contraseña incorrectos."));
 		else
 			request.getSession().setAttribute("user", p);
 		
