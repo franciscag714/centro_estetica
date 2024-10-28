@@ -8,8 +8,11 @@
 
 <%= generateHead(true, null, null) %>
 <%
+	@SuppressWarnings("unchecked")
 	LinkedList<Appointment> appointments = (LinkedList<Appointment>) request.getAttribute("appointmentsList");
+	@SuppressWarnings("unchecked")	
 	LinkedList<Client> clients = (LinkedList<Client>) request.getAttribute("clientsList");
+	@SuppressWarnings("unchecked")
 	LinkedList<Employee> employees = (LinkedList<Employee>) request.getAttribute("employeesList");
 %>
 
@@ -67,9 +70,12 @@
 				
 				<label for="client" style="color:gray">Cliente (opcional)</label>
 				<select id="client" name="client">
-				<% for (Client c: clients){%>
-						<option value="<%= c.getId() %>"><%= c.getFullname() %></option>
-				<%}%>
+					<option value="0">--disponible--</option>
+					
+<% for (Client c: clients){%>
+					<option value="<%= c.getId() %>"><%= c.getFullname() %></option>
+<%}%>
+
 				</select>
 				
 				<footer>

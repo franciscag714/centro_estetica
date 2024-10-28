@@ -5,6 +5,7 @@
 
 <%= generateHead(true, null, null) %>	
 <%
+	@SuppressWarnings("unchecked")
 	LinkedList<Client> clients = (LinkedList<Client>) request.getAttribute("clientsList");
 %>
 
@@ -37,7 +38,6 @@
 			</table>
 			<div>
 				<button id="newClient">Nuevo cliente</button>
-				<button id="updatePassword">Cambiar contraseña</button>
 				<button id="updateClient">Modificar</button>
 				<button id="deleteClient">Eliminar</button>
 			</div>
@@ -66,10 +66,8 @@
 				<label for="user">Usuario</label>
 				<input type="text" name="user" id="user" required>
 				
-				<div id="passwordDiv">
-					<label for="password">Contraseña</label>
-					<input type="password" name="password" id="password" required>		    		
-				</div>
+				<label for="password">Contraseña</label>
+				<input type="password" name="password" id="password" required>
 				
 				<footer>
 					<button type="button" id="closeClientModal" class="secondary">Cancelar</button>

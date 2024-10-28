@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd" version="5.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="https://jakarta.ee/xml/ns/jakartaee"
+  xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+  version="5.0">
   <display-name>centro_estetica</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
@@ -9,6 +12,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/WEB-INF/error-404.jsp</location>
+  </error-page>
+  <error-page>
+    <exception-type>java.lang.Exception</exception-type>
+    <location>/WEB-INF/error-500.jsp</location>
+  </error-page>
   <servlet>
     <description></description>
     <display-name>servicios</display-name>
@@ -31,12 +42,12 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>SignIn</display-name>
-    <servlet-name>SignIn</servlet-name>
-    <servlet-class>servlets.SignIn</servlet-class>
+    <display-name>login</display-name>
+    <servlet-name>login</servlet-name>
+    <servlet-class>servlets.LogIn</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>SignIn</servlet-name>
+    <servlet-name>login</servlet-name>
     <url-pattern></url-pattern>
     <url-pattern>/index</url-pattern>
   </servlet-mapping>
@@ -94,7 +105,7 @@
     <description></description>
     <display-name>atenciones</display-name>
     <servlet-name>atenciones</servlet-name>
-    <servlet-class>servlets.cruds.AttentiontsCrud</servlet-class>
+    <servlet-class>servlets.cruds.AttentionsCrud</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>atenciones</servlet-name>
@@ -129,5 +140,25 @@
   <servlet-mapping>
     <servlet-name>mis-datos</servlet-name>
     <url-pattern>/mis-datos</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>reservar-turno</display-name>
+    <servlet-name>reservar-turno</servlet-name>
+    <servlet-class>servlets.BookAppointment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>reservar-turno</servlet-name>
+    <url-pattern>/reservar-turno</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>lista-atenciones</display-name>
+    <servlet-name>lista-atenciones</servlet-name>
+    <servlet-class>servlets.AttentionsList</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>lista-atenciones</servlet-name>
+    <url-pattern>/lista-atenciones/*</url-pattern>
   </servlet-mapping>
 </web-app>

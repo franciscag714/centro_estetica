@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.LinkedList;
+
 import data.ClientData;
 import entities.Client;
 

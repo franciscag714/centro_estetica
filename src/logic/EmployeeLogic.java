@@ -1,11 +1,12 @@
 package logic;
 
 import java.util.LinkedList;
+
 import data.EmployeeData;
 import entities.Employee;
 
 public class EmployeeLogic
-{	
+{
 	private EmployeeData employeeData;
 
 	public EmployeeLogic() {

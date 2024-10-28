@@ -13,8 +13,8 @@ public class ServiceTypeLogic
 		stData = new ServiceTypeData();
 	}
 
-	public LinkedList<ServiceType> list() {
-		return stData.list();
+	public LinkedList<ServiceType> list(Boolean populateServices) {
+		return stData.list(populateServices);
 	}
 	
 	public ServiceType searchById(ServiceType servType) {

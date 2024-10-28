@@ -23,7 +23,7 @@
 			<label for="description">Describa su problema</label>
 			<textarea id="description" name="description" rows=5 required></textarea>
 			
-			<input type="submit" value="Enviar">
+			<input id="submit-btn" type="submit" value="Enviar">
 		</form>
 	</div>
 </body>

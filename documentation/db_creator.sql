@@ -2,9 +2,9 @@ CREATE DATABASE  IF NOT EXISTS `centro_estetica` /*!40100 DEFAULT CHARACTER SET 
 USE `centro_estetica`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: localhost    Database: centro_estetica
+-- Host: 127.0.0.1    Database: centro_estetica
 -- ------------------------------------------------------
--- Server version	8.0.37
+-- Server version	8.3.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -34,11 +34,11 @@ CREATE TABLE `appointments` (
   KEY `FK_clients_appointments_idx` (`client_id`),
   CONSTRAINT `FK_clients_appointments` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
   CONSTRAINT `FK_employees_appointments` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `attentions`
+-- Table structure for table `attentionts`
 --
 
 DROP TABLE IF EXISTS `attentions`;
@@ -47,11 +47,11 @@ DROP TABLE IF EXISTS `attentions`;
 CREATE TABLE `attentions` (
   `appointment_id` int unsigned NOT NULL,
   `service_id` int unsigned NOT NULL,
+  `price` decimal(10,2) NOT NULL,
   PRIMARY KEY (`appointment_id`,`service_id`),
   KEY `FK_services_attentionts_idx` (`service_id`),
-  KEY `FK_appointment_attentionts_idx` (`appointment_id`),
-  CONSTRAINT `FK_appointments_attentionts` FOREIGN KEY (`appointment_id`) REFERENCES `appointments` (`id`),
-  CONSTRAINT `FK_services_attentionts` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`)
+  CONSTRAINT `FK_appointments_attentions` FOREIGN KEY (`appointment_id`) REFERENCES `appointments` (`id`),
+  CONSTRAINT `FK_services_attentions` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -64,13 +64,13 @@ DROP TABLE IF EXISTS `clients`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clients` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `user` varchar(20) NOT NULL,
-  `password` varchar(128) NOT NULL,
+  `user` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `password` varchar(60) NOT NULL,
   `firstname` varchar(30) NOT NULL,
   `lastname` varchar(30) NOT NULL,
   `email` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,14 +82,14 @@ DROP TABLE IF EXISTS `employees`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employees` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `user` varchar(20) NOT NULL,
-  `password` varchar(128) NOT NULL,
+  `user` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `password` varchar(60) NOT NULL,
   `firstname` varchar(30) NOT NULL,
   `lastname` varchar(30) NOT NULL,
   `email` varchar(45) NOT NULL,
   `is_admin` tinyint NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +103,7 @@ CREATE TABLE `service_types` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `description` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,7 +121,7 @@ CREATE TABLE `services` (
   PRIMARY KEY (`id`),
   KEY `FK_types_services_idx` (`service_type_id`),
   CONSTRAINT `FK_types_services` FOREIGN KEY (`service_type_id`) REFERENCES `service_types` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -136,4 +136,4 @@ CREATE TABLE `services` (
 create user 'centro'@'%' identified by 'estetica2024';
 GRANT SELECT, INSERT, UPDATE, DELETE ON `centro_estetica`.* TO 'centro'@'%';
 
--- Dump completed on 2024-09-24 19:04:24
+-- Dump completed on 2024-10-25 10:30:00

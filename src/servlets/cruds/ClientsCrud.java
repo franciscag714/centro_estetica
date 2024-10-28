@@ -1,19 +1,15 @@
 package servlets.cruds;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import logic.ClientLogic;
-import logic.ServiceTypeLogic;
-
 import java.io.IOException;
 import java.util.LinkedList;
 
 import entities.Client;
 import entities.Employee;
-import entities.ServiceType;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import logic.ClientLogic;
 
 public class ClientsCrud extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -22,6 +18,7 @@ public class ClientsCrud extends HttpServlet {
         super();
     }
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		if (request.getSession().getAttribute("user") == null)
@@ -38,6 +35,7 @@ public class ClientsCrud extends HttpServlet {
 			response.sendRedirect("index");
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		if (request.getSession().getAttribute("user") == null) {
@@ -52,7 +50,6 @@ public class ClientsCrud extends HttpServlet {
 			String action = request.getParameter("action");
 			
 			if (action.equals("create"))
-			{
 				try {
 					client.setFirstname(request.getParameter("firstname"));
 					client.setLastname(request.getParameter("lastname"));
@@ -62,9 +59,7 @@ public class ClientsCrud extends HttpServlet {
 					logic.create(client);
 				}
 				catch (Exception e) { }
-			}
 			else if (action.equals("update"))
-			{
 				try {
 					client.setId(Integer.parseInt(request.getParameter("id")));
 					client.setFirstname(request.getParameter("firstname"));
@@ -75,16 +70,12 @@ public class ClientsCrud extends HttpServlet {
 					logic.update(client);
 				}
 				catch (Exception e) { }
-				
-			}
 			else if (action.equals("delete"))
-			{
 				try {
 					client.setId(Integer.parseInt(request.getParameter("id")));
 					logic.delete(client);
 				}
 				catch (Exception e) { }
-			}
 		}
 		response.sendRedirect("clientes");
 	}
