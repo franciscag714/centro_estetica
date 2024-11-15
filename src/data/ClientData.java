@@ -100,6 +100,7 @@ public class ClientData {
 		}
 	}
 	
+	//No se si esto esta funcionando bien
 	public Client searchByUserAndPassword(Client cli) {
 		DbConnector db = new DbConnector();
 		Connection conn;

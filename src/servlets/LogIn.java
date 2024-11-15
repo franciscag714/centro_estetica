@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 
 import entities.Alert;
+import entities.Client;
 import entities.Employee;
 import entities.Person;
 import jakarta.servlet.ServletException;
@@ -26,8 +27,11 @@ public class LogIn extends HttpServlet {
 			request.getRequestDispatcher("WEB-INF/index.jsp").forward(request, response);
 		else if (p.getClass() == Employee.class)
 			request.getRequestDispatcher("WEB-INF/main.jsp").forward(request, response);
+		else if (p.getClass() == Client.class)
+			request.getRequestDispatcher("WEB-INF/main.jsp").forward(request, response);
+			//response.sendRedirect("reservar-turno");
 		else
-			response.sendRedirect("reservar-turno");
+			response.sendRedirect("index.jsp");
 	}
 	
 	@Override
