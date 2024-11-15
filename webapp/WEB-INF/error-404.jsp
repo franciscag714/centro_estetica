@@ -4,6 +4,6 @@
 <%= generateHead(false, null, null) %>
 
 <body>
-	<p>404 - Not found</p>
+	<img src="resources/error-404.jpg" style="display:flex;">
 </body>
 </html>

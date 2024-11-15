@@ -4,6 +4,6 @@
 <%= generateHead(false, null, null) %>
 
 <body>
-	<p>500 - Internal Server Error</p>
+	<img src="resources/error-500.jpg" style="display: block; margin: 0 auto">
 </body>
 </html>
