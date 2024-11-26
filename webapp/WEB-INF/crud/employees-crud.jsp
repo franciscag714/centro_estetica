@@ -108,6 +108,7 @@
 		</article>
 	</dialog>
 	
+	<jsp:include page="../common/show-alert.jsp"/>
 	<script src="scripts/employees-crud.js"></script>
 </body>
 </html>

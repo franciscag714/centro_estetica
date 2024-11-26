@@ -103,6 +103,7 @@
 		</article>
 	</dialog>
 	
+	<jsp:include page="../common/show-alert.jsp"/>
 	<script src="scripts/appointments-crud.js"></script>
 </body>
 </html>

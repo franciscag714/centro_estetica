@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
+import entities.Alert;
 import entities.Appointment;
 import entities.Client;
 import entities.Employee;
+import entities.Person;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,77 +19,91 @@ import logic.EmployeeLogic;
 
 public class AppointmentsCrud extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public AppointmentsCrud() {
-        super();
-    }
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-		if (request.getSession().getAttribute("user") == null)
-        	response.sendRedirect("index");
-        
-        else if (request.getSession().getAttribute("user").getClass() == Employee.class)
-        {
-        	AppointmentLogic appointmentLogic = new AppointmentLogic();
-        	LinkedList<Appointment> appointments = appointmentLogic.list();
-        	request.setAttribute("appointmentsList", appointments);
-        	
-        	ClientLogic clientLogic = new ClientLogic();
-			LinkedList<Client> clients = clientLogic.list();
-			request.setAttribute("clientsList", clients);
-			
-			EmployeeLogic employeeLogic = new EmployeeLogic();
-			LinkedList<Employee> employees = employeeLogic.list();
-			request.setAttribute("employeesList", employees);
-			
-			request.getRequestDispatcher("WEB-INF/crud/appointments-crud.jsp").forward(request, response);
-        }
-        else
-        	response.sendRedirect("index");
+	public AppointmentsCrud() {
+		super();
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-		if (request.getSession().getAttribute("user") == null)
-		{
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Person user = (Person) request.getSession().getAttribute("user");
+
+		if (user == null || user instanceof Client) {
 			response.sendRedirect("index");
 			return;
 		}
-		if (request.getSession().getAttribute("user").getClass() == Employee.class)
-		{
-			Appointment appointment = new Appointment();
-			AppointmentLogic logic = new AppointmentLogic();
-			String action = request.getParameter("action");
-			
-			try {
-				if (action.equals("create"))
-				{
-					setData(request, appointment);
-					logic.create(appointment);
-				}
-				else if (action.equals("update"))
-				{
-					appointment.setId(Integer.parseInt(request.getParameter("id")));
-					setData(request, appointment);
-					logic.update(appointment);
-				}
-				else if (action.equals("delete"))
-				{
-					appointment.setId(Integer.parseInt(request.getParameter("id")));
-					logic.delete(appointment);
-				}
-			} catch (Exception e) { }
-		}
-		response.sendRedirect("turnos");
+
+		// user is Employee
+		AppointmentLogic appointmentLogic = new AppointmentLogic();
+		LinkedList<Appointment> appointments = appointmentLogic.list();
+		request.setAttribute("appointmentsList", appointments);
+
+		ClientLogic clientLogic = new ClientLogic();
+		LinkedList<Client> clients = clientLogic.list();
+		request.setAttribute("clientsList", clients);
+
+		EmployeeLogic employeeLogic = new EmployeeLogic();
+		LinkedList<Employee> employees = employeeLogic.list();
+		request.setAttribute("employeesList", employees);
+
+		request.getRequestDispatcher("WEB-INF/crud/appointments-crud.jsp").forward(request, response);
 	}
-	
-	private void setData(HttpServletRequest request, Appointment appointment)
-	{
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Person user = (Person) request.getSession().getAttribute("user");
+
+		if (user == null || user instanceof Client) {
+			response.sendRedirect("index");
+			return;
+		}
+
+		// user is Employee
+		Appointment appointment = new Appointment();
+		AppointmentLogic logic = new AppointmentLogic();
+		String action = request.getParameter("action");
+
+		try {
+			if (action.equals("create")) {
+				setData(request, appointment);
+				appointment = logic.create(appointment);
+
+				if (appointment != null)
+					request.setAttribute("alert", new Alert("success", "Se ha creado el nuevo turno."));
+				else
+					request.setAttribute("alert", new Alert("error", "No se ha podido crear el nuevo turno."));
+
+			} else if (action.equals("update")) {
+				appointment.setId(Integer.parseInt(request.getParameter("id")));
+				setData(request, appointment);
+				appointment = logic.update(appointment);
+
+				if (appointment != null)
+					request.setAttribute("alert", new Alert("success", "Se ha modificado el turno."));
+				else
+					request.setAttribute("alert", new Alert("error", "No se ha podido modificar el turno."));
+
+			} else if (action.equals("delete")) {
+				appointment.setId(Integer.parseInt(request.getParameter("id")));
+				appointment = logic.delete(appointment);
+
+				if (appointment != null)
+					request.setAttribute("alert", new Alert("success", "Se ha eliminado el turno."));
+				else
+					request.setAttribute("alert", new Alert("error", "No se ha podido eliminar el turno."));
+			}
+
+		} catch (Exception e) {
+		}
+
+		this.doGet(request, response);
+	}
+
+	private void setData(HttpServletRequest request, Appointment appointment) {
 		appointment.setDateTime(LocalDateTime.parse(request.getParameter("date_time")));
-		
+
 		Employee e = new Employee();
 		e.setId(Integer.parseInt(request.getParameter("employee")));
 		appointment.setEmployee(e);

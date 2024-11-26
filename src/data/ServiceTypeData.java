@@ -178,7 +178,6 @@ public class ServiceTypeData
 			cn = db.getConnection();
 			pstmt = cn.prepareStatement("DELETE FROM service_types WHERE id = ?");
 			pstmt.setInt(1, servType.getId());
-			pstmt.executeUpdate();
 			
 			if (pstmt.executeUpdate() == 0)
 			{

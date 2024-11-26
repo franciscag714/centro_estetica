@@ -57,7 +57,8 @@ else {
 
 		</div>
 	</div>
-	<script src="scripts/book-appointment.js"></script>
+	
 	<jsp:include page="../common/show-alert.jsp"/>
+	<script src="scripts/book-appointment.js"></script>
 </body>
 </html>

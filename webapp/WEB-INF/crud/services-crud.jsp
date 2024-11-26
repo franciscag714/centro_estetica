@@ -93,6 +93,7 @@
 		</article>
 	</dialog>
 	
+	<jsp:include page="../common/show-alert.jsp"/>
 	<script src="scripts/services-crud.js"></script>
 </body>
 </html>
