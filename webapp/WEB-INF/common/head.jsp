@@ -16,7 +16,6 @@ String generateHead(Boolean includeCss, String title, String additionalLines)
 	if (includeCss){
 		head.append("<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css'>");
 		head.append("<link rel='stylesheet' type='text/css' href='styles/main.css'>");
-		head.append("<link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>");
 	}
 	
 	if (additionalLines != null) head.append(additionalLines);

@@ -33,7 +33,7 @@ public class ClientLogic {
 		return clientData.searchById(c);
 	}
 	
-	public Client searchByUser(Client c) {
+	public Client searchByUserAndPassword(Client c) {
 		return clientData.searchByUserAndPassword(c);
 	}
 }

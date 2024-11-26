@@ -4,6 +4,11 @@
   width: 100px;
   height: 100px;
 }
+.main-container {
+  display: flex;
+  padding-right: 0;
+  padding-left: 0;
+}
 
 nav {
   background-color: #e5e2e1;
