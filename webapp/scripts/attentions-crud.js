@@ -1,7 +1,7 @@
 const html = document.getElementsByTagName("html")[0];
 const baseUrl =
   window.location.hostname === "localhost"
-    ? "http://localhost:8080/centroestetica"
+    ? "http://localhost:8080/centro_estetica"
     : "https://centroestetica.com";
 
 const selectedAttention = { appointmentId: null, serviceId: null };

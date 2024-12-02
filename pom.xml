@@ -10,6 +10,12 @@
   <description>Trabajo práctico - Lenguaje de Programación Java</description>
 
   <dependencies>
+	<dependency>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>6.1.0</version>
+        <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>com.mysql</groupId>
       <artifactId>mysql-connector-j</artifactId>
