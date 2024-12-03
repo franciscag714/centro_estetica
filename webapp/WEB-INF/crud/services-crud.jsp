@@ -15,7 +15,7 @@
 <body>
 	<jsp:include page="../common/topbar.jsp"/>
 	
-	<div class="container-fluid" style="display:flex;">
+	<div class="container-fluid main-container">
 		<jsp:include page="../common/sidebar.jsp"/>
 		<div style="width:50%">
 			<table>
@@ -37,7 +37,7 @@
 <%	}	%>
 				</tbody>
 			</table>
-			<div>
+			<div class="buttons-div">
 				<button id="newService">Nuevo servicio</button>
 				<button id="updateService">Modificar</button>
 				<button id="deleteService">Eliminar</button>
@@ -46,7 +46,7 @@
 	</div>
 	
 	<!-- Modals -->
-	<dialog id="serviceModal">
+	<dialog id="serviceModal" class="modal">
 		<article>
 			<header>
 				<h2 id="serviceModalTitle" class="modal-title">Servicio</h2>
@@ -76,7 +76,7 @@
 		</article>
 	</dialog>
 	
-	<dialog id="deleteModal">
+	<dialog id="deleteModal" class="modal">
 		<article>
 			<header>
 				<h2 class="modal-title">Atención</h2>
@@ -94,6 +94,7 @@
 	</dialog>
 	
 	<jsp:include page="../common/show-alert.jsp"/>
+	<script src="scripts/sidebar.js"></script>
 	<script src="scripts/services-crud.js"></script>
 </body>
 </html>

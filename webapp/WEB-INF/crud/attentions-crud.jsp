@@ -13,12 +13,10 @@
 	LinkedList<Service> services = (LinkedList<Service>) request.getAttribute("servicesList");
 %>
 
-<!-- Aclaro que quise hacer: dos tablas primero appoint y que al seleccionar una fila aparezca la de att
-junto con los botones de agregar, mod y eliminar, los cuales abren modal -->
 <body>
 	<jsp:include page="../common/topbar.jsp"/>
 	
-	<div class="container-fluid" style="display:flex;">
+	<div class="container-fluid main-container">
 		<jsp:include page="../common/sidebar.jsp"/>
 					
 		<div style="width: 65%; margin: 10px;">
@@ -65,7 +63,7 @@ junto con los botones de agregar, mod y eliminar, los cuales abren modal -->
 	</div>
 	
 	<!-- Modals -->
-	<dialog id="createAttentionModal">
+	<dialog id="createAttentionModal" class="modal">
 		<article>
 			<header>
 				<h2 class="modal-title">Nueva Atención</h2>
@@ -99,7 +97,7 @@ junto con los botones de agregar, mod y eliminar, los cuales abren modal -->
 		</article>
 	</dialog>
 	
-	<dialog id="deleteModal">
+	<dialog id="deleteModal" class="modal">
 		<article>
 			<header>
 				<h2 class="modal-title">Atención</h2>
@@ -118,6 +116,7 @@ junto con los botones de agregar, mod y eliminar, los cuales abren modal -->
 	</dialog>
 	
 	<jsp:include page="../common/show-alert.jsp"/>
+	<script src="scripts/sidebar.js"></script>
 	<script src="scripts/attentions-crud.js"></script>
 </body>
 </html>

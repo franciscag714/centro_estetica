@@ -12,26 +12,27 @@
 <body>
 	<jsp:include page="../common/topbar.jsp"/>
 	
-	<div class="container-fluid" style="display:flex;">
+	<div class="container-fluid main-container">
 		<jsp:include page="../common/sidebar.jsp"/>
-		<div style="width:50%">
-			<table>
-				<thead>
-					<tr>
-						<th scope="col">Apellido</th>
-						<th scope="col">Nombre</th>
-						<th scope="col">Correo</th>
-						<th scope="col">Usuario</th>
-						<th scope="col">Tipo empleado</th>
-					</tr>
-				</thead>
-				<tbody>
+		<div style="width:85%;">
+			<div style="overflow-x:auto;">
+				<table>
+					<thead>
+						<tr>
+							<th scope="col">Apellido</th>
+							<th scope="col">Nombre</th>
+							<th scope="col">Correo</th>
+							<th scope="col">Usuario</th>
+							<th scope="col">Tipo empleado</th>
+						</tr>
+					</thead>
+					<tbody>
 <% for (Employee e: employees) { %>
-					<tr id="employeeId:<%= e.getId() %>" onclick="changeSelectedRow(this.id)">
-						<td><%= e.getLastname() %></td>
-						<td><%= e.getFirstname() %></td>
-						<td><%= e.getEmail() %></td>
-						<td><%= e.getUser() %></td>
+						<tr id="employeeId:<%= e.getId() %>" onclick="changeSelectedRow(this.id)">
+							<td><%= e.getLastname() %></td>
+							<td><%= e.getFirstname() %></td>
+							<td><%= e.getEmail() %></td>
+							<td><%= e.getUser() %></td>
 <%
 	String tipo = ""; 
 	if (e.getIsAdmin()) 
@@ -39,12 +40,14 @@
 	else 
 		tipo = "empleado";
 %>
-						<td><%= tipo %></td>
-					</tr>
-				<% } %>
-				</tbody>
-			</table>
-			<div>
+							<td><%= tipo %></td>
+						</tr>
+<% } %>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="buttons-div">
 				<button id="newEmployee">Nuevo empleado</button>
 				<button id="updateEmployee">Modificar</button>
 				<button id="deleteEmployee">Eliminar</button>
@@ -53,7 +56,7 @@
 	</div>
 	
 	<!-- Modals -->
-	<dialog id="employeeModal">
+	<dialog id="employeeModal" class="modal">
 		<article>
 			<header>
 				<h2 id="employeeModalTitle" class="modal-title">Empleado</h2>
@@ -91,7 +94,7 @@
 		</article>
 	</dialog>
 	
-	<dialog id="deleteModal">
+	<dialog id="deleteModal" class="modal">
 		<article>
 			<header>
 				<h2 class="modal-title">Atención</h2>
@@ -109,6 +112,7 @@
 	</dialog>
 	
 	<jsp:include page="../common/show-alert.jsp"/>
+	<script src="scripts/sidebar.js"></script>
 	<script src="scripts/employees-crud.js"></script>
 </body>
 </html>

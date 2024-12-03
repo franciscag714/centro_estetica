@@ -12,9 +12,9 @@
 	<div class="container-fluid main-container">
 		<jsp:include page="../common/sidebar.jsp"/>
 		
-		<div id="mainDiv">
+		<div id="main-div">
 			<h1 style="text-align: center;">Mis Datos</h1>
-			<form id="clientDataForm" method="POST" action="mis-datos">
+			<form id="client-data-form" method="POST" action="mis-datos">
 				
 				<div class="form-group">
 					<label for="firstname">Nombre</label>
@@ -34,20 +34,21 @@
 					<input type="text" name="user" id="user" value="<%= client.getUser() %>" oninput="enableUpdateButton()">
 					
 					<label for="password">Constraseña</label>
-					<div id="passwordDiv" role="group">
+					<div id="password-div" role="group">
 					    <input type="password" name="password" id="password" placeholder="No modificar" oninput="enableUpdateButton()">
-						<i id="eyeIcon" class="bx bx-show"></i>
+						<i id="eye-icon" class="bx bx-show"></i>
 					</div>
 				</div>
 				
 				<div id="button-div">
-					<button type="submit" id="updateClientData" disabled>Guardar cambios</button>
+					<button type="submit" id="update-data-btn" disabled>Guardar cambios</button>
 				</div>
 			</form>
 		</div>
 	</div>
 	
 	<jsp:include page="../common/show-alert.jsp"/>
+	<script src="scripts/sidebar.js"></script>
 	<script src="scripts/my-data.js"></script>
 </body>
 </html>

@@ -5,9 +5,18 @@
   --pico-form-element-spacing-horizontal: 0.75rem;
 }
 
-#mainDiv {
-  margin-left: 5%;
-  width: 60%;
+@media (width <= 600px) {
+  #main-div {
+    margin-left: 5px;
+    margin-right: -11px;
+  }
+}
+
+@media (width >= 800px) {
+  #main-div {
+    margin-left: 5%;
+    width: 60%;
+  }
 }
 
 .form-group {
@@ -25,16 +34,16 @@
 .form-group input {
   margin-bottom: 0;
   margin-left: 0.2rem;
-  margin-right: 1rem; /*TODO ver que no terminan bien alineados los ultimos 2 input*/
+  margin-right: 1rem;
 }
 
-#passwordDiv {
+#password-div {
   display: block;
   position: relative;
   margin-right: 1.2rem;
 }
 
-#eyeIcon {
+#eye-icon {
   cursor: pointer;
   position: absolute;
   right: 10px;

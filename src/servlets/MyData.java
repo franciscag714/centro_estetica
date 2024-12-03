@@ -33,7 +33,6 @@ public class MyData extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Integer.parseInt("adfadf");
 		Person user = (Person) request.getSession().getAttribute("user");
 
 		if (user == null || user instanceof Employee) {

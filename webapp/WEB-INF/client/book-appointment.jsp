@@ -11,7 +11,7 @@
 
 <body>
 	<jsp:include page="../common/topbar.jsp"/>
-	<div class="container-fluid" style="display:flex;">
+	<div class="container-fluid main-container">
 		<jsp:include page="../common/sidebar.jsp"/>
 		
 		<form action="reservar-turno" method="get" id="filter-form">
@@ -59,6 +59,7 @@ else {
 	</div>
 	
 	<jsp:include page="../common/show-alert.jsp"/>
+	<script src="scripts/sidebar.js"></script>
 	<script src="scripts/book-appointment.js"></script>
 </body>
 </html>
