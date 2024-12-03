@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import entities.Appointment;
 import entities.Attention;
+import entities.Client;
+import entities.Person;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +26,14 @@ public class AttentionsList extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		Person user = (Person) request.getSession().getAttribute("user");
 
+		if (user == null || user instanceof Client) {
+			response.sendRedirect("../index");
+			return;
+		}
+
+		// user is Employee
 		ObjectMapper objectMapper = new ObjectMapper();
 		PrintWriter out = response.getWriter();
 		AttentionLogic logic = new AttentionLogic();
@@ -38,7 +47,7 @@ public class AttentionsList extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
-		
+
 		LinkedList<Attention> attentions = logic.searchByAppointment(app);
 		String jsonResponse = objectMapper.writeValueAsString(attentions);
 		out.print(jsonResponse);

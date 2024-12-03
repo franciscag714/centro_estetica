@@ -6,7 +6,8 @@ import java.util.LinkedList;
 import entities.Alert;
 import entities.Appointment;
 import entities.Attention;
-import entities.Employee;
+import entities.Client;
+import entities.Person;
 import entities.Service;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -26,70 +27,77 @@ public class AttentionsCrud extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (request.getSession().getAttribute("user") == null)
+
+		Person user = (Person) request.getSession().getAttribute("user");
+
+		if (user == null || user instanceof Client) {
 			response.sendRedirect("index");
+			return;
+		}
 
-		else if (request.getSession().getAttribute("user").getClass() == Employee.class) {
-			AppointmentLogic appointmentLogic = new AppointmentLogic();
-			ServiceLogic serviceLogic = new ServiceLogic();
+		// user is Employee
+		AppointmentLogic appointmentLogic = new AppointmentLogic();
+		ServiceLogic serviceLogic = new ServiceLogic();
 
-			LinkedList<Appointment> appointments = appointmentLogic.listPast();
-			request.setAttribute("appointmentsList", appointments);
+		LinkedList<Appointment> appointments = appointmentLogic.listPast();
+		request.setAttribute("appointmentsList", appointments);
 
-			LinkedList<Service> services = serviceLogic.list();
-			request.setAttribute("servicesList", services);
+		LinkedList<Service> services = serviceLogic.list();
+		request.setAttribute("servicesList", services);
 
-			request.getRequestDispatcher("WEB-INF/crud/attentions-crud.jsp").forward(request, response);
-		} else
-			response.sendRedirect("index");
+		request.getRequestDispatcher("WEB-INF/crud/attentions-crud.jsp").forward(request, response);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (request.getSession().getAttribute("user") == null)
+		Person user = (Person) request.getSession().getAttribute("user");
+
+		if (user == null || user instanceof Client) {
 			response.sendRedirect("index");
+			return;
+		}
 
-		else if (request.getSession().getAttribute("user").getClass() == Employee.class) {
-			Attention attention = new Attention();
-			AttentionLogic logic = new AttentionLogic();
+		// user is Employee
+		Attention attention = new Attention();
+		AttentionLogic logic = new AttentionLogic();
 
-			Appointment app = new Appointment();
-			Service service = new Service();
+		Appointment app = new Appointment();
+		Service service = new Service();
 
-			String action = request.getParameter("action");
+		String action = request.getParameter("action");
 
-			try {
-				if (action.equals("create")) {
-					app.setId(Integer.parseInt(request.getParameter("appointment")));
-					service.setId(Integer.parseInt(request.getParameter("service")));
+		try {
+			if (action.equals("create")) {
+				app.setId(Integer.parseInt(request.getParameter("appointment")));
+				service.setId(Integer.parseInt(request.getParameter("service")));
 
-					attention.setAppointment(app);
-					attention.setService(service);
+				attention.setAppointment(app);
+				attention.setService(service);
 
-					attention = logic.create(attention);
-					if (attention != null)
-						request.setAttribute("alert", new Alert("success", "Se ha registrado la atención realizada."));
-					else
-						request.setAttribute("alert", new Alert("error", "No se pudo registrar la atención."));
-				} else if (action.equals("delete")) {
-					app.setId(Integer.parseInt(request.getParameter("appointment")));
-					service.setId(Integer.parseInt(request.getParameter("service")));
+				attention = logic.create(attention);
+				if (attention != null)
+					request.setAttribute("alert", new Alert("success", "Se ha registrado la atención realizada."));
+				else
+					request.setAttribute("alert", new Alert("error", "No se ha podido registrar la atención."));
 
-					attention.setAppointment(app);
-					attention.setService(service);
+			} else if (action.equals("delete")) {
+				app.setId(Integer.parseInt(request.getParameter("appointment")));
+				service.setId(Integer.parseInt(request.getParameter("service")));
 
-					attention = logic.delete(attention);
-					if (attention != null)
-						request.setAttribute("alert", new Alert("success", "Se ha borrado la atención."));
-					else
-						request.setAttribute("alert", new Alert("error", "No se pudo borrar la atención."));
-				}
-			} catch (Exception e) {
+				attention.setAppointment(app);
+				attention.setService(service);
+
+				attention = logic.delete(attention);
+				if (attention != null)
+					request.setAttribute("alert", new Alert("success", "Se ha eliminado la atención."));
+				else
+					request.setAttribute("alert", new Alert("error", "No se ha podido eliminar la atención."));
 			}
-			// to do: seleccionar turno automáticamente
-			this.doGet(request, response);
-		} else
-			response.sendRedirect("index");
+		} catch (Exception e) {
+		}
+
+		// TODO: seleccionar turno automáticamente
+		this.doGet(request, response);
 	}
 }

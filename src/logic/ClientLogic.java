@@ -32,4 +32,8 @@ public class ClientLogic {
 	public Client searchById(Client c) {
 		return clientData.searchById(c);
 	}
+	
+	public Client searchByUserAndPassword(Client c) {
+		return clientData.searchByUserAndPassword(c);
+	}
 }

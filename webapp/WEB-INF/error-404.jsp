@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="common/head.jsp" %>
 
-<%= generateHead(false, null, null) %>
+<%= generateHead(true, null, null) %>
 
 <body>
-	<p>404 - Not found</p>
+	<jsp:include page="common/topbar.jsp"/>
+	<img src="resources/error-404.jpg" style="display: block; margin: 0 auto; height: 80vh;">
 </body>
 </html>

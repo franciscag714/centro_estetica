@@ -12,32 +12,35 @@
 <body>
 	<jsp:include page="../common/topbar.jsp"/>
 	
-	<div class="container-fluid" style="display:flex;">
+	<div class="container-fluid main-container">
 		<jsp:include page="../common/sidebar.jsp"/>
-		<div style="width:50%">
-			<table>
-				<thead>
-					<tr>
-						<th scope="col">Apellido</th>
-						<th scope="col">Nombre</th>
-						<th scope="col">Correo</th>
-						<th scope="col">Usuario</th>
-					</tr>
-				</thead>
-				<tbody>
+		<div style="width:85%">
+			<div style="overflow-x:auto;">
+				<table>
+					<thead>
+						<tr>
+							<th scope="col">Apellido</th>
+							<th scope="col">Nombre</th>
+							<th scope="col">Correo</th>
+							<th scope="col">Usuario</th>
+						</tr>
+					</thead>
+					<tbody>
 				
 <%	for (Client c : clients){ %>
-					<tr id="clientId:<%= c.getId() %>" onclick="changeSelectedRow(this.id)">
-						<td><%= c.getLastname() %></td>
-						<td><%= c.getFirstname() %></td>
-						<td><%= c.getEmail() %></td>
-						<td><%= c.getUser() %></td>
-					</tr>
+						<tr id="clientId:<%= c.getId() %>" onclick="changeSelectedRow(this.id)">
+							<td><%= c.getLastname() %></td>
+							<td><%= c.getFirstname() %></td>
+							<td><%= c.getEmail() %></td>
+							<td><%= c.getUser() %></td>
+						</tr>
 <%	}	%>
-				</tbody>
-			</table>
-			<div>
-				<button id="newClient">Nuevo cliente</button>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="buttons-div">
+				<button id="newClient">Nuevo Cliente</button>
 				<button id="updateClient">Modificar</button>
 				<button id="deleteClient">Eliminar</button>
 			</div>
@@ -45,7 +48,7 @@
 	</div>
 	
 	<!-- Modals -->
-	<dialog id="clientModal">
+	<dialog id="clientModal" class="modal">
 		<article>
 			<header>
 				<h2 id="clientModalTitle" class="modal-title">Cliente</h2>
@@ -77,7 +80,7 @@
 		</article>
 	</dialog>
 	
-	<dialog id="deleteModal">
+	<dialog id="deleteModal" class="modal">
 		<article>
 			<header>
 				<h2 class="modal-title">Atención</h2>
@@ -94,6 +97,8 @@
 		</article>
 	</dialog>
 	
+	<jsp:include page="../common/show-alert.jsp"/>
+	<script src="scripts/sidebar.js"></script>
 	<script src="scripts/clients-crud.js"></script>
 </body>
 </html>

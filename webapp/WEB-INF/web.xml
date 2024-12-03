@@ -133,6 +133,16 @@
   </servlet-mapping>
   <servlet>
     <description></description>
+    <display-name>mis-datos</display-name>
+    <servlet-name>mis-datos</servlet-name>
+    <servlet-class>servlets.MyData</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mis-datos</servlet-name>
+    <url-pattern>/mis-datos</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
     <display-name>reservar-turno</display-name>
     <servlet-name>reservar-turno</servlet-name>
     <servlet-class>servlets.BookAppointment</servlet-class>
