@@ -75,11 +75,11 @@ public class BookAppointment extends HttpServlet {
 		try {
 			appointment.setId(Integer.parseInt(request.getParameter("appointment-id")));
 			appointment.setClient((Client) request.getSession().getAttribute("user"));
-
-			appointment = appointmentLogic.book(appointment);
+			String imagePath = getServletContext().getRealPath("/resources/CE.jpg");
+			
+			appointment = appointmentLogic.book(appointment, imagePath);
 			if (appointment != null)
-				alert = new Alert("success", "Turno reservado con éxito."); // TODO se pueden mostrar detalles y enviar
-																			// mail confimración
+				alert = new Alert("success", "Turno reservado con éxito."); // TODO mostrar turnos reservados para poder cancelar
 		} catch (Exception e) {
 		}
 

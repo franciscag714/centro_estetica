@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+:root {
+  --pico-form-element-spacing-vertical: 0.5rem;
+  --pico-form-element-spacing-horizontal: 0.75rem;
+  --pico-spacing: 0.5rem;
+}
+
 body {
   min-height: 100vh;
   background: radial-gradient(
@@ -12,17 +18,61 @@ body {
   );
 }
 
+@media (width <= 600px) {
+  .location-container {
+    display: flex;
+    flex-direction: column;
+  }
+  #questions-form {
+    order: 1;
+    margin: 10px;
+  }
+  #map {
+    order: 2;
+    margin: 0 10px 10px 10px;
+  }
+}
+
+@media (600px < width < 1000px) {
+  .location-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  #map {
+    width: 45%;
+    height: inherit;
+    margin-top: 50px;
+  }
+  #questions-form {
+    width: 50%;
+    margin-top: 50px;
+  }
+}
+
+@media (width >= 1000px) {
+  .location-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  #map {
+    width: 50%;
+    height: inherit;
+    margin-top: 50px;
+  }
+  #questions-form {
+    width: 30%;
+    margin-top: 50px;
+  }
+}
+
 #map {
-  width: 50%;
-  height: inherit;
-  margin-top: 50px;
   border: 5px solid #e2dada;
   border-radius: 10px;
 }
 
 #questions-form {
-  width: 30%;
-  margin-top: 50px;
   padding: 10px;
   border-radius: 10px;
   border: 2px solid #e2dada;
@@ -34,6 +84,10 @@ body {
 #questions-form textarea:focus {
   border: var(--pico-border-width) solid transparent;
   --pico-box-shadow: 0 0 0 var(--pico-outline-width) transparent;
+}
+
+#issue {
+  cursor: pointer;
 }
 
 #submit-btn {

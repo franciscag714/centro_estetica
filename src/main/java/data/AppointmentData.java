@@ -151,42 +151,84 @@ public class AppointmentData
 	}
 	
 	/**
-	 * This method books an appointment.
-	 * To book, the client_id in the database must be null.
-	 * Returns the parameter sent if has been booked, otherwise returns null.
+	 * This method books an appointment. To book, the client_id in the database must be null.
+	 * Returns the booked appointment with the client's first name, last name and email, and the employee's first name and last name.
+	 * If the appointment was not booked, returns null.
 	 * @param appointment It must have id and clientId.
 	 */
 	public Appointment book(Appointment appointment)
 	{
 		DbConnector db = new DbConnector();
-		Connection cn;
+		Connection cn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
 		try {
 			cn = db.getConnection();
+			cn.setAutoCommit(false);
+			
 			pstmt = cn.prepareStatement(""
-					+ "UPDATE appointments "
-					+ "SET client_id = ? "
-					+ "WHERE id = ? "
-					+ "		AND client_id IS NULL "
+					+ "	UPDATE appointments"
+					+ "	SET client_id = ?"
+					+ "	WHERE id = ?"
+					+ "		AND client_id IS NULL"
 					+ "		AND date_time > NOW()"
-					+ "ORDER BY date_time;");
+					+ "	ORDER BY date_time;");
 			
 			pstmt.setInt(1, appointment.getClient().getId());
 			pstmt.setInt(2, appointment.getId());
 			
-			if (pstmt.executeUpdate() == 0)
+			if (pstmt.executeUpdate() == 0) {
+				cn.rollback();
 				return null;
+			}
 			
-			return appointment;
+			pstmt = cn.prepareStatement(""
+					+ "	SELECT cli.firstname, cli.lastname, cli.email"
+					+ "		, emp.firstname, emp.lastname"
+					+ "	FROM appointments app"
+					+ "	INNER JOIN clients cli"
+					+ "		ON cli.id = app.client_id"
+					+ "	INNER JOIN employees emp"
+					+ "		ON emp.id = app.employee_id"
+					+ "	WHERE app.id = ?;");
+			
+			pstmt.setInt(1, appointment.getId());
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				Client c = new Client();
+				c.setFirstname(rs.getString(1));
+				c.setLastname(rs.getString(2));
+				c.setEmail(rs.getString(3));
+				appointment.setClient(c);
+				
+				Employee e = new Employee();
+				e.setFirstname(rs.getString(4));
+				e.setLastname(rs.getString(5));
+				appointment.setEmployee(e);
+				
+				cn.commit();
+				return appointment;
+			}
+			
+			cn.rollback();
+			return null;
 			
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
+			try {
+                cn.rollback();
+            } catch (SQLException ex) {
+               ex.printStackTrace();
+            }
+			
 			return null;
 		}
 		finally {
 			try {
+				if (cn != null)
+					cn.setAutoCommit(true);
 				if (rs != null)
 					rs.close();
 				if (pstmt != null)
