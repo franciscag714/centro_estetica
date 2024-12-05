@@ -23,7 +23,7 @@
 				<tbody>
 						
 <%	for (ServiceType t : types){ %>
-					<tr id="typeId:<%= t.getId() %>" onclick="changeSelectedRow(this.id)">
+					<tr id="type-id:<%= t.getId() %>" onclick="changeSelectedRow(this.id)">
 						<td><%= t.getDescription() %></td>
 					</tr>
 <%	}	%>
@@ -31,46 +31,46 @@
 			</table>
 			
 			<div class="buttons-div">
-				<button id="newType">Nuevo tipo</button>
-				<button id="updateType">Modificar</button>
-				<button id="deleteType">Eliminar</button>
+				<button id="new-type">Nuevo tipo</button>
+				<button id="update-type">Modificar</button>
+				<button id="delete-type">Eliminar</button>
 			</div>
 		</div>
 	</div>
 	
 	
 	<!-- Modals -->
-	<dialog id="typeModal" class="modal">
+	<dialog id="type-modal" class="modal">
 		<article>
 			<header>
-				<h2 id="typeModalTitle" class="modal-title">tipo de servicio</h2>
+				<h2 id="type-modal-title">tipo de servicio</h2>
 			</header>
 			<form method="post" action="tipos-servicios">
-				<input type="hidden" name="action" id="actionModal" value="">
-				<input type="hidden" name="id" id="typeModalId" value="">
+				<input type="hidden" name="action" id="action-modal" value="">
+				<input type="hidden" name="id" id="type-modal-id" value="">
 				<label for="desc">Descripción</label>
 				<input type="text" name="description" id="desc" required>
 			
 				<footer>
-					<button type="button" id="closeTypeModal" class="secondary">Cancelar</button>
+					<button type="button" class="secondary" onclick="closeModal('type-modal')">Cancelar</button>
 					<button type="submit" style="width:auto">Guardar</button>
 				</footer>
 			</form>
 		</article>
 	</dialog>
 	
-	<dialog id="deleteModal" class="modal">
+	<dialog id="delete-modal" class="modal">
 		<article>
 			<header>
-				<h2 class="modal-title">Atención</h2>
+				<h2>Atención</h2>
 			</header>
 			<form method="post" action="tipos-servicios">
 				<input type="hidden" name="action" value="delete">
-				<input type="hidden" name="id" id="deleteModalId" value="">
+				<input type="hidden" name="id" id="delete-modal-id" value="">
 				<p>¿Está seguro que desea eliminar el tipo de servicio?</p>
 				<footer>
-					<button type="button" id="closeDeleteModal" class="secondary">Cancelar</button>
-					<button type="submit" class="deleteBtn" style="width:auto">Eliminar</button>
+					<button type="button" class="secondary" onclick="closeModal('delete-modal')">Cancelar</button>
+					<button type="submit" class="delete-btn" style="width:auto">Eliminar</button>
 				</footer>
 			</form>
 		</article>

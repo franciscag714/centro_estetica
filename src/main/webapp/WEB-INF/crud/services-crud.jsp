@@ -29,7 +29,7 @@
 				<tbody>
 				
 <%	for (Service s : services){ %>
-					<tr id="serviceId:<%= s.getId() %>" onclick="changeSelectedRow(this.id)">
+					<tr id="service-id:<%= s.getId() %>" onclick="changeSelectedRow(this.id)">
 						<td><%= s.getDescription() %></td>
 						<td data-typeid="<%= s.getType().getId() %>"><%= s.getType().getDescription() %></td>
 						<td><%= s.getUpdatedPrice() %></td>
@@ -38,22 +38,22 @@
 				</tbody>
 			</table>
 			<div class="buttons-div">
-				<button id="newService">Nuevo servicio</button>
-				<button id="updateService">Modificar</button>
-				<button id="deleteService">Eliminar</button>
+				<button id="new-service">Nuevo servicio</button>
+				<button id="update-service">Modificar</button>
+				<button id="delete-service">Eliminar</button>
 			</div>
 		</div>
 	</div>
 	
 	<!-- Modals -->
-	<dialog id="serviceModal" class="modal">
+	<dialog id="service-modal" class="modal">
 		<article>
 			<header>
-				<h2 id="serviceModalTitle" class="modal-title">Servicio</h2>
+				<h2 id="service-modal-title">Servicio</h2>
 			</header>
 			<form method="post" action="abmc-servicios">
-				<input type="hidden" name="action" id="actionModal" value="">
-				<input type="hidden" name="id" id="serviceIdModal" value="">
+				<input type="hidden" name="action" id="action-modal" value="">
+				<input type="hidden" name="id" id="service-id-modal" value="">
 				
 				<label for="desc">Descripción</label>
 				<input type="text" name="description" id="desc" required>
@@ -69,25 +69,25 @@
 				<input type="number" name="price" id="price" min="0" step="0.01" required>
 
 				<footer>
-					<button type="button" id="closeServiceModal" class="secondary">Cancelar</button>
+					<button type="button" class="secondary" onclick="closeModal('service-modal')">Cancelar</button>
 					<button type="submit" style="width:auto">Guardar</button>
 				</footer>
 			</form>
 		</article>
 	</dialog>
 	
-	<dialog id="deleteModal" class="modal">
+	<dialog id="delete-modal" class="modal">
 		<article>
 			<header>
-				<h2 class="modal-title">Atención</h2>
+				<h2>Atención</h2>
 			</header>
 			<form method="post" action="abmc-servicios">
 				<input type="hidden" name="action" value="delete">
-				<input type="hidden" name="id" id="deleteModalId" value="">
+				<input type="hidden" name="id" id="delete-modal-id" value="">
 				<p>¿Está seguro que desea eliminar el servicio?</p>
 				<footer>
-					<button type="button" id="closeDeleteModal" class="secondary">Cancelar</button>
-					<button type="submit" class="deleteBtn" style="width:auto">Eliminar</button>
+					<button type="button" class="secondary" onclick="closeModal('delete-modal')">Cancelar</button>
+					<button type="submit" class="delete-btn" style="width:auto">Eliminar</button>
 				</footer>
 			</form>
 		</article>

@@ -11,6 +11,7 @@ String generateHead(Boolean includeCss, String title, String additionalLines)
 	head.append("<head>");
 	head.append("<meta charset='UTF-8'>");
 	head.append("<meta name='viewport' content='width=device-width, initial-scale=1.0'>");
+	head.append("<link rel='icon' type='image/x-icon' href='resources/favicon.ico'>");
 	head.append("<title>" + title + "</title>");
 	
 	if (includeCss){

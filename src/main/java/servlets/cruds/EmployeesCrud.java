@@ -95,7 +95,7 @@ public class EmployeesCrud extends HttpServlet {
 		employee.setEmail(request.getParameter("email"));
 
 		boolean isAdmin = false;
-		if (request.getParameter("is_admin").equals("administrador"))
+		if (request.getParameter("is-admin").equals("administrador"))
 			isAdmin = true;
 
 		employee.setIsAdmin(isAdmin);

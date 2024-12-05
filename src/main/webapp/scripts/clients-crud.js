@@ -1,40 +1,42 @@
 const html = document.getElementsByTagName("html")[0];
 let selectedId;
 
-const clientModal = document.getElementById("clientModal");
-const deleteModal = document.getElementById("deleteModal");
+const clientModal = document.getElementById("client-modal");
+const deleteModal = document.getElementById("delete-modal");
 
-const newClientBtn = document.getElementById("newClient");
-const updateBtn = document.getElementById("updateClient");
-const deleteBtn = document.getElementById("deleteClient");
-
-const closeClientModalBtn = document.getElementById("closeClientModal");
-const closeDeleteBtn = document.getElementById("closeDeleteModal");
+const newClientBtn = document.getElementById("new-client");
+const updateBtn = document.getElementById("update-client");
+const deleteBtn = document.getElementById("delete-client");
 
 function changeSelectedRow(id) {
   if (selectedId)
     document
-      .getElementById("clientId:" + selectedId)
+      .getElementById("client-id:" + selectedId)
       .classList.remove("selected-row");
 
   document.getElementById(id).classList.add("selected-row");
-  selectedId = id.replace("clientId:", "");
+  selectedId = id.replace("client-id:", "");
 }
 
 function removeClass(className) {
   html.classList.remove(className);
 }
 
-function closeModal(modal) {
-  modal.close();
-  removeClass("modal-is-closing");
-  removeClass("modal-is-open");
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  html.classList.add("modal-is-closing");
+
+  setTimeout(() => {
+    modal.close();
+    html.classList.remove("modal-is-closing");
+    html.classList.remove("modal-is-open");
+  }, 400);
 }
 
 newClientBtn.addEventListener("click", () => {
-  document.getElementById("actionModal").value = "create";
-  document.getElementById("clientModalId").value = "";
-  document.getElementById("clientModalTitle").textContent = "Nuevo Cliente";
+  document.getElementById("action-modal").value = "create";
+  document.getElementById("client-modal-id").value = "";
+  document.getElementById("client-modal-title").textContent = "Nuevo Cliente";
 
   clientModal.querySelector("[name='lastname']").value = "";
   clientModal.querySelector("[name='firstname']").value = "";
@@ -43,6 +45,7 @@ newClientBtn.addEventListener("click", () => {
 
   document.getElementById("password").required = true;
   document.getElementById("password").value = "";
+  document.getElementById("password").minlength = "4";
 
   html.classList.add("modal-is-open");
   html.classList.add("modal-is-opening");
@@ -52,13 +55,13 @@ newClientBtn.addEventListener("click", () => {
 
 updateBtn.addEventListener("click", () => {
   if (selectedId) {
-    document.getElementById("actionModal").value = "update";
-    document.getElementById("clientModalId").value = selectedId;
-    document.getElementById("clientModalTitle").textContent =
+    document.getElementById("action-modal").value = "update";
+    document.getElementById("client-modal-id").value = selectedId;
+    document.getElementById("client-modal-title").textContent =
       "Modificar Cliente";
 
     const cells = document
-      .getElementById("clientId:" + selectedId)
+      .getElementById("client-id:" + selectedId)
       .getElementsByTagName("td");
     clientModal.querySelector("[name='lastname']").value = cells[0].textContent;
     clientModal.querySelector("[name='firstname']").value =
@@ -75,28 +78,26 @@ updateBtn.addEventListener("click", () => {
     clientModal.showModal();
     setTimeout(removeClass.bind(null, "modal-is-opening"), 400);
   } else {
-    alert("Primero seleccione un cliente");
+    Swal.fire({
+      title: "Primero seleccione un cliente.",
+      icon: "error",
+      confirmButtonColor: "#f0ad4e",
+    });
   }
 });
 
 deleteBtn.addEventListener("click", () => {
   if (selectedId) {
-    document.getElementById("deleteModalId").value = selectedId;
+    document.getElementById("delete-modal-id").value = selectedId;
     html.classList.add("modal-is-open");
     html.classList.add("modal-is-opening");
     deleteModal.showModal();
     setTimeout(removeClass.bind(null, "modal-is-opening"), 400);
   } else {
-    alert("Primero seleccione un cliente");
+    Swal.fire({
+      title: "Primero seleccione un cliente.",
+      icon: "error",
+      confirmButtonColor: "#f0ad4e",
+    });
   }
-});
-
-closeClientModalBtn.addEventListener("click", () => {
-  html.classList.add("modal-is-closing");
-  setTimeout(closeModal.bind(null, clientModal), 400);
-});
-
-closeDeleteBtn.addEventListener("click", () => {
-  html.classList.add("modal-is-closing");
-  setTimeout(closeModal.bind(null, deleteModal), 400);
 });

@@ -32,7 +32,7 @@
 				</thead>
 				<tbody>
 				<% for (Appointment a: appointments){ %>
-					<tr id="appointmentId:<%= a.getId() %>" data-ismodifiable="<%= a.isModifiable() %>" onclick="changeSelectedRow(this.id)">
+					<tr id="appointment-id:<%= a.getId() %>" data-ismodifiable="<%= a.isModifiable() %>" onclick="changeSelectedRow(this.id)">
 						<td><%= a.getFormattedDateTime() %></td>
 						<td data-employeeid=<%= a.getEmployee().getId() %> ><%= a.getEmployee().getFullname() %></td>
 						<td data-clientid=<%= a.getClient().getId() %> ><%= a.getClient().getFullname() != null ? a.getClient().getFullname() : "--disponible--"%></td>
@@ -41,25 +41,25 @@
 				</tbody>
 			</table>
 			<div class="buttons-div">
-				<button id="newAppointment">Nuevo Turno</button>
-				<button id="updateAppointment">Modificar</button>
-				<button id="deleteAppointment">Eliminar</button>
+				<button id="new-appointment">Nuevo Turno</button>
+				<button id="update-appointment">Modificar</button>
+				<button id="delete-appointment">Eliminar</button>
 			</div>
 		</div>
 	</div>
 	
 	<!-- Modals -->
-	<dialog id="appointmentModal" class="modal">
+	<dialog id="appointment-modal" class="modal">
 		<article>
 			<header>
-				<h2 id="appointmentModalTitle" class="modal-title">Turno</h2>
+				<h2 id="appointment-modal-title">Turno</h2>
 			</header>
 			<form method="post" action="turnos">
-				<input type="hidden" name="action" id="actionModal" value="">
-				<input type="hidden" name="id" id="appointmentModalId" value="">
+				<input type="hidden" name="action" id="action-modal" value="">
+				<input type="hidden" name="id" id="appointment-modal-id" value="">
 				
-				<label for="date_time">Horario</label>
-				<input type="datetime-local" name="date_time" id="date_time" required>
+				<label for="date-time">Horario</label>
+				<input type="datetime-local" name="date-time" id="date-time" required>
 				
 				<label for="employee">Empleado</label>
 				<select id="employee" name="employee" required>	
@@ -79,25 +79,25 @@
 				</select>
 				
 				<footer>
-					<button type="button" id="closeAppointmentModal" class="secondary">Cancelar</button>
+					<button type="button" class="secondary" onclick="closeModal('appointment-modal')">Cancelar</button>
 					<button type="submit" style="width:auto">Guardar</button>
 				</footer>
 			</form>
 		</article>
 	</dialog>
 	
-	<dialog id="deleteModal" class="modal">
+	<dialog id="delete-modal" class="modal">
 		<article>
 			<header>
-				<h2 class="modal-title">Atención</h2>
+				<h2>Atención</h2>
 			</header>
 			<form method="post" action="turnos">
 				<input type="hidden" name="action" value="delete">
-				<input type="hidden" name="id" id="deleteModalId" value="">
+				<input type="hidden" name="id" id="delete-modal-id" value="">
 				<p>¿Está seguro que desea eliminar el turno?</p>
 				<footer>
-					<button type="button" id="closeDeleteModal" class="secondary">Cancelar</button>
-					<button type="submit" class="deleteBtn" style="width:auto">Eliminar</button>
+					<button type="button" class="secondary" onclick="closeModal('delete-modal')">Cancelar</button>
+					<button type="submit" class="delete-btn" style="width:auto">Eliminar</button>
 				</footer>
 			</form>
 		</article>

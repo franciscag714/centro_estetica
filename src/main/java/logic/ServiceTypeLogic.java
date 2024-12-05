@@ -22,23 +22,20 @@ public class ServiceTypeLogic
 	}
 	
 	public ServiceType create(ServiceType servType) {
-		if (servType.getDescription().equals(""))
+		if (servType.getDescription().isBlank())
 			return null;
 		
 		return stData.add(servType);
 	}
 	
 	public ServiceType update(ServiceType servType) {
-		if (servType.getDescription().equals("") || servType.getId() == 0)
+		if (servType.getDescription().isBlank())
 			return null;
 		
 		return stData.update(servType);
 	}
 	
 	public ServiceType delete(ServiceType servType) {
-		if (servType.getId() == 0)
-			return null;
-		
 		return stData.delete(servType);
 	}
 }

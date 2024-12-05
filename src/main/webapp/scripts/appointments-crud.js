@@ -1,22 +1,17 @@
 const html = document.getElementsByTagName("html")[0];
 let selectedId;
 
-const appointmentModal = document.getElementById("appointmentModal");
-const deleteModal = document.getElementById("deleteModal");
+const appointmentModal = document.getElementById("appointment-modal");
+const deleteModal = document.getElementById("delete-modal");
 
-const newAppointmentBtn = document.getElementById("newAppointment");
-const updateBtn = document.getElementById("updateAppointment");
-const deleteBtn = document.getElementById("deleteAppointment");
-
-const closeAppointmentModalBtn = document.getElementById(
-  "closeAppointmentModal"
-);
-const closeDeleteBtn = document.getElementById("closeDeleteModal");
+const newAppointmentBtn = document.getElementById("new-appointment");
+const updateBtn = document.getElementById("update-appointment");
+const deleteBtn = document.getElementById("delete-appointment");
 
 function changeSelectedRow(id) {
   if (selectedId)
     document
-      .getElementById("appointmentId:" + selectedId)
+      .getElementById("appointment-id:" + selectedId)
       .classList.remove("selected-row");
 
   document.getElementById(id).classList.add("selected-row");
@@ -25,25 +20,31 @@ function changeSelectedRow(id) {
     showButtons();
   else hideButtons();
 
-  selectedId = id.replace("appointmentId:", "");
+  selectedId = id.replace("appointment-id:", "");
 }
 
 function removeClass(className) {
   html.classList.remove(className);
 }
 
-function closeModal(modal) {
-  modal.close();
-  removeClass("modal-is-closing");
-  removeClass("modal-is-open");
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  html.classList.add("modal-is-closing");
+
+  setTimeout(() => {
+    modal.close();
+    html.classList.remove("modal-is-closing");
+    html.classList.remove("modal-is-open");
+  }, 400);
 }
 
 newAppointmentBtn.addEventListener("click", () => {
-  document.getElementById("actionModal").value = "create";
-  document.getElementById("appointmentModalId").value = "";
-  document.getElementById("appointmentModalTitle").textContent = "Nuevo Turno";
+  document.getElementById("action-modal").value = "create";
+  document.getElementById("appointment-modal-id").value = "";
+  document.getElementById("appointment-modal-title").textContent =
+    "Nuevo Turno";
 
-  appointmentModal.querySelector("[name='date_time']").value = "";
+  appointmentModal.querySelector("[name='date-time']").value = "";
   appointmentModal.querySelector("[name='employee']").value = "";
   appointmentModal.querySelector("[name='client']").value = "0";
 
@@ -55,16 +56,16 @@ newAppointmentBtn.addEventListener("click", () => {
 
 updateBtn.addEventListener("click", () => {
   if (selectedId) {
-    document.getElementById("actionModal").value = "update";
-    document.getElementById("appointmentModalId").value = selectedId;
-    document.getElementById("appointmentModalTitle").textContent =
+    document.getElementById("action-modal").value = "update";
+    document.getElementById("appointment-modal-id").value = selectedId;
+    document.getElementById("appointment-modal-title").textContent =
       "Modificar Turno";
 
     const cells = document
-      .getElementById("appointmentId:" + selectedId)
+      .getElementById("appointment-id:" + selectedId)
       .getElementsByTagName("td");
 
-    appointmentModal.querySelector("[name='date_time']").value =
+    appointmentModal.querySelector("[name='date-time']").value =
       formatForDateTimeLocal(cells[0].textContent);
     appointmentModal.querySelector("[name='employee']").value =
       cells[1].dataset.employeeid;
@@ -76,41 +77,42 @@ updateBtn.addEventListener("click", () => {
     appointmentModal.showModal();
     setTimeout(removeClass.bind(null, "modal-is-opening"), 400);
   } else {
-    alert("Primero seleccione un turno");
+    Swal.fire({
+      title: "Primero seleccione un turno.",
+      icon: "error",
+      confirmButtonColor: "#f0ad4e",
+    });
   }
 });
 
 deleteBtn.addEventListener("click", () => {
   if (selectedId) {
-    document.getElementById("deleteModalId").value = selectedId;
+    document.getElementById("delete-modal-id").value = selectedId;
     html.classList.add("modal-is-open");
     html.classList.add("modal-is-opening");
     deleteModal.showModal();
     setTimeout(removeClass.bind(null, "modal-is-opening"), 400);
   } else {
-    alert("Primero seleccione un turno");
+    Swal.fire({
+      title: "Primero seleccione un turno.",
+      icon: "error",
+      confirmButtonColor: "#f0ad4e",
+    });
   }
 });
 
-closeAppointmentModalBtn.addEventListener("click", () => {
-  html.classList.add("modal-is-closing");
-  setTimeout(closeModal.bind(null, appointmentModal), 400);
-});
-
-closeDeleteBtn.addEventListener("click", () => {
-  html.classList.add("modal-is-closing");
-  setTimeout(closeModal.bind(null, deleteModal), 400);
-});
-
-appointmentModal.addEventListener("submit", function (event) {
+appointmentModal.addEventListener("change", function () {
   const selectedDateTime = new Date(
-    appointmentModal.querySelector("[name='date_time']").value
+    appointmentModal.querySelector("[name='date-time']").value
   );
   const currentDateTime = new Date();
 
   if (selectedDateTime.getTime() < currentDateTime.getTime()) {
-    alert("La fecha y la hora para el turno no pueden ser anteriores a ahora.");
-    event.preventDefault();
+    document
+      .getElementById("date-time")
+      .setCustomValidity("Ingrese una fecha y una hora posteriores a ahora.");
+  } else {
+    document.getElementById("date-time").setCustomValidity("");
   }
 });
 

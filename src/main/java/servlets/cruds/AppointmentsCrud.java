@@ -102,7 +102,7 @@ public class AppointmentsCrud extends HttpServlet {
 	}
 
 	private void setData(HttpServletRequest request, Appointment appointment) {
-		appointment.setDateTime(LocalDateTime.parse(request.getParameter("date_time")));
+		appointment.setDateTime(LocalDateTime.parse(request.getParameter("date-time")));
 
 		Employee e = new Employee();
 		e.setId(Integer.parseInt(request.getParameter("employee")));

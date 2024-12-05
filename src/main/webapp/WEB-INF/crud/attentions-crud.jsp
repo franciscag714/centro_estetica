@@ -32,7 +32,7 @@
 				<tbody>
 <% 	for (Appointment a : appointments){	%>
 		
-					<tr id="appointmentId:<%= a.getId() %>" onclick="changeSelAppointment(<%= a.getId() %>)">
+					<tr id="appointment-id:<%= a.getId() %>" onclick="changeSelAppointment(<%= a.getId() %>)">
 						<td><%= a.getFormattedDateTime() %></td>
 						<td><%= a.getEmployee().getFullname() %></td>
 						<td><%= a.getClient().getFullname() %></td>
@@ -44,9 +44,9 @@
 		</div>
 		
 		<div style="width: 35%; margin: 10px; border-left: 1px solid #ccc;">
-			<p id="attentionsMessage" style="text-align: center; margin-top: 10px;">Seleccione un turno para ver los servicios brindados.</p><!-- poner mensaje de que no hay servicios también y ocultar tabla -->
+			<p id="attentions-message" style="text-align: center; margin-top: 10px;">Seleccione un turno para ver los servicios brindados.</p><!-- poner mensaje de que no hay servicios también y ocultar tabla -->
 			
-			<table id="attentionsTable" style="display: none; width: 100%; border-collapse: collapse;">
+			<table id="attentions-table" style="display: none; width: 100%; border-collapse: collapse;">
 				<thead>
 					<tr>
 						<th scope="col">Servicio</th>
@@ -55,25 +55,25 @@
 				</thead>
 				<tbody></tbody>
 			</table>
-			<div id="attentionsActions" style="display: none;">
-				<button id="createAttention">Nueva atención</button>
-				<button id="deleteAttention">Eliminar</button>
+			<div id="attentions-actions" style="display: none;">
+				<button id="create-attention">Nueva atención</button>
+				<button id="delete-attention">Eliminar</button>
 			</div>
 		</div>
 	</div>
 	
 	<!-- Modals -->
-	<dialog id="createAttentionModal" class="modal">
+	<dialog id="create-attention-modal" class="modal">
 		<article>
 			<header>
-				<h2 class="modal-title">Nueva Atención</h2>
+				<h2>Nueva Atención</h2>
 			</header>
 			<form method="post" action="atenciones">
 				<input type="hidden" name="action" value="create">
 				<input type="hidden" id="appointment" name="appointment" value="">
 				
-				<label id="appointmentLabel">Turno: dd/MM/yyyy</label>
-				<label id="clientLabel">Ciente: nombre-apellido</label>
+				<label id="appointment-label">Turno: dd/MM/yyyy</label>
+				<label id="client-label">Ciente: nombre-apellido</label>
 				<label id="price">Servicio</label>
 				<label for="service">Servicio</label>
 				<select id="service" name="service" required>
@@ -90,26 +90,26 @@
 				
 				
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('createAttentionModal')">Cancelar</button>
+					<button type="button" class="secondary" onclick="closeModal('create-attention-modal')">Cancelar</button>
 					<button type="submit" style="width:auto">Guardar</button>
 				</footer>
 			</form>
 		</article>
 	</dialog>
 	
-	<dialog id="deleteModal" class="modal">
+	<dialog id="delete-modal" class="modal">
 		<article>
 			<header>
-				<h2 class="modal-title">Atención</h2>
+				<h2>Atención</h2>
 			</header>
 			<form method="post" action="atenciones">
 				<input type="hidden" name="action" value="delete">
-				<input type="hidden" name="appointment" id="deleteModalAppointmentId" value="">
-				<input type="hidden" name="service" id="deleteModalServiceId" value="">
+				<input type="hidden" name="appointment" id="delete-modal-appointment-id" value="">
+				<input type="hidden" name="service" id="delete-modal-service-id" value="">
 				<p>¿Está seguro que desea eliminar la atención?</p>
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('deleteModal')">Cancelar</button>
-					<button type="submit" class="deleteBtn" style="width:auto">Eliminar</button>
+					<button type="button" class="secondary" onclick="closeModal('delete-modal')">Cancelar</button>
+					<button type="submit" class="delete-btn" style="width:auto">Eliminar</button>
 				</footer>
 			</form>
 		</article>

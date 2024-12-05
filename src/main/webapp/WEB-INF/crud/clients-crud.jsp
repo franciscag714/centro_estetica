@@ -28,7 +28,7 @@
 					<tbody>
 				
 <%	for (Client c : clients){ %>
-						<tr id="clientId:<%= c.getId() %>" onclick="changeSelectedRow(this.id)">
+						<tr id="client-id:<%= c.getId() %>" onclick="changeSelectedRow(this.id)">
 							<td><%= c.getLastname() %></td>
 							<td><%= c.getFirstname() %></td>
 							<td><%= c.getEmail() %></td>
@@ -40,23 +40,23 @@
 			</div>
 			
 			<div class="buttons-div">
-				<button id="newClient">Nuevo Cliente</button>
-				<button id="updateClient">Modificar</button>
-				<button id="deleteClient">Eliminar</button>
+				<button id="new-client">Nuevo Cliente</button>
+				<button id="update-client">Modificar</button>
+				<button id="delete-client">Eliminar</button>
 			</div>
 		</div>
 	</div>
 	
 	<!-- Modals -->
-	<dialog id="clientModal" class="modal">
+	<dialog id="client-modal" class="modal">
 		<article>
 			<header>
-				<h2 id="clientModalTitle" class="modal-title">Cliente</h2>
+				<h2 id="client-modal-title">Cliente</h2>
 			</header>
 			<form method="post" action="clientes">
-				<input type="hidden" name="action" id="actionModal" value="">
-				<input type="hidden" name="id" id="clientModalId" value="">
-									
+				<input type="hidden" name="action" id="action-modal" value="">
+				<input type="hidden" name="id" id="client-modal-id" value="">
+				
 				<label for="firstname">Nombre</label>
 				<input type="text" name="firstname" id="firstname" required>
 				
@@ -70,28 +70,28 @@
 				<input type="text" name="user" id="user" required>
 				
 				<label for="password">Contraseña</label>
-				<input type="password" name="password" id="password" required>
+				<input type="password" name="password" id="password" required minlength="4">
 				
 				<footer>
-					<button type="button" id="closeClientModal" class="secondary">Cancelar</button>
+					<button type="button" class="secondary" onclick="closeModal('client-modal')">Cancelar</button>
 					<button type="submit" style="width:auto">Guardar</button>
 				</footer>
 			</form>
 		</article>
 	</dialog>
 	
-	<dialog id="deleteModal" class="modal">
+	<dialog id="delete-modal" class="modal">
 		<article>
 			<header>
-				<h2 class="modal-title">Atención</h2>
+				<h2>Atención</h2>
 			</header>
 			<form method="post" action="clientes">
 				<input type="hidden" name="action" value="delete">
-				<input type="hidden" name="id" id="deleteModalId" value="">
+				<input type="hidden" name="id" id="delete-modal-id" value="">
 				<p>¿Está seguro que desea eliminar al cliente?</p>
 				<footer>
-					<button type="button" id="closeDeleteModal" class="secondary">Cancelar</button>
-					<button type="submit" class="deleteBtn" style="width:auto">Eliminar</button>
+					<button type="button" class="secondary" onclick="closeModal('delete-modal')">Cancelar</button>
+					<button type="submit" class="delete-btn" style="width:auto">Eliminar</button>
 				</footer>
 			</form>
 		</article>

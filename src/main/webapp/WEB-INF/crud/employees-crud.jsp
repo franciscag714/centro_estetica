@@ -28,7 +28,7 @@
 					</thead>
 					<tbody>
 <% for (Employee e: employees) { %>
-						<tr id="employeeId:<%= e.getId() %>" onclick="changeSelectedRow(this.id)">
+						<tr id="employee-id:<%= e.getId() %>" onclick="changeSelectedRow(this.id)">
 							<td><%= e.getLastname() %></td>
 							<td><%= e.getFirstname() %></td>
 							<td><%= e.getEmail() %></td>
@@ -48,22 +48,22 @@
 			</div>
 			
 			<div class="buttons-div">
-				<button id="newEmployee">Nuevo empleado</button>
-				<button id="updateEmployee">Modificar</button>
-				<button id="deleteEmployee">Eliminar</button>
+				<button id="new-employee">Nuevo empleado</button>
+				<button id="update-employee">Modificar</button>
+				<button id="delete-employee">Eliminar</button>
 			</div>
 		</div>
 	</div>
 	
 	<!-- Modals -->
-	<dialog id="employeeModal" class="modal">
+	<dialog id="employee-modal" class="modal">
 		<article>
 			<header>
-				<h2 id="employeeModalTitle" class="modal-title">Empleado</h2>
+				<h2 id="employee-modal-title">Empleado</h2>
 			</header>
 			<form method="post" action="empleados" >
-				<input type="hidden" name="action" id="actionModal" value="">
-				<input type="hidden" name="id" id="employeeModalId" value="">
+				<input type="hidden" name="action" id="action-modal" value="">
+				<input type="hidden" name="id" id="employee-modal-id" value="">
 				
 				<label for="firstname">Nombre</label>
 				<input type="text" name="firstname" id="firstname" required>
@@ -80,32 +80,32 @@
 				<label for="password">Contraseña</label>
 				<input type="password" name="password" id="password" required>
 				
-				<label for="is_admin">Tipo empleado</label>
-				<select id="is_admin" name="is_admin" required>
+				<label for="is-admin">Tipo empleado</label>
+				<select id="is-admin" name="is-admin" required>
 					<option value="empleado">Empleado</option>
 					<option value="administrador">Administrador</option>
 				</select>
 				
 				<footer>
-					<button type="button" id="closeEmployeeModal" class="secondary">Cancelar</button>
+					<button type="button" class="secondary" onclick="closeModal('employee-modal')">Cancelar</button>
 					<button type="submit" style="width:auto">Guardar</button>
 				</footer>
 			</form>
 		</article>
 	</dialog>
 	
-	<dialog id="deleteModal" class="modal">
+	<dialog id="delete-modal" class="modal">
 		<article>
 			<header>
-				<h2 class="modal-title">Atención</h2>
+				<h2>Atención</h2>
 			</header>
 			<form method="post" action="empleados">
 				<input type="hidden" name="action" value="delete">
-				<input type="hidden" name="id" id="deleteModalId" value="">				
+				<input type="hidden" name="id" id="delete-modal-id" value="">				
 				<p>¿Esta seguro que desea eliminar al empleado?</p>
 				<footer>
-					<button type="button" id="closeDeleteModal" class="secondary">Cancelar</button>
-					<button type="submit" class="deleteBtn" style="width:auto">Eliminar</button>
+					<button type="button" class="secondary" onclick="closeModal('delete-modal')">Cancelar</button>
+					<button type="submit" class="delete-btn" style="width:auto">Eliminar</button>
 				</footer>
 			</form>
 		</article>
