@@ -155,14 +155,17 @@ public class EmployeeData {
 		
 		try {
 			conn = db.getConnection();
-			pstmt = conn.prepareStatement("INSERT INTO employees(user, password, firstname, lastname, email, is_admin) VALUES (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			pstmt = conn.prepareStatement(""
+					+ "	INSERT INTO employees(user, password, firstname, lastname, email, is_admin)"
+					+ "	VALUES (?,?,?,?,?,?)",
+					Statement.RETURN_GENERATED_KEYS);
 			
 			pstmt.setString(1, emp.getUser());
 			pstmt.setString(2, BCrypt.hashpw(emp.getPassword(), BCrypt.gensalt()));
 			pstmt.setString(3, emp.getFirstname());
 			pstmt.setString(4, emp.getLastname());
 			pstmt.setString(5, emp.getEmail());
-			pstmt.setBoolean(6, emp.getIsAdmin());
+			pstmt.setBoolean(6, emp.isAdmin());
 			
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
@@ -209,7 +212,7 @@ public class EmployeeData {
 			pstmt.setString(2, emp.getFirstname());
 			pstmt.setString(3, emp.getLastname());
 			pstmt.setString(4, emp.getEmail());
-			pstmt.setBoolean(5, emp.getIsAdmin());
+			pstmt.setBoolean(5, emp.isAdmin());
 			
 			if (emp.getPassword() != "") {
 				pstmt.setString(6, BCrypt.hashpw(emp.getPassword(), BCrypt.gensalt()));

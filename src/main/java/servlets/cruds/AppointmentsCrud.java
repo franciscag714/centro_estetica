@@ -61,13 +61,14 @@ public class AppointmentsCrud extends HttpServlet {
 		}
 
 		// user is Employee
+		Employee employee = (Employee) user;
 		Appointment appointment = new Appointment();
 		AppointmentLogic logic = new AppointmentLogic();
 		String action = request.getParameter("action");
 
 		try {
 			if (action.equals("create")) {
-				setData(request, appointment);
+				setData(request, appointment, employee);
 				appointment = logic.create(appointment);
 
 				if (appointment != null)
@@ -77,8 +78,8 @@ public class AppointmentsCrud extends HttpServlet {
 
 			} else if (action.equals("update")) {
 				appointment.setId(Integer.parseInt(request.getParameter("id")));
-				setData(request, appointment);
-				appointment = logic.update(appointment);
+				setData(request, appointment, employee);
+				appointment = logic.update(appointment, employee);
 
 				if (appointment != null)
 					request.setAttribute("alert", new Alert("success", "Se ha modificado el turno."));
@@ -87,7 +88,7 @@ public class AppointmentsCrud extends HttpServlet {
 
 			} else if (action.equals("delete")) {
 				appointment.setId(Integer.parseInt(request.getParameter("id")));
-				appointment = logic.delete(appointment);
+				appointment = logic.delete(appointment, employee);
 
 				if (appointment != null)
 					request.setAttribute("alert", new Alert("success", "Se ha eliminado el turno."));
@@ -101,12 +102,15 @@ public class AppointmentsCrud extends HttpServlet {
 		this.doGet(request, response);
 	}
 
-	private void setData(HttpServletRequest request, Appointment appointment) {
+	private void setData(HttpServletRequest request, Appointment appointment, Employee employee) {
 		appointment.setDateTime(LocalDateTime.parse(request.getParameter("date-time")));
 
-		Employee e = new Employee();
-		e.setId(Integer.parseInt(request.getParameter("employee")));
-		appointment.setEmployee(e);
+		if (employee.isAdmin()) {
+			Employee e = new Employee();
+			e.setId(Integer.parseInt(request.getParameter("employee")));
+			appointment.setEmployee(e);	
+		} else
+			appointment.setEmployee(employee);
 
 		Client c = new Client();
 		if (request.getParameter("client") != null)

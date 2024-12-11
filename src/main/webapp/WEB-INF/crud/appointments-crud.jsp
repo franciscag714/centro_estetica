@@ -8,6 +8,7 @@
 
 <%= generateHead(true, null, null) %>
 <%
+	Employee emp = (Employee) session.getAttribute("user");
 	@SuppressWarnings("unchecked")
 	LinkedList<Appointment> appointments = (LinkedList<Appointment>) request.getAttribute("appointmentsList");
 	@SuppressWarnings("unchecked")	
@@ -34,10 +35,10 @@
 					</thead>
 					<tbody>
 					<% for (Appointment a: appointments){ %>
-						<tr id="appointment-id:<%= a.getId() %>" data-ismodifiable="<%= a.isModifiable() %>" onclick="changeSelectedRow(this.id)">
+						<tr id="appointment-id:<%= a.getId() %>" data-is-modifiable="<%= a.isModifiable(emp) %>" onclick="changeSelectedRow(this.id)">
 							<td><%= a.getFormattedDateTime() %></td>
-							<td data-employeeid=<%= a.getEmployee().getId() %> ><%= a.getEmployee().getFullname() %></td>
-							<td data-clientid=<%= a.getClient().getId() %> ><%= a.getClient().getFullname() != null ? a.getClient().getFullname() : "--disponible--"%></td>
+							<td data-employee-id=<%= a.getEmployee().getId() %> ><%= a.getEmployee().getFullname() %></td>
+							<td data-client-id=<%= a.getClient().getId() %> ><%= a.getClient().getFullname() != null ? a.getClient().getFullname() : "--disponible--"%></td>
 						</tr>
 					<% } %>
 					</tbody>
@@ -63,21 +64,22 @@
 				
 				<label for="date-time">Horario</label>
 				<input type="datetime-local" name="date-time" id="date-time" required>
-				
+
+<%	if (emp.isAdmin()) { %>
 				<label for="employee">Empleado</label>
 				<select id="employee" name="employee" required>	
-				<% for (Employee e: employees){%>
+<%		for (Employee e: employees) { %>
 						<option value="<%= e.getId() %>"><%= e.getFullname() %></option>
-				<%}%>
+<%		} %>
 				</select>
-				
+<%	} %>
 				<label for="client" style="color:gray">Cliente (opcional)</label>
 				<select id="client" name="client">
 					<option value="0">--disponible--</option>
 					
-<% for (Client c: clients){%>
+<%	for (Client c: clients) { %>
 					<option value="<%= c.getId() %>"><%= c.getFullname() %></option>
-<%}%>
+<%	} %>
 
 				</select>
 				

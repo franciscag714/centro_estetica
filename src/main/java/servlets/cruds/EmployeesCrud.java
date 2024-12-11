@@ -25,12 +25,12 @@ public class EmployeesCrud extends HttpServlet {
 			throws ServletException, IOException {
 		Person user = (Person) request.getSession().getAttribute("user");
 
-		if (user == null || user instanceof Client) {
+		if (user == null || user instanceof Client || !((Employee) user).isAdmin()) {
 			response.sendRedirect("index");
 			return;
 		}
 
-		// user is Employee
+		// user is an administrator Employee
 		EmployeeLogic ctrl = new EmployeeLogic();
 		LinkedList<Employee> employees = ctrl.list();
 		request.setAttribute("employeesList", employees);
@@ -42,12 +42,12 @@ public class EmployeesCrud extends HttpServlet {
 			throws ServletException, IOException {
 		Person user = (Person) request.getSession().getAttribute("user");
 
-		if (user == null || user instanceof Client) {
+		if (user == null || user instanceof Client || !((Employee) user).isAdmin()) {
 			response.sendRedirect("index");
 			return;
 		}
 
-		// user is Employee
+		// user is an administrator Employee
 		Employee employee = new Employee();
 		EmployeeLogic logic = new EmployeeLogic();
 		String action = request.getParameter("action");

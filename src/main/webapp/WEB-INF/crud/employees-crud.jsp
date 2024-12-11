@@ -36,7 +36,7 @@
 							<td><%= e.getUser() %></td>
 <%
 	String tipo = ""; 
-	if (e.getIsAdmin()) 
+	if (e.isAdmin()) 
 		tipo = "administrador";
 	else 
 		tipo = "empleado";

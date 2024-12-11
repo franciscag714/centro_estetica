@@ -7,6 +7,7 @@ import entities.Alert;
 import entities.Appointment;
 import entities.Attention;
 import entities.Client;
+import entities.Employee;
 import entities.Person;
 import entities.Service;
 import jakarta.servlet.ServletException;
@@ -39,7 +40,7 @@ public class AttentionsCrud extends HttpServlet {
 		AppointmentLogic appointmentLogic = new AppointmentLogic();
 		ServiceLogic serviceLogic = new ServiceLogic();
 
-		LinkedList<Appointment> appointments = appointmentLogic.listPast();
+		LinkedList<Appointment> appointments = appointmentLogic.listPast((Employee) user);
 		request.setAttribute("appointmentsList", appointments);
 
 		LinkedList<Service> services = serviceLogic.list();
@@ -75,31 +76,24 @@ public class AttentionsCrud extends HttpServlet {
 
 		Appointment app = new Appointment();
 		Service service = new Service();
-
 		String action = request.getParameter("action");
 
 		try {
+			app.setId(Integer.parseInt(request.getParameter("appointment")));
+			service.setId(Integer.parseInt(request.getParameter("service")));
+
+			attention.setAppointment(app);
+			attention.setService(service);
+			
 			if (action.equals("create")) {
-				app.setId(Integer.parseInt(request.getParameter("appointment")));
-				service.setId(Integer.parseInt(request.getParameter("service")));
-
-				attention.setAppointment(app);
-				attention.setService(service);
-
-				attention = logic.create(attention);
+				attention = logic.create(attention, (Employee) user);
 				if (attention != null)
 					request.setAttribute("alert", new Alert("success", "Se ha registrado la atención realizada."));
 				else
 					request.setAttribute("alert", new Alert("error", "No se ha podido registrar la atención."));
 
 			} else if (action.equals("delete")) {
-				app.setId(Integer.parseInt(request.getParameter("appointment")));
-				service.setId(Integer.parseInt(request.getParameter("service")));
-
-				attention.setAppointment(app);
-				attention.setService(service);
-
-				attention = logic.delete(attention);
+				attention = logic.delete(attention, (Employee) user);
 				if (attention != null)
 					request.setAttribute("alert", new Alert("success", "Se ha eliminado la atención."));
 				else

@@ -19,10 +19,13 @@
       		<li <%= filename.equals("attentions-crud.jsp") ? "class='selected'" : "" %>><a href="atenciones">Atenciones</a></li>
       		<li <%= filename.equals("appointments-crud.jsp") ? "class='selected'" : "" %>><a href="turnos">Turnos</a></li>
       		<li <%= filename.equals("clients-crud.jsp") ? "class='selected'" : "" %>><a href="clientes">Clientes</a></li>
+
+<%		if (((Employee) user).isAdmin()) {	%>
       		<li <%= filename.equals("services-crud.jsp") ? "class='selected'" : "" %>><a href="abmc-servicios">Servicios</a></li>
       		<li <%= filename.equals("service-types-crud.jsp") ? "class='selected'" : "" %>><a href="tipos-servicios">Tipos de servicios</a></li>
       		<li <%= filename.equals("employees-crud.jsp") ? "class='selected'" : "" %>><a href="empleados">Empleados</a></li>
 <%
+		}
 	}
 	else if (user != null && user.getClass() == Client.class) {
 %>

@@ -15,7 +15,6 @@ public class Appointment {
 	private Employee employee;
 	private Client client;
 	private double totalIncome;
-	private Boolean isModifiable = true; //dependerá de los permisos del usuario
 	
 	public int getId() { return id;	}
 	public void setId(int id) { this.id = id; }
@@ -40,7 +39,12 @@ public class Appointment {
 	public void setTotalIncome(double totalIncome) { this.totalIncome = totalIncome; }
 	
 	@JsonIgnore
-	public Boolean isModifiable() { return isModifiable; }
+	public Boolean isModifiable(Employee emp) {
+		if (emp.isAdmin() || emp.getId() == this.getEmployee().getId())
+			return true;
+		
+		return false;
+	}
 	
 	@JsonIgnore
 	public String getFormattedDateTime() {

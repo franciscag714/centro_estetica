@@ -7,6 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import data.AppointmentData;
 import entities.Appointment;
 import entities.AppointmentFilter;
+import entities.Employee;
 import utils.EmailSender;
 
 public class AppointmentLogic {
@@ -20,8 +21,11 @@ public class AppointmentLogic {
 		return appointmentData.list();
 	}
 	
-	public LinkedList<Appointment> listPast(){
-		return appointmentData.listPast();
+	public LinkedList<Appointment> listPast(Employee e){
+		if (e.isAdmin())
+			return appointmentData.listPast(null);
+		else
+			return appointmentData.listPast(e);
 	}
 	
 	public LinkedList<Appointment> listAvailable(AppointmentFilter filter) {
@@ -81,25 +85,26 @@ public class AppointmentLogic {
 	}
 	
 	public Appointment create(Appointment a) {
-
 		if (a.getDateTime().isBefore(LocalDateTime.now()))
 			return null;
 		
 		return appointmentData.add(a);
 	}
 	
-	public Appointment update(Appointment a) {
+	public Appointment update(Appointment a, Employee e) {
 		if (a.getDateTime().isBefore(LocalDateTime.now()))
 			return null;
 		
-		return appointmentData.update(a);
+		if (e.isAdmin())
+			return appointmentData.update(a, null);
+		else
+			return appointmentData.update(a, e);
 	}
 	
-	public Appointment delete(Appointment a) {
-		return appointmentData.delete(a);
-	}
-	
-	public Appointment searchById(Appointment a) {
-		return appointmentData.searchById(a);
+	public Appointment delete(Appointment a, Employee e) {
+		if (e.isAdmin())
+			return appointmentData.delete(a, null);
+		else
+			return appointmentData.delete(a, e);
 	}
 }

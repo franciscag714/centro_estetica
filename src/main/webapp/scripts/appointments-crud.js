@@ -16,7 +16,7 @@ function changeSelectedRow(id) {
 
   document.getElementById(id).classList.add("selected-row");
 
-  if (document.getElementById(id).dataset.ismodifiable === "true")
+  if (document.getElementById(id).dataset.isModifiable === "true")
     showButtons();
   else hideButtons();
 
@@ -45,7 +45,10 @@ newAppointmentBtn.addEventListener("click", () => {
     "Nuevo Turno";
 
   appointmentModal.querySelector("[name='date-time']").value = "";
-  appointmentModal.querySelector("[name='employee']").value = "";
+
+  const employeeInput = appointmentModal.querySelector("[name='employee']");
+  if (employeeInput) employeeInput.value = "";
+
   appointmentModal.querySelector("[name='client']").value = "0";
 
   html.classList.add("modal-is-open");
@@ -67,10 +70,12 @@ updateBtn.addEventListener("click", () => {
 
     appointmentModal.querySelector("[name='date-time']").value =
       formatForDateTimeLocal(cells[0].textContent);
-    appointmentModal.querySelector("[name='employee']").value =
-      cells[1].dataset.employeeid;
+
+    const employeeInput = appointmentModal.querySelector("[name='employee']");
+    if (employeeInput) employeeInput.value = cells[1].dataset.employeeId;
+
     appointmentModal.querySelector("[name='client']").value =
-      cells[2].dataset.clientid;
+      cells[2].dataset.clientId;
 
     html.classList.add("modal-is-open");
     html.classList.add("modal-is-opening");
@@ -135,6 +140,6 @@ function hideButtons() {
 }
 
 function showButtons() {
-  updateBtn.style.display = "inline";
-  deleteBtn.style.display = "inline";
+  updateBtn.style.display = "";
+  deleteBtn.style.display = "";
 }

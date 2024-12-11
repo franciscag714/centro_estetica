@@ -95,7 +95,7 @@ public class AppointmentData
 			filter.append("AND TIME(date_time) >= ? ");
 		
 		if (appointFilter.getEndTime() != null)
-			filter.append("AND TIME(date_time) <= ? ");	//analizar si puedo evitar usar función en el where ya que no aprovecha índices...
+			filter.append("AND TIME(date_time) <= ? ");
 		
 		DbConnector db = new DbConnector();
 		Connection cn;
@@ -247,19 +247,19 @@ public class AppointmentData
 	 * Their clients and employees are not complete.
 	 * They only have id, lastname and firstname attributes.
 	 */
-	public LinkedList<Appointment> listPast()
+	public LinkedList<Appointment> listPast(Employee employee)
 	{
+		String filter = employee != null ? " AND app.employee_id = ?" : "";
 		DbConnector db = new DbConnector();
 		Connection cn;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
 		LinkedList<Appointment> appointments = new LinkedList<>();
 		
 		try {
 			cn = db.getConnection();
-			stmt = cn.createStatement();
-			rs = stmt.executeQuery(""
+			pstmt = cn.prepareStatement(""
 					+ "	SELECT app.id, app.date_time"
 					+ "		, cli.id, cli.lastname, cli.firstname"
 					+ "		, emp.id, emp.lastname, emp.firstname"
@@ -271,9 +271,15 @@ public class AppointmentData
 					+ "		ON app.client_id = cli.id"
 					+ "	LEFT JOIN attentions att"
 					+ "		ON att.appointment_id = app.id"
-					+ "	WHERE app.date_time <= ADDDATE(NOW(), INTERVAL 1 HOUR)"
+					+ "	WHERE app.date_time BETWEEN (NOW() - INTERVAL 1 MONTH) AND (NOW() + INTERVAL 1 HOUR)"
+					+ 	filter
 					+ "	GROUP BY app.id, cli.id, emp.id"
 					+ "	ORDER BY app.date_time DESC;");
+			
+			if (employee != null)
+				pstmt.setInt(1, employee.getId());
+			
+			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
 				Appointment appointment = new Appointment();
@@ -305,8 +311,8 @@ public class AppointmentData
 			try {
 				if (rs != null)
 					rs.close();
-				if (stmt != null)
-					stmt.close();
+				if (pstmt != null)
+					pstmt.close();
 				db.releaseConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -426,14 +432,20 @@ public class AppointmentData
 		}
 	}
 	
-	public Appointment update(Appointment appointment) {
+	public Appointment update(Appointment appointment, Employee employee) {
+		String filter = employee != null ? " AND employee_id = ?" : "";
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
 		
 		try {
 			cn = db.getConnection();
-			pstmt = cn.prepareStatement("UPDATE appointments SET date_time=?, employee_id=?, client_id=? WHERE id=?");
+			pstmt = cn.prepareStatement(""
+					+ "	UPDATE appointments"
+					+ "	SET date_time=?, employee_id=?, client_id=?"
+					+ "	WHERE id = ?"
+					+	filter);
+			
 			pstmt.setObject(1, appointment.getDateTime());
 			pstmt.setInt(2, appointment.getEmployee().getId());
 
@@ -443,6 +455,9 @@ public class AppointmentData
 				pstmt.setInt(3, appointment.getClient().getId());
 			
 			pstmt.setInt(4, appointment.getId());
+			
+			if (employee != null)
+				pstmt.setInt(5, employee.getId());
 			
 			if (pstmt.executeUpdate() == 0)
 			{
@@ -467,16 +482,24 @@ public class AppointmentData
 		}
 	}
 	
-	public Appointment delete(Appointment appointment) {
+	public Appointment delete(Appointment appointment, Employee employee) {
+		String filter = employee != null ? " AND employee_id = ?" : "";
 		DbConnector db = new DbConnector();
 		Connection cn;
 		PreparedStatement pstmt = null;
 		
 		try {
 			cn = db.getConnection();
-			pstmt = cn.prepareStatement("DELETE FROM appointments WHERE id=?");
+			pstmt = cn.prepareStatement(""
+					+ "	DELETE FROM appointments"
+					+ "	WHERE id = ?"
+					+ 	filter);
+			
 			pstmt.setInt(1, appointment.getId());
 
+			if (employee != null)
+				pstmt.setInt(2, employee.getId());
+			
 			if (pstmt.executeUpdate() == 0)
 			{
 				System.out.println("No rows were deleted.");

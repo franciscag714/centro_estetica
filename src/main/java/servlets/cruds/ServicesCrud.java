@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import entities.Alert;
 import entities.Client;
+import entities.Employee;
 import entities.Person;
 import entities.Service;
 import entities.ServiceType;
@@ -27,12 +28,12 @@ public class ServicesCrud extends HttpServlet {
 			throws ServletException, IOException {
 		Person user = (Person) request.getSession().getAttribute("user");
 
-		if (user == null || user instanceof Client) {
+		if (user == null || user instanceof Client || !((Employee) user).isAdmin()) {
 			response.sendRedirect("index");
 			return;
 		}
 
-		// user is Employee
+		// user is an administrator Employee
 		ServiceLogic serviceLogic = new ServiceLogic();
 		LinkedList<Service> services = serviceLogic.list();
 		request.setAttribute("servicesList", services);
@@ -50,12 +51,12 @@ public class ServicesCrud extends HttpServlet {
 			throws ServletException, IOException {
 		Person user = (Person) request.getSession().getAttribute("user");
 
-		if (user == null || user instanceof Client) {
+		if (user == null || user instanceof Client || !((Employee) user).isAdmin()) {
 			response.sendRedirect("index");
 			return;
 		}
 
-		// user is Employee
+		// user is an administrator Employee
 		Service service = new Service();
 		ServiceLogic logic = new ServiceLogic();
 		String action = request.getParameter("action");
