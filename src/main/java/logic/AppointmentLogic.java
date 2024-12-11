@@ -1,5 +1,6 @@
 package logic;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
 
@@ -81,21 +82,16 @@ public class AppointmentLogic {
 	
 	public Appointment create(Appointment a) {
 
-		/*if (dt.isBefore(LocalDateTime.now()))
-			return false;
-		else
-			appointment.setDateTime(dt);
-		*/
+		if (a.getDateTime().isBefore(LocalDateTime.now()))
+			return null;
+		
 		return appointmentData.add(a);
 	}
 	
 	public Appointment update(Appointment a) {
-
-		/*if (dt.isBefore(LocalDateTime.now()))
-			return false;
-		else
-			appointment.setDateTime(dt);
-		*/
+		if (a.getDateTime().isBefore(LocalDateTime.now()))
+			return null;
+		
 		return appointmentData.update(a);
 	}
 	

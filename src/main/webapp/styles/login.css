@@ -1,5 +1,12 @@
 @charset "UTF-8";
 
+:root {
+  --pico-font-size: 112.5%;
+  --pico-spacing: 1rem;
+  --pico-form-element-spacing-vertical: 0.75rem;
+  --pico-form-element-spacing-horizontal: 1rem;
+}
+
 html {
   min-height: 100vh;
 }
@@ -17,6 +24,9 @@ body {
 }
 
 #div-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border: 3px solid white;
   border-radius: 20px;
   margin-top: 50px;

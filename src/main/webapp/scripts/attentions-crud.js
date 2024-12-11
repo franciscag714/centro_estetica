@@ -4,7 +4,11 @@ const baseUrl =
     ? "http://localhost:8080/centro_estetica"
     : "https://centroestetica.com";
 
-const selectedAttention = { appointmentId: null, serviceId: null };
+const selectedAppointment = {
+  appointmentId: null,
+  selectedServiceId: null,
+  servicesIds: [],
+};
 
 const attentionsTable = document.getElementById("attentions-table");
 const attentionsActions = document.getElementById("attentions-actions");
@@ -17,34 +21,60 @@ const createAttBtn = document.getElementById("create-attention");
 const deleteBtn = document.getElementById("delete-attention");
 
 function changeSelAppointment(appointmentId) {
-  if (selectedAttention.appointmentId)
+  if (selectedAppointment.appointmentId)
     document
-      .getElementById("appointment-id:" + selectedAttention.appointmentId)
+      .getElementById("appointment-id:" + selectedAppointment.appointmentId)
       .classList.remove("selected-row");
 
   document
     .getElementById("appointment-id:" + appointmentId)
     .classList.add("selected-row");
 
-  selectedAttention.appointmentId = appointmentId;
-  selectedAttention.serviceId = null;
+  selectedAppointment.appointmentId = appointmentId;
+  selectedAppointment.selectedServiceId = null;
+  selectedAppointment.servicesIds = [];
+
   loadAttentionsTable();
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  id = attentionsTable.getAttribute("data-selected-appointment");
+  if (id !== "0") {
+    selectedAppointment.appointmentId = parseInt(id);
+    document
+      .getElementById("appointment-id:" + id)
+      .classList.add("selected-row");
+
+    const tableBody = attentionsTable.querySelector("tbody");
+    const rows = tableBody.querySelectorAll("tr");
+
+    rows.forEach((row) => {
+      const serviceId = row.id.substring(11);
+      selectedAppointment.servicesIds.push(parseInt(serviceId));
+
+      row.addEventListener("click", () => {
+        changeSelAttention(serviceId);
+      });
+    });
+  }
+});
 
 async function loadAttentionsTable() {
   try {
     const response = await fetch(
-      `${baseUrl}/lista-atenciones/${selectedAttention.appointmentId}`
+      `${baseUrl}/lista-atenciones/${selectedAppointment.appointmentId}`
     );
     if (!response.ok) throw new Error("Network response was not OK");
 
     const attentions = await response.json();
-    tableBody = attentionsTable.querySelector("tbody");
+    const tableBody = attentionsTable.querySelector("tbody");
     tableBody.innerHTML = "";
 
-    if (attentions.length != 0) {
+    if (attentions.length !== 0) {
       attentions.forEach((attention) => {
+        selectedAppointment.servicesIds.push(attention.service.id);
         const row = document.createElement("tr");
+
         row.addEventListener("click", () =>
           changeSelAttention(attention.service.id)
         );
@@ -58,13 +88,11 @@ async function loadAttentionsTable() {
 
         deleteBtn.style.display = "";
         attentionsMessage.style.display = "none";
-        attentionsTable.style.display = "";
       });
     } else {
       deleteBtn.style.display = "none";
       attentionsMessage.textContent = "No se brindó ninguna atención.";
       attentionsMessage.style.display = "";
-      attentionsTable.style.display = "none";
     }
     attentionsActions.style.display = "";
   } catch (error) {
@@ -77,16 +105,16 @@ async function loadAttentionsTable() {
 }
 
 function changeSelAttention(serviceId) {
-  if (selectedAttention.serviceId)
+  if (selectedAppointment.selectedServiceId)
     document
-      .getElementById("service-id:" + selectedAttention.serviceId)
+      .getElementById("service-id:" + selectedAppointment.selectedServiceId)
       .classList.remove("selected-row");
 
   document
     .getElementById("service-id:" + serviceId)
     .classList.add("selected-row");
 
-  selectedAttention.serviceId = serviceId;
+  selectedAppointment.selectedServiceId = serviceId;
 }
 
 function removeClass(className) {
@@ -105,35 +133,56 @@ function closeModal(modalId) {
 }
 
 createAttBtn.addEventListener("click", () => {
-  document.getElementById("appointment").value =
-    selectedAttention.appointmentId;
-  const row = document
-    .getElementById("appointment-id:" + selectedAttention.appointmentId)
-    .querySelectorAll("td");
+  let openModal = false;
+  const serviceSelect = document.getElementById("service");
+  const options = serviceSelect.options;
 
-  document.getElementById(
-    "appointment-label"
-  ).innerHTML = `Fecha y hora turno: <b>${row[0].textContent}</b>`;
+  Array.from(options).forEach((opt) => {
+    if (selectedAppointment.servicesIds.includes(parseInt(opt.value)))
+      opt.style.display = "none";
+    else {
+      opt.style.display = "";
+      openModal = true;
+    }
+  });
 
-  document.getElementById(
-    "client-label"
-  ).innerHTML = `Cliente: <b>${row[2].textContent}</b>`;
+  if (openModal) {
+    document.getElementById("appointment").value =
+      selectedAppointment.appointmentId;
+    const row = document
+      .getElementById("appointment-id:" + selectedAppointment.appointmentId)
+      .querySelectorAll("td");
 
-  document.getElementById("service").value = "";
-  document.getElementById("price").textContent = "Precio: ---";
+    document.getElementById(
+      "appointment-label"
+    ).innerHTML = `Fecha y hora turno: <b>${row[0].textContent}</b>`;
 
-  html.classList.add("modal-is-open");
-  html.classList.add("modal-is-opening");
-  createAttModal.showModal();
-  setTimeout(removeClass.bind(null, "modal-is-opening"), 400);
+    document.getElementById(
+      "client-label"
+    ).innerHTML = `Cliente: <b>${row[2].textContent}</b>`;
+
+    serviceSelect.value = "";
+    document.getElementById("price").textContent = "Precio: ---";
+
+    html.classList.add("modal-is-open");
+    html.classList.add("modal-is-opening");
+    createAttModal.showModal();
+    setTimeout(removeClass.bind(null, "modal-is-opening"), 400);
+  } else {
+    Swal.fire({
+      title: "Todos los servicios disponibles han sido brindados.",
+      icon: "error",
+      confirmButtonColor: "#f0ad4e",
+    });
+  }
 });
 
 deleteBtn.addEventListener("click", () => {
-  if (selectedAttention.serviceId) {
+  if (selectedAppointment.selectedServiceId) {
     document.getElementById("delete-modal-appointment-id").value =
-      selectedAttention.appointmentId;
+      selectedAppointment.appointmentId;
     document.getElementById("delete-modal-service-id").value =
-      selectedAttention.serviceId;
+      selectedAppointment.selectedServiceId;
 
     html.classList.add("modal-is-open");
     html.classList.add("modal-is-opening");

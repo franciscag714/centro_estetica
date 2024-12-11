@@ -17,26 +17,29 @@
 	
 	<div class="container-fluid main-container">
 		<jsp:include page="../common/sidebar.jsp"/>
-		<div style="width:50%">
-			<table>
-				<thead>
-					<tr>
-						<th scope="col">Descripción</th>
-						<th scope="col">Tipo</th>
-						<th scope="col">Precio</th>
-					</tr>
-				</thead>
-				<tbody>
-				
+		
+		<div class="content-div" style="width:50%;">
+			<div class="table-div">
+				<table>
+					<thead>
+						<tr>
+							<th scope="col">Descripción</th>
+							<th scope="col">Tipo</th>
+							<th scope="col">Precio</th>
+						</tr>
+					</thead>
+					<tbody>
+					
 <%	for (Service s : services){ %>
-					<tr id="service-id:<%= s.getId() %>" onclick="changeSelectedRow(this.id)">
-						<td><%= s.getDescription() %></td>
-						<td data-typeid="<%= s.getType().getId() %>"><%= s.getType().getDescription() %></td>
-						<td><%= s.getUpdatedPrice() %></td>
-					</tr>
+						<tr id="service-id:<%= s.getId() %>" onclick="changeSelectedRow(this.id)">
+							<td><%= s.getDescription() %></td>
+							<td data-typeid="<%= s.getType().getId() %>"><%= s.getType().getDescription() %></td>
+							<td><%= s.getUpdatedPrice() %></td>
+						</tr>
 <%	}	%>
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			</div>
 			<div class="buttons-div">
 				<button id="new-service">Nuevo servicio</button>
 				<button id="update-service">Modificar</button>

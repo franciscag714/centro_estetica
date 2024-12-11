@@ -6,7 +6,7 @@
 <body>
 	<jsp:include page="common/topbar.jsp"/>
 	
-    <div class="container-fluid flex-container-column" id="div-login">
+    <div class="container-fluid" id="div-login">
     	<h3>Iniciar sesión</h3>
 		<form action="#" method="post" id="login-form">
 			<fieldset>

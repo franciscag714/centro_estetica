@@ -172,8 +172,7 @@ public class AppointmentData
 					+ "	SET client_id = ?"
 					+ "	WHERE id = ?"
 					+ "		AND client_id IS NULL"
-					+ "		AND date_time > NOW()"
-					+ "	ORDER BY date_time;");
+					+ "		AND date_time > NOW();");
 			
 			pstmt.setInt(1, appointment.getClient().getId());
 			pstmt.setInt(2, appointment.getId());
@@ -186,6 +185,7 @@ public class AppointmentData
 			pstmt = cn.prepareStatement(""
 					+ "	SELECT cli.firstname, cli.lastname, cli.email"
 					+ "		, emp.firstname, emp.lastname"
+					+ "		, app.date_time"
 					+ "	FROM appointments app"
 					+ "	INNER JOIN clients cli"
 					+ "		ON cli.id = app.client_id"
@@ -207,6 +207,8 @@ public class AppointmentData
 				e.setFirstname(rs.getString(4));
 				e.setLastname(rs.getString(5));
 				appointment.setEmployee(e);
+				
+				appointment.setDateTime(rs.getObject(6, LocalDateTime.class));
 				
 				cn.commit();
 				return appointment;

@@ -5,6 +5,6 @@
 
 <body>
 	<jsp:include page="common/topbar.jsp"/>
-	<img src="resources/error-404.jpg" style="display: block; margin: 0 auto; height: 80vh;">
+	<img src="resources/error-404.jpg" style="width:100%; height:auto; max-height:80vh; object-fit:contain;">
 </body>
 </html>

@@ -21,25 +21,28 @@
 	
 	<div class="container-fluid main-container">
 		<jsp:include page="../common/sidebar.jsp"/>
-		<div style="width:50%">
-			<table>
-				<thead>
-					<tr>
-						<th scope="col">Fecha y hora</th>
-						<th scope="col">Empleado</th>
-						<th scope="col">Cliente</th>
-					</tr>
-				</thead>
-				<tbody>
-				<% for (Appointment a: appointments){ %>
-					<tr id="appointment-id:<%= a.getId() %>" data-ismodifiable="<%= a.isModifiable() %>" onclick="changeSelectedRow(this.id)">
-						<td><%= a.getFormattedDateTime() %></td>
-						<td data-employeeid=<%= a.getEmployee().getId() %> ><%= a.getEmployee().getFullname() %></td>
-						<td data-clientid=<%= a.getClient().getId() %> ><%= a.getClient().getFullname() != null ? a.getClient().getFullname() : "--disponible--"%></td>
-					</tr>
-				<% } %>
-				</tbody>
-			</table>
+		
+		<div class="content-div" style="width:50%;">
+			<div class="table-div">
+				<table>
+					<thead>
+						<tr>
+							<th scope="col">Fecha y hora</th>
+							<th scope="col">Empleado</th>
+							<th scope="col">Cliente</th>
+						</tr>
+					</thead>
+					<tbody>
+					<% for (Appointment a: appointments){ %>
+						<tr id="appointment-id:<%= a.getId() %>" data-ismodifiable="<%= a.isModifiable() %>" onclick="changeSelectedRow(this.id)">
+							<td><%= a.getFormattedDateTime() %></td>
+							<td data-employeeid=<%= a.getEmployee().getId() %> ><%= a.getEmployee().getFullname() %></td>
+							<td data-clientid=<%= a.getClient().getId() %> ><%= a.getClient().getFullname() != null ? a.getClient().getFullname() : "--disponible--"%></td>
+						</tr>
+					<% } %>
+					</tbody>
+				</table>
+			</div>
 			<div class="buttons-div">
 				<button id="new-appointment">Nuevo Turno</button>
 				<button id="update-appointment">Modificar</button>

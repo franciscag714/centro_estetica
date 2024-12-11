@@ -1,5 +1,16 @@
 @charset "UTF-8";
 
+:root {
+  --topbar-height: calc(
+    90px - 2 * var(--pico-nav-link-spacing-vertical) + 2 * 15px
+  );
+  --sidebar-btn-height: 0px;
+  --pico-font-size: 108%;
+  --pico-spacing: 0.8rem;
+  --pico-form-element-spacing-vertical: 0.5rem;
+  --pico-form-element-spacing-horizontal: 0.75rem;
+}
+
 body {
   min-height: 100vh;
   overflow-x: hidden;
@@ -39,7 +50,6 @@ body {
 #show-sidebar-btn {
   display: none;
   width: 100%;
-  /*background-color: #f4a6c3;*/
 }
 
 #sidebar {
@@ -55,11 +65,22 @@ body {
   padding: 15px;
 }
 
+/* topbar and sidebar*/
+nav {
+  background-color: #e5e2e1;
+}
+
+nav .selected {
+  background-color: #f4a6c3;
+  border-radius: 5px;
+}
+
+/* screen sizes */
 @media (600px < width < 800px) {
   #sidebar {
     width: 25%;
   }
-  .main-container > div:first-of-type {
+  .content-div {
     width: auto !important;
     flex: 1;
     overflow-x: auto;
@@ -77,33 +98,36 @@ body {
   #show-sidebar-btn {
     display: block;
   }
-  .main-container > div:first-of-type {
+  .content-div {
     width: 100% !important;
+  }
+  :root {
+    --sidebar-btn-height: calc(
+      var(--pico-line-height) * 1rem + 2 * var(--pico-border-width) + 2 *
+        var(--pico-form-element-spacing-vertical)
+    );
   }
 }
 
-nav {
-  background-color: #e5e2e1;
-}
-
-nav .selected {
-  background-color: #f4a6c3;
-  border-radius: 5px;
-}
-
 /* pages */
-td:hover {
-  cursor: pointer;
-}
-
-.flex-container-column {
+.content-div {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  max-height: calc(100vh - var(--topbar-height) - var(--sidebar-btn-height));
 }
 
-.deleteBtn {
-  background-color: red;
+.table-div {
+  overflow: auto;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+td:hover {
+  cursor: pointer;
 }
 
 .selected-row {
@@ -112,20 +136,30 @@ td:hover {
 
 .buttons-div {
   text-align: right;
-  margin-right: 25px;
+  margin: 25px 25px 25px 0px;
 }
 
-.modal footer {
-  display: flex;
-  margin-left: 100px;
-  justify-content: space-around;
-  margin-right: 100px;
-}
-
+/* modal */
+.modal h2,
 .modal p {
   text-align: center;
 }
 
-.modal h2 {
-  text-align: center;
+.modal footer {
+  display: flex;
+  justify-content: center;
+  gap: 10vw;
+  margin-top: var(--pico-spacing);
+}
+
+@media (width >= 450px) {
+  dialog article {
+    max-width: 450px;
+  }
+}
+
+@media (width >= 768px) {
+  dialog article {
+    max-width: 550px;
+  }
 }

@@ -5,12 +5,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="../common/head.jsp" %>
 
-<%= generateHead(true, null, null) %>
+<%= generateHead(true, null, "<link rel='stylesheet' type='text/css' href='styles/attentions-crud.css'>") %>
 <%
+	int selectedId = (int) request.getAttribute("selectedId");
+	
 	@SuppressWarnings("unchecked")
 	LinkedList<Appointment> appointments = (LinkedList<Appointment>) request.getAttribute("appointmentsList");
+	
 	@SuppressWarnings("unchecked")
 	LinkedList<Service> services = (LinkedList<Service>) request.getAttribute("servicesList");
+	
+	@SuppressWarnings("unchecked")
+	LinkedList<Attention> attentions = (LinkedList<Attention>) request.getAttribute("attentionsList");
 %>
 
 <body>
@@ -18,46 +24,71 @@
 	
 	<div class="container-fluid main-container">
 		<jsp:include page="../common/sidebar.jsp"/>
-					
-		<div style="width: 65%; margin: 10px;">
-			<table style="width: 100%; border-collapse: collapse;">
-				<thead>
-					<tr>
-						<th scope="col">Fecha y hora</th>
-						<th scope="col">Empleado</th>
-						<th scope="col">Cliente</th>
-						<th scope="col">Ingresos</th>
-					</tr>
-				</thead>
-				<tbody>
-<% 	for (Appointment a : appointments){	%>
-		
-					<tr id="appointment-id:<%= a.getId() %>" onclick="changeSelAppointment(<%= a.getId() %>)">
-						<td><%= a.getFormattedDateTime() %></td>
-						<td><%= a.getEmployee().getFullname() %></td>
-						<td><%= a.getClient().getFullname() %></td>
-						<td><%= a.getTotalIncome() %></td>
-					</tr>
+		<div class="content-div">
+			<div id="appointments-div" class="table-div">
+				<table>
+					<thead>
+						<tr>
+							<th scope="col">Fecha y hora</th>
+							<th scope="col">Empleado</th>
+							<th scope="col">Cliente</th>
+							<th scope="col">Ingresos</th>
+						</tr>
+					</thead>
+					<tbody>
+<% 	for (Appointment a : appointments) {	%>
+						<tr id="appointment-id:<%= a.getId() %>" onclick="changeSelAppointment(<%= a.getId() %>)">
+							<td><%= a.getFormattedDateTime() %></td>
+							<td><%= a.getEmployee().getFullname() %></td>
+							<td><%= a.getClient().getFullname() %></td>
+							<td><%= a.getTotalIncome() %></td>
+						</tr>
 <%	}	%>
-				</tbody>	
-			</table>
-		</div>
-		
-		<div style="width: 35%; margin: 10px; border-left: 1px solid #ccc;">
-			<p id="attentions-message" style="text-align: center; margin-top: 10px;">Seleccione un turno para ver los servicios brindados.</p><!-- poner mensaje de que no hay servicios también y ocultar tabla -->
+					</tbody>	
+				</table>
+			</div>
 			
-			<table id="attentions-table" style="display: none; width: 100%; border-collapse: collapse;">
-				<thead>
-					<tr>
-						<th scope="col">Servicio</th>
-						<th scope="col">Precio</th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
-			<div id="attentions-actions" style="display: none;">
-				<button id="create-attention">Nueva atención</button>
-				<button id="delete-attention">Eliminar</button>
+			<div id="attentions-div">
+				<div class="table-div">
+					<table id="attentions-table" data-selected-appointment=<%= selectedId %>>
+						<thead>
+							<tr>
+								<th scope="col">Servicio</th>
+								<th scope="col">Precio</th>
+							</tr>
+						</thead>
+						<tbody>
+<%
+if (attentions != null) {
+ 	for (Attention a : attentions) {	%>
+							<tr id="service-id:<%= a.getService().getId() %>">
+								<td><%= a.getService().getDescription() %></td>
+								<td><%= a.getFormatedPrice() %></td>
+							</tr>
+<%
+	}
+}
+%>
+						</tbody>
+					</table>
+<%
+if (attentions == null) {	%>
+					<p id="attentions-message">Seleccione un turno para ver los servicios brindados.</p>
+<%
+} else if (attentions.isEmpty()) {	%>
+					<p id="attentions-message">No se brindó ninguna atención.</p>
+<%
+} else {	%>
+					<p id="attentions-message" style="display:none;"></p>
+<%
+}
+%>
+				</div>
+				
+				<div id="attentions-actions" <%= attentions == null ? "style='display:none;'" : "" %>>
+					<button id="create-attention">Nueva atención</button>
+					<button id="delete-attention" <%= attentions != null && attentions.isEmpty() ? "style='display:none;'" : "" %>>Eliminar</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -86,8 +117,6 @@
 					</option>
 <%	}	%>
 				</select>
-
-				
 				
 				<footer>
 					<button type="button" class="secondary" onclick="closeModal('create-attention-modal')">Cancelar</button>

@@ -14,8 +14,9 @@
 	
 	<div class="container-fluid main-container">
 		<jsp:include page="../common/sidebar.jsp"/>
-		<div style="width:85%;">
-			<div style="overflow-x:auto;">
+		
+		<div class="content-div" style="width:85%;">
+			<div class="table-div">
 				<table>
 					<thead>
 						<tr>

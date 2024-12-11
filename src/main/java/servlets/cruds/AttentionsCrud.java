@@ -45,6 +45,17 @@ public class AttentionsCrud extends HttpServlet {
 		LinkedList<Service> services = serviceLogic.list();
 		request.setAttribute("servicesList", services);
 
+		if (request.getAttribute("selectedId") == null)
+			request.setAttribute("selectedId", 0);
+		else {
+			Appointment app = new Appointment();
+			app.setId((int) request.getAttribute("selectedId"));
+			AttentionLogic attentionLogic = new AttentionLogic();
+			
+			LinkedList<Attention> attentions = attentionLogic.searchByAppointment(app);
+			request.setAttribute("attentionsList", attentions);
+		}
+		
 		request.getRequestDispatcher("WEB-INF/crud/attentions-crud.jsp").forward(request, response);
 	}
 
@@ -94,10 +105,12 @@ public class AttentionsCrud extends HttpServlet {
 				else
 					request.setAttribute("alert", new Alert("error", "No se ha podido eliminar la atención."));
 			}
+			
+			request.setAttribute("selectedId", app.getId());
+			
 		} catch (Exception e) {
 		}
 
-		// TODO: seleccionar turno automáticamente
 		this.doGet(request, response);
 	}
 }

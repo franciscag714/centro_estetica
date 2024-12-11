@@ -13,23 +13,25 @@
 
 	<div class="container-fluid main-container">
 		<jsp:include page="../common/sidebar.jsp"/>
-		<div style="width:50%">
-			<table>
-				<thead>
-					<tr>
-						<th scope="col">Descripción</th>
-					</tr>
-				</thead>
-				<tbody>
-						
+		
+		<div class="content-div" style="width:50%;">
+			<div class="table-div">
+				<table>
+					<thead>
+						<tr>
+							<th scope="col">Descripción</th>
+						</tr>
+					</thead>
+					<tbody>
+					
 <%	for (ServiceType t : types){ %>
-					<tr id="type-id:<%= t.getId() %>" onclick="changeSelectedRow(this.id)">
-						<td><%= t.getDescription() %></td>
-					</tr>
+						<tr id="type-id:<%= t.getId() %>" onclick="changeSelectedRow(this.id)">
+							<td><%= t.getDescription() %></td>
+						</tr>
 <%	}	%>
-				</tbody>
-			</table>
-			
+					</tbody>
+				</table>
+			</div>
 			<div class="buttons-div">
 				<button id="new-type">Nuevo tipo</button>
 				<button id="update-type">Modificar</button>
