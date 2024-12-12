@@ -87,7 +87,7 @@ if (attentions == null) {	%>
 				
 				<div id="attentions-actions" <%= attentions == null ? "style='display:none;'" : "" %>>
 					<button id="create-attention">Nueva atención</button>
-					<button id="delete-attention" <%= attentions != null && attentions.isEmpty() ? "style='display:none;'" : "" %>>Eliminar</button>
+					<button id="delete-attention" class="secondary-btn" <%= attentions != null && attentions.isEmpty() ? "style='display:none;'" : "" %>>Eliminar</button>
 				</div>
 			</div>
 		</div>
@@ -119,8 +119,8 @@ if (attentions == null) {	%>
 				</select>
 				
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('create-attention-modal')">Cancelar</button>
-					<button type="submit" style="width:auto">Guardar</button>
+					<button type="button" class="secondary-btn" onclick="closeModal('create-attention-modal')">Cancelar</button>
+					<button type="submit">Guardar</button>
 				</footer>
 			</form>
 		</article>
@@ -137,8 +137,8 @@ if (attentions == null) {	%>
 				<input type="hidden" name="service" id="delete-modal-service-id" value="">
 				<p>¿Está seguro que desea eliminar la atención?</p>
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('delete-modal')">Cancelar</button>
-					<button type="submit" class="delete-btn" style="width:auto">Eliminar</button>
+					<button type="button" class="secondary-btn" onclick="closeModal('delete-modal')">Cancelar</button>
+					<button type="submit" class="delete-btn">Eliminar</button>
 				</footer>
 			</form>
 		</article>

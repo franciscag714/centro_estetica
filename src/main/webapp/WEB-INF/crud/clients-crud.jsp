@@ -42,8 +42,8 @@
 			
 			<div class="buttons-div">
 				<button id="new-client">Nuevo Cliente</button>
-				<button id="update-client">Modificar</button>
-				<button id="delete-client">Eliminar</button>
+				<button id="update-client" class="secondary-btn">Modificar</button>
+				<button id="delete-client" class="secondary-btn">Eliminar</button>
 			</div>
 		</div>
 	</div>
@@ -74,8 +74,8 @@
 				<input type="password" name="password" id="password" required minlength="4">
 				
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('client-modal')">Cancelar</button>
-					<button type="submit" style="width:auto">Guardar</button>
+					<button type="button" class="secondary-btn" onclick="closeModal('client-modal')">Cancelar</button>
+					<button type="submit">Guardar</button>
 				</footer>
 			</form>
 		</article>
@@ -91,8 +91,8 @@
 				<input type="hidden" name="id" id="delete-modal-id" value="">
 				<p>¿Está seguro que desea eliminar al cliente?</p>
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('delete-modal')">Cancelar</button>
-					<button type="submit" class="delete-btn" style="width:auto">Eliminar</button>
+					<button type="button" class="secondary-btn" onclick="closeModal('delete-modal')">Cancelar</button>
+					<button type="submit" class="delete-btn">Eliminar</button>
 				</footer>
 			</form>
 		</article>

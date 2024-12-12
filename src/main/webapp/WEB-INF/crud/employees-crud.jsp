@@ -50,8 +50,8 @@
 			
 			<div class="buttons-div">
 				<button id="new-employee">Nuevo empleado</button>
-				<button id="update-employee">Modificar</button>
-				<button id="delete-employee">Eliminar</button>
+				<button id="update-employee" class="secondary-btn">Modificar</button>
+				<button id="delete-employee" class="secondary-btn">Eliminar</button>
 			</div>
 		</div>
 	</div>
@@ -88,8 +88,8 @@
 				</select>
 				
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('employee-modal')">Cancelar</button>
-					<button type="submit" style="width:auto">Guardar</button>
+					<button type="button" class="secondary-btn" onclick="closeModal('employee-modal')">Cancelar</button>
+					<button type="submit">Guardar</button>
 				</footer>
 			</form>
 		</article>
@@ -105,8 +105,8 @@
 				<input type="hidden" name="id" id="delete-modal-id" value="">				
 				<p>¿Esta seguro que desea eliminar al empleado?</p>
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('delete-modal')">Cancelar</button>
-					<button type="submit" class="delete-btn" style="width:auto">Eliminar</button>
+					<button type="button" class="secondary-btn" onclick="closeModal('delete-modal')">Cancelar</button>
+					<button type="submit" class="delete-btn">Eliminar</button>
 				</footer>
 			</form>
 		</article>

@@ -46,8 +46,8 @@
 			</div>
 			<div class="buttons-div">
 				<button id="new-appointment">Nuevo Turno</button>
-				<button id="update-appointment">Modificar</button>
-				<button id="delete-appointment">Eliminar</button>
+				<button id="update-appointment" class="secondary-btn">Modificar</button>
+				<button id="delete-appointment" class="secondary-btn">Eliminar</button>
 			</div>
 		</div>
 	</div>
@@ -84,8 +84,8 @@
 				</select>
 				
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('appointment-modal')">Cancelar</button>
-					<button type="submit" style="width:auto">Guardar</button>
+					<button type="button" class="secondary-btn" onclick="closeModal('appointment-modal')">Cancelar</button>
+					<button type="submit">Guardar</button>
 				</footer>
 			</form>
 		</article>
@@ -101,8 +101,8 @@
 				<input type="hidden" name="id" id="delete-modal-id" value="">
 				<p>¿Está seguro que desea eliminar el turno?</p>
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('delete-modal')">Cancelar</button>
-					<button type="submit" class="delete-btn" style="width:auto">Eliminar</button>
+					<button type="button" class="secondary-btn" onclick="closeModal('delete-modal')">Cancelar</button>
+					<button type="submit" class="delete-btn">Eliminar</button>
 				</footer>
 			</form>
 		</article>

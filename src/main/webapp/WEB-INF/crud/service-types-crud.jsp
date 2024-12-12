@@ -34,8 +34,8 @@
 			</div>
 			<div class="buttons-div">
 				<button id="new-type">Nuevo tipo</button>
-				<button id="update-type">Modificar</button>
-				<button id="delete-type">Eliminar</button>
+				<button id="update-type" class="secondary-btn">Modificar</button>
+				<button id="delete-type" class="secondary-btn">Eliminar</button>
 			</div>
 		</div>
 	</div>
@@ -54,8 +54,8 @@
 				<input type="text" name="description" id="desc" required>
 			
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('type-modal')">Cancelar</button>
-					<button type="submit" style="width:auto">Guardar</button>
+					<button type="button" class="secondary-btn" onclick="closeModal('type-modal')">Cancelar</button>
+					<button type="submit">Guardar</button>
 				</footer>
 			</form>
 		</article>
@@ -71,8 +71,8 @@
 				<input type="hidden" name="id" id="delete-modal-id" value="">
 				<p>¿Está seguro que desea eliminar el tipo de servicio?</p>
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('delete-modal')">Cancelar</button>
-					<button type="submit" class="delete-btn" style="width:auto">Eliminar</button>
+					<button type="button" class="secondary-btn" onclick="closeModal('delete-modal')">Cancelar</button>
+					<button type="submit" class="delete-btn">Eliminar</button>
 				</footer>
 			</form>
 		</article>

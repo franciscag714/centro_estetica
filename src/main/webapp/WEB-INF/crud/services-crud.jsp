@@ -42,8 +42,8 @@
 			</div>
 			<div class="buttons-div">
 				<button id="new-service">Nuevo servicio</button>
-				<button id="update-service">Modificar</button>
-				<button id="delete-service">Eliminar</button>
+				<button id="update-service" class="secondary-btn">Modificar</button>
+				<button id="delete-service" class="secondary-btn">Eliminar</button>
 			</div>
 		</div>
 	</div>
@@ -72,8 +72,8 @@
 				<input type="number" name="price" id="price" min="0" step="0.01" required>
 
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('service-modal')">Cancelar</button>
-					<button type="submit" style="width:auto">Guardar</button>
+					<button type="button" class="secondary-btn" onclick="closeModal('service-modal')">Cancelar</button>
+					<button type="submit">Guardar</button>
 				</footer>
 			</form>
 		</article>
@@ -89,8 +89,8 @@
 				<input type="hidden" name="id" id="delete-modal-id" value="">
 				<p>¿Está seguro que desea eliminar el servicio?</p>
 				<footer>
-					<button type="button" class="secondary" onclick="closeModal('delete-modal')">Cancelar</button>
-					<button type="submit" class="delete-btn" style="width:auto">Eliminar</button>
+					<button type="button" class="secondary-btn" onclick="closeModal('delete-modal')">Cancelar</button>
+					<button type="submit" class="delete-btn">Eliminar</button>
 				</footer>
 			</form>
 		</article>

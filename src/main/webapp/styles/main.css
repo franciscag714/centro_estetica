@@ -134,9 +134,38 @@ td:hover {
   --pico-background-color: #b8bdbc;
 }
 
+/* buttons */
 .buttons-div {
   text-align: right;
   margin: 25px 25px 25px 0px;
+}
+
+.secondary-btn {
+  background-color: transparent;
+  border-color: var(--pico-secondary-background);
+  color: var(--pico-secondary-background);
+}
+
+.secondary-btn:hover {
+  background-color: var(--pico-secondary-background);
+  color: var(--pico-secondary-inverse);
+}
+
+.secondary-btn:focus {
+  box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-secondary-focus);
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.delete-btn:focus {
+  box-shadow: 0 0 0 var(--pico-outline-width) #c0392b;
 }
 
 /* modal */
@@ -150,6 +179,10 @@ td:hover {
   justify-content: center;
   gap: 10vw;
   margin-top: var(--pico-spacing);
+}
+
+.modal footer button[type="submit"] {
+  width: auto;
 }
 
 @media (width >= 450px) {
