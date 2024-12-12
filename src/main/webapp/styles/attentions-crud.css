@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+@media (width < 900px) {
+  #appointments-div {
+    width: 100%;
+    max-height: 50%;
+    margin: 5px;
+  }
+  #attentions-div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: 50%;
+    margin: 5px;
+    border-top: 1px solid #ccc;
+  }
+}
+
+@media (width >= 900px) {
+  #appointments-div {
+    width: 65%;
+    margin: 10px;
+  }
+  #attentions-div {
+    width: 35%;
+    margin: 10px;
+    border-left: 1px solid #ccc;
+  }
+  .content-div {
+    flex-direction: row;
+    flex: 1;
+  }
+}
+
+.content-div {
+  height: calc(100vh - var(--topbar-height) - var(--sidebar-btn-height));
+}
+
+#appointments-div table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#attentions-message {
+  text-align: center;
+  color: #4a148c;
+  background-color: #e1bee7;
+  border-radius: 5px;
+  padding: 10px 0 10px 0;
+}
+
+#attentions-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#attentions-actions {
+  display: flex;
+  justify-content: space-evenly;
+}

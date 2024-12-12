@@ -1,0 +1,120 @@
+@charset "UTF-8";
+
+.content-div {
+  height: calc(100vh - var(--topbar-height) - var(--sidebar-btn-height));
+}
+
+#my-appointments-div,
+#available-div {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  padding: 10px;
+  border: 1px solid #f4a6c3;
+  border-radius: 10px;
+}
+
+#book-form {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@media (width < 800px) {
+  #my-appointments-div {
+    width: 100%;
+    max-height: 35%;
+    margin: 10px 0 10px 0;
+  }
+  #available-div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: 65%;
+    margin: 10px 0 10px 0;
+    overflow: hidden;
+  }
+  #open-filters-btn img {
+    height: 35px;
+  }
+  h3 {
+    height: 35px;
+    align-content: center;
+    margin-bottom: 0;
+    border-bottom: 1px solid #f4a6c3;
+  }
+  #available-div h3 span {
+    padding-left: 35px;
+  }
+  [type="button"],
+  [type="reset"],
+  [type="submit"] {
+    margin-bottom: 0;
+  }
+}
+
+@media (width >= 800px) {
+  .content-div {
+    flex-direction: row;
+    flex: 1;
+  }
+  #my-appointments-div {
+    width: 35%;
+    max-width: 400px;
+    max-height: calc(100% - 20px);
+    margin: 10px;
+  }
+  #available-div {
+    width: 65%;
+    max-width: 500px;
+    max-height: calc(100% - 20px);
+    margin: 10px;
+  }
+  #open-filters-btn img {
+    height: 50px;
+  }
+  h3 {
+    height: 50px;
+    align-content: center;
+  }
+  #available-div h3 span {
+    padding-left: 50px;
+  }
+}
+
+#available-div h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#available-div h3 span {
+  flex-grow: 1;
+  text-align: center;
+}
+
+li {
+  list-style-type: none;
+  margin-left: -40px;
+}
+
+/* filters */
+#filters-form {
+  margin: 10px;
+}
+
+#filters-modal h3 {
+  text-align: center;
+  border-bottom: none;
+}
+
+#open-filters-btn {
+  background-color: transparent;
+  padding: 0px;
+  margin: 0px;
+  border-color: transparent;
+}
+
+#open-filters-btn:hover {
+  background-color: #ffddc1;
+}
