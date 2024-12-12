@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
+import java.util.Map;
 
 import entities.Alert;
 import entities.Appointment;
@@ -49,8 +50,12 @@ public class BookAppointment extends HttpServlet {
 			if (request.getParameter("end-time") != null && !request.getParameter("end-time").isEmpty())
 				filter.setEndTime(LocalTime.parse(request.getParameter("end-time")));
 
-			LinkedList<Appointment> appointments = appointmentLogic.listAvailable(filter);
+			Map<String, LinkedList<Appointment>> appointments = appointmentLogic.listAvailable(filter);
 			request.setAttribute("availableAppointments", appointments);
+
+			LinkedList<Appointment> clientAppointments = appointmentLogic.searchByClient((Client) user);
+			request.setAttribute("clientAppointments", clientAppointments);
+
 		} catch (Exception e) {
 		}
 
@@ -70,20 +75,39 @@ public class BookAppointment extends HttpServlet {
 		// user is Client
 		AppointmentLogic appointmentLogic = new AppointmentLogic();
 		Appointment appointment = new Appointment();
-		Alert alert = new Alert("error", "No se pudo reservar el turno.");
 
+		String action = request.getParameter("action");
 		try {
-			appointment.setId(Integer.parseInt(request.getParameter("appointment-id")));
-			appointment.setClient((Client) request.getSession().getAttribute("user"));
-			String imagePath = getServletContext().getRealPath("/resources/CE.jpg");
-			
-			appointment = appointmentLogic.book(appointment, imagePath);
-			if (appointment != null)
-				alert = new Alert("success", "Turno reservado con éxito."); // TODO mostrar turnos reservados para poder cancelar
+			if (action.equals("book")) {
+				Alert alert = new Alert("error", "No se pudo reservar el turno.");
+
+				appointment.setId(Integer.parseInt(request.getParameter("appointment-id")));
+				appointment.setClient((Client) request.getSession().getAttribute("user"));
+				String imagePath = getServletContext().getRealPath("/resources/CE.jpg");
+
+				appointment = appointmentLogic.book(appointment, imagePath);
+				if (appointment != null)
+					alert = new Alert("success", "Turno reservado con éxito.");
+
+				request.setAttribute("alert", alert);
+
+			} else if (action.equals("unbook")) {
+				Alert alert = new Alert("error", "No se pudo cancelar el turno.");
+
+				appointment.setId(Integer.parseInt(request.getParameter("appointment-id")));
+				appointment.setClient((Client) request.getSession().getAttribute("user"));
+				String imagePath = getServletContext().getRealPath("/resources/CE.jpg");
+
+				appointment = appointmentLogic.unbook(appointment, imagePath);
+				if (appointment != null)
+					alert = new Alert("success", "Turno cancelado con éxito.");
+
+				request.setAttribute("alert", alert);
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		request.setAttribute("alert", alert);
 		this.doGet(request, response);
 	}
 }

@@ -30,8 +30,8 @@ body {
 }
 
 #home-btn a img {
-  width: 90px;
   height: 90px;
+  object-fit: contain;
 }
 
 .tob-bar-item a {

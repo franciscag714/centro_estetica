@@ -106,12 +106,15 @@ public class AppointmentData
 		try {
 			cn = db.getConnection();
 			pstmt = cn.prepareStatement(""
-					+ "SELECT app.id, app.date_time "
-					+ "FROM appointments app "
-					+ "WHERE app.client_id IS NULL "
-					+ "AND app.date_time > NOW() "
-					+ filter
-					+ "ORDER BY app.date_time;");
+					+ "	SELECT app.id, app.date_time"
+					+ "		, emp.lastname, emp.firstname"
+					+ "	FROM appointments app"
+					+ "	INNER JOIN employees emp"
+					+ "		ON emp.id = app.employee_id"
+					+ "	WHERE app.client_id IS NULL"
+					+ "	AND app.date_time > NOW()"
+					+ 	filter
+					+ "	ORDER BY app.date_time;");
 			
 			int i = 1;
 			if (appointFilter.getDate() != null)
@@ -129,6 +132,12 @@ public class AppointmentData
 				Appointment appointment = new Appointment();
 				appointment.setId(rs.getInt(1));
 				appointment.setDateTime(rs.getObject(2, LocalDateTime.class));
+				
+				Employee employee = new Employee();
+				employee.setLastname(rs.getString(3));
+				employee.setFirstname(rs.getString(4));
+				appointment.setEmployee(employee);
+				
 				appointments.add(appointment);
 			}
 			return appointments;
@@ -231,6 +240,62 @@ public class AppointmentData
 			try {
 				if (cn != null)
 					cn.setAutoCommit(true);
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				db.releaseConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * This method cancels an appointment. To cancel, the clientId in the database must be the user id.
+	 * Returns the given parameter if the appointment was cancelled, otherwise returns null.
+	 * @param appointment It must have id and clientId.
+	 */
+	public Appointment unbook(Appointment appointment) {
+		DbConnector db = new DbConnector();
+		Connection cn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			cn = db.getConnection();
+			pstmt = cn.prepareStatement(""
+					+ "	UPDATE appointments"
+					+ "	SET client_id = NULL"
+					+ "	WHERE id = ?"
+					+ "		AND client_id = ?"
+					+ "		AND date_time > NOW();");
+			
+			pstmt.setInt(1, appointment.getId());
+			pstmt.setInt(2, appointment.getClient().getId());
+			
+			if (pstmt.executeUpdate() == 0)
+				return null;
+			
+			pstmt = cn.prepareStatement(""
+					+ "	SELECT date_time"
+					+ "	FROM appointments"
+					+ "	WHERE id = ?;");
+			
+			pstmt.setInt(1, appointment.getId());
+			rs = pstmt.executeQuery();
+			
+			if (rs.next())
+				appointment.setDateTime(rs.getObject(1, LocalDateTime.class));
+			
+			return appointment;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally {
+			try {
 				if (rs != null)
 					rs.close();
 				if (pstmt != null)
@@ -370,6 +435,56 @@ public class AppointmentData
 			}
 			
 			return null;
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				db.releaseConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * This method returns all client appointments with date_time greater than the previous day.
+	 * Appointments only have id and date_time.
+	 * @param client It must have an id.
+	 */
+	public LinkedList<Appointment> searchByClient(Client client) {
+		DbConnector db = new DbConnector();
+		Connection cn;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		LinkedList<Appointment> appointments = new LinkedList<>();
+		
+		try {
+			cn = db.getConnection();
+			pstmt = cn.prepareStatement(""
+					+ "	SELECT app.id, app.date_time"
+					+ "	FROM appointments app"
+					+ "	WHERE app.client_id = ?"
+					+ "		AND app.date_time >= CURDATE() - INTERVAL 1 DAY"
+					+ "	ORDER BY app.date_time ASC;");
+			
+			pstmt.setInt(1, client.getId());
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				Appointment app = new Appointment();
+				app.setId(rs.getInt(1));
+				app.setDateTime(rs.getObject(2, LocalDateTime.class));
+				appointments.add(app);
+			}
+			return appointments;
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

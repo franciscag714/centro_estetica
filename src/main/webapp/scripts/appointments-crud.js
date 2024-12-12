@@ -7,6 +7,7 @@ const deleteModal = document.getElementById("delete-modal");
 const newAppointmentBtn = document.getElementById("new-appointment");
 const updateBtn = document.getElementById("update-appointment");
 const deleteBtn = document.getElementById("delete-appointment");
+const dateTimeInput = document.getElementById("date-time");
 
 function changeSelectedRow(id) {
   if (selectedId)
@@ -106,19 +107,15 @@ deleteBtn.addEventListener("click", () => {
   }
 });
 
-appointmentModal.addEventListener("change", function () {
-  const selectedDateTime = new Date(
-    appointmentModal.querySelector("[name='date-time']").value
-  );
+dateTimeInput.addEventListener("change", function () {
+  const selectedDateTime = new Date(dateTimeInput.value);
   const currentDateTime = new Date();
 
-  if (selectedDateTime.getTime() < currentDateTime.getTime()) {
-    document
-      .getElementById("date-time")
-      .setCustomValidity("Ingrese una fecha y una hora posteriores a ahora.");
-  } else {
-    document.getElementById("date-time").setCustomValidity("");
-  }
+  if (selectedDateTime.getTime() < currentDateTime.getTime())
+    dateTimeInput.setCustomValidity(
+      "Ingrese una fecha y una hora posteriores a ahora."
+    );
+  else dateTimeInput.setCustomValidity("");
 });
 
 function formatForDateTimeLocal(dateStr) {

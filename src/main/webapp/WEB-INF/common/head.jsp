@@ -7,7 +7,7 @@ String generateHead(Boolean includeCss, String title, String additionalLines)
 	
 	StringBuilder head = new StringBuilder();
 	head.append("<!DOCTYPE html>");
-	head.append("<html>");
+	head.append("<html lang='es'>");
 	head.append("<head>");
 	head.append("<meta charset='UTF-8'>");
 	head.append("<meta name='viewport' content='width=device-width, initial-scale=1.0'>");

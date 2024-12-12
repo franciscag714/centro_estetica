@@ -13,7 +13,7 @@
 		<jsp:include page="../common/sidebar.jsp"/>
 		
 		<div id="main-div">
-			<h1 style="text-align: center;">Mis Datos</h1>
+			<h3 style="text-align:center;">Mis Datos</h3>
 			<form id="client-data-form" method="POST" action="mis-datos">
 				
 				<div class="form-group">

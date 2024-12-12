@@ -51,4 +51,22 @@ public class Appointment {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         return this.getDateTime().format(formatter);
 	}
+	
+	@JsonIgnore
+	public String getFormattedDate() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE dd 'de' MMMM 'de' yyyy");
+        return this.getDateTime().format(formatter);
+	}
+	
+	@JsonIgnore
+	public String getFullFormattedDateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE dd 'de' MMMM 'de' yyyy - HH:mm 'hs'");
+        return this.getDateTime().format(formatter);
+	}
+	
+	@JsonIgnore
+	public String getFormattedTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm 'hs'");
+        return this.getDateTime().format(formatter);
+	}
 }
