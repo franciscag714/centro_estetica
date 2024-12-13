@@ -3,6 +3,8 @@ package servlets.cruds;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import entities.Alert;
 import entities.Appointment;
 import entities.Attention;
@@ -17,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import logic.AppointmentLogic;
 import logic.AttentionLogic;
 import logic.ServiceLogic;
+import utils.QrGenerator;
 
 public class AttentionsCrud extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -106,5 +109,40 @@ public class AttentionsCrud extends HttpServlet {
 		}
 
 		this.doGet(request, response);
+	}
+
+	@Override
+	protected void doPut(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Person user = (Person) request.getSession().getAttribute("user");
+
+		if (user == null || user instanceof Client) {
+			response.sendRedirect("index");
+			return;
+		}
+
+		// user is Employee
+		StringBuilder stringBuilder = new StringBuilder();
+		String line;
+		while ((line = request.getReader().readLine()) != null)
+			stringBuilder.append(line);
+
+		String requestBody = stringBuilder.toString();
+		ObjectMapper objectMapper = new ObjectMapper();
+		Appointment appointment = objectMapper.readValue(requestBody, Appointment.class);
+
+		AppointmentLogic logic = new AppointmentLogic();
+		appointment = logic.calculateTotalIncome(appointment);
+
+		if (appointment != null) {
+			QrGenerator qr = new QrGenerator();
+			Boolean generated = qr.generate(appointment);
+
+			if (generated)
+				response.setStatus(HttpServletResponse.SC_OK);
+			else
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		} else
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 }

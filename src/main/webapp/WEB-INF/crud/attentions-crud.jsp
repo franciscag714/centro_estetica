@@ -84,9 +84,9 @@ if (attentions == null) {	%>
 }
 %>
 				</div>
-				
 				<div id="attentions-actions" <%= attentions == null ? "style='display:none;'" : "" %>>
 					<button id="create-attention">Nueva atención</button>
+					<button id="qr-btn" onclick="generateQr()" class="secondary-btn" <%= attentions != null && attentions.isEmpty() ? "style='display:none;'" : "" %>>QR</button>
 					<button id="delete-attention" class="secondary-btn" <%= attentions != null && attentions.isEmpty() ? "style='display:none;'" : "" %>>Eliminar</button>
 				</div>
 			</div>

@@ -36,6 +36,10 @@ public class Appointment {
 		Locale locale = Locale.forLanguageTag("es-AR");
 		return NumberFormat.getCurrencyInstance(locale).format(this.totalIncome);
 	}
+	@JsonIgnore
+	public double getDoubleTotalIncome() {
+		return this.totalIncome;
+	}
 	public void setTotalIncome(double totalIncome) { this.totalIncome = totalIncome; }
 	
 	@JsonIgnore
