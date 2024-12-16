@@ -637,4 +637,45 @@ public class AppointmentData
 			}
 		}
 	}
+
+	public Appointment calculateTotalIncome(Appointment a) {
+		DbConnector db = new DbConnector();
+		Connection cn;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			cn = db.getConnection();
+			pstmt = cn.prepareStatement(""
+					+ "	SELECT SUM(price)"
+					+ "	FROM attentions"
+					+ "	WHERE appointment_id = ?;");
+			
+
+			pstmt.setInt(1, a.getId());
+
+			rs = pstmt.executeQuery();
+			
+			if (rs.next() && rs.getInt(1) != 0) {
+				a.setTotalIncome(rs.getInt(1));
+				return a;
+			}
+			
+			return null;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				db.releaseConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

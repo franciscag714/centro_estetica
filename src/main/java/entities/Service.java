@@ -30,4 +30,8 @@ public class Service {
 		Locale locale = Locale.forLanguageTag("es-AR");
 		return NumberFormat.getCurrencyInstance(locale).format(this.getUpdatedPrice());
 	}
+	
+	public void trimFields() {
+		this.description = this.description.trim();
+	}
 }

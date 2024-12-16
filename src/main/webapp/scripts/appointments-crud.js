@@ -1,5 +1,4 @@
 const html = document.getElementsByTagName("html")[0];
-let selectedId;
 
 const appointmentModal = document.getElementById("appointment-modal");
 const deleteModal = document.getElementById("delete-modal");
@@ -9,6 +8,7 @@ const updateBtn = document.getElementById("update-appointment");
 const deleteBtn = document.getElementById("delete-appointment");
 const dateTimeInput = document.getElementById("date-time");
 
+// @Override
 function changeSelectedRow(id) {
   if (selectedId)
     document
@@ -22,21 +22,6 @@ function changeSelectedRow(id) {
   else hideButtons();
 
   selectedId = id.replace("appointment-id:", "");
-}
-
-function removeClass(className) {
-  html.classList.remove(className);
-}
-
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  html.classList.add("modal-is-closing");
-
-  setTimeout(() => {
-    modal.close();
-    html.classList.remove("modal-is-closing");
-    html.classList.remove("modal-is-open");
-  }, 400);
 }
 
 newAppointmentBtn.addEventListener("click", () => {

@@ -17,7 +17,8 @@ public class ServiceLogic {
 	}
 
 	public Service create(Service service) {
-
+		service.trimFields();
+		
 		if (service.getDescription().isBlank() || service.getUpdatedPrice() < 0)
 			return null;
 
@@ -25,6 +26,8 @@ public class ServiceLogic {
 	}
 
 	public Service update(Service service) {
+		service.trimFields();
+		
 		if (service.getDescription().isBlank() || service.getUpdatedPrice() < 0)
 			return null;
 

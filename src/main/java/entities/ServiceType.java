@@ -15,4 +15,8 @@ public class ServiceType {
 	
 	public LinkedList<Service> getServices() { return services; }
 	public void setServices(LinkedList<Service> services) {	this.services = services; }
+	
+	public void trimFields() {
+		this.description = this.description.trim();
+	}
 }

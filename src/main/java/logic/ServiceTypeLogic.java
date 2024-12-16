@@ -22,6 +22,8 @@ public class ServiceTypeLogic
 	}
 	
 	public ServiceType create(ServiceType servType) {
+		servType.trimFields();
+		
 		if (servType.getDescription().isBlank())
 			return null;
 		
@@ -29,6 +31,8 @@ public class ServiceTypeLogic
 	}
 	
 	public ServiceType update(ServiceType servType) {
+		servType.trimFields();
+		
 		if (servType.getDescription().isBlank())
 			return null;
 		

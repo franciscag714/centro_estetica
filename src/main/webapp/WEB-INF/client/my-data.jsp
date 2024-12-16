@@ -18,20 +18,20 @@
 				
 				<div class="form-group">
 					<label for="firstname">Nombre</label>
-					<input type="text" name="firstname" id="firstname" value="<%= client.getFirstname() %>" oninput="enableUpdateButton()">
+					<input type="text" name="firstname" id="firstname" value="<%= client.getFirstname() %>" oninput="enableUpdateButton()" required>
 				
 					<label for="lastname" style="margin-left:15px; margin-right:5px;">Apellido</label>
-					<input type="text" name="lastname" id="lastname" value="<%= client.getLastname() %>" oninput="enableUpdateButton()">
+					<input type="text" name="lastname" id="lastname" value="<%= client.getLastname() %>" oninput="enableUpdateButton()" required>
 				</div>
 				
 				<div class="form-group">
 					<label for="email">Correo&nbsp;electrónico</label>
-					<input type="email" name="email" id="email" value="<%= client.getEmail() %>" oninput="enableUpdateButton()">
+					<input type="email" name="email" id="email" value="<%= client.getEmail() %>" oninput="enableUpdateButton()" required>
 				</div>
 				
 				<div class="form-group">
 					<label for="user">Usuario</label>
-					<input type="text" name="user" id="user" value="<%= client.getUser() %>" oninput="enableUpdateButton()">
+					<input type="text" name="user" id="user" value="<%= client.getUser() %>" oninput="enableUpdateButton()" required>
 					
 					<label for="password">Constraseña</label>
 					<div id="password-div" role="group">

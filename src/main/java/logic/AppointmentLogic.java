@@ -168,4 +168,8 @@ public class AppointmentLogic {
 	public LinkedList<Appointment> searchByClient(Client c) {
 		return appointmentData.searchByClient(c);
 	}
+
+	public Appointment calculateTotalIncome(Appointment a) {
+		return appointmentData.calculateTotalIncome(a);
+	}
 }

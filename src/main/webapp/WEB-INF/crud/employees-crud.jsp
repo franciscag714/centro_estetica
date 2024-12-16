@@ -113,6 +113,7 @@
 	</dialog>
 	
 	<jsp:include page="../common/show-alert.jsp"/>
+	<script src="scripts/utils.js"></script>
 	<script src="scripts/sidebar.js"></script>
 	<script src="scripts/employees-crud.js"></script>
 </body>

@@ -17,6 +17,8 @@ public class EmployeeLogic {
 	}
 
 	public Employee create(Employee e) {
+		e.trimFields();
+		
 		if (e.getFirstname().isBlank() || e.getLastname().isBlank() || e.getEmail().isBlank() || e.getUser().isBlank()
 				|| e.getPassword().trim().length() < 4)
 			return null;
@@ -25,10 +27,12 @@ public class EmployeeLogic {
 	}
 
 	public Employee update(Employee e) {
+		e.trimFields();
+		
 		if (e.getFirstname().isBlank() || e.getLastname().isBlank() || e.getEmail().isBlank() || e.getUser().isBlank())
 			return null;
 
-		String password = e.getPassword().trim();
+		String password = e.getPassword();
 
 		if (!password.isEmpty() && password.length() < 4)
 			return null;

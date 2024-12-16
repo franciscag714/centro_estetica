@@ -18,6 +18,7 @@ const createAttModal = document.getElementById("create-attention-modal");
 const deleteModal = document.getElementById("delete-modal");
 
 const createAttBtn = document.getElementById("create-attention");
+const qrBtn = document.getElementById("qr-btn");
 const deleteBtn = document.getElementById("delete-attention");
 
 function changeSelAppointment(appointmentId) {
@@ -86,10 +87,12 @@ async function loadAttentionsTable() {
 
         tableBody.appendChild(row);
 
+        qrBtn.style.display = "";
         deleteBtn.style.display = "";
         attentionsMessage.style.display = "none";
       });
     } else {
+      qrBtn.style.display = "none";
       deleteBtn.style.display = "none";
       attentionsMessage.textContent = "No se brindó ninguna atención.";
       attentionsMessage.style.display = "";
@@ -115,21 +118,6 @@ function changeSelAttention(serviceId) {
     .classList.add("selected-row");
 
   selectedAppointment.selectedServiceId = serviceId;
-}
-
-function removeClass(className) {
-  html.classList.remove(className);
-}
-
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  html.classList.add("modal-is-closing");
-
-  setTimeout(() => {
-    modal.close();
-    html.classList.remove("modal-is-closing");
-    html.classList.remove("modal-is-open");
-  }, 400);
 }
 
 createAttBtn.addEventListener("click", () => {
@@ -203,3 +191,28 @@ document.getElementById("service").addEventListener("change", (event) => {
     "price"
   ).innerHTML = `Precio: <b>${selectedService.getAttribute("data-price")}</b>`;
 });
+
+function generateQr() {
+  url = `${baseUrl}/atenciones`;
+  fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id: selectedAppointment.appointmentId }),
+  }).then((response) => {
+    if (response.ok) {
+      Swal.fire({
+        title: "QR listo!",
+        icon: "success",
+        confirmButtonColor: "#f0ad4e",
+      });
+    } else {
+      Swal.fire({
+        title: "No se pudo generar el QR.",
+        icon: "error",
+        confirmButtonColor: "#f0ad4e",
+      });
+    }
+  });
+}
