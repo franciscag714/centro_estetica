@@ -58,8 +58,8 @@
 				<input type="hidden" name="action" id="action-modal" value="">
 				<input type="hidden" name="id" id="service-id-modal" value="">
 				
-				<label for="desc">Descripción</label>
-				<input type="text" name="description" id="desc" required>
+				<label for="description">Descripción</label>
+				<input type="text" name="description" id="description" required>
 				
 				<label for="type">Tipo de servicio</label>
 				<select id="type" name="type" required>
@@ -97,6 +97,7 @@
 	</dialog>
 	
 	<jsp:include page="../common/show-alert.jsp"/>
+	<script src="scripts/utils.js"></script>
 	<script src="scripts/sidebar.js"></script>
 	<script src="scripts/services-crud.js"></script>
 </body>

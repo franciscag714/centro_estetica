@@ -18,6 +18,8 @@ public class ClientLogic {
 	}
 
 	public Client create(Client c) {
+		c.trimFields();
+		
 		if (c.getFirstname().isBlank() || c.getLastname().isBlank() || c.getEmail().isBlank() || c.getUser().isBlank()
 				|| c.getPassword().trim().length() < 4)
 			return null;
@@ -26,10 +28,12 @@ public class ClientLogic {
 	}
 
 	public Client update(Client c) {
+		c.trimFields();
+		
 		if (c.getFirstname().isBlank() || c.getLastname().isBlank() || c.getEmail().isBlank() || c.getUser().isBlank())
 			return null;
 
-		String password = c.getPassword().trim();
+		String password = c.getPassword();
 
 		if (!password.isEmpty() && password.length() < 4)
 			return null;

@@ -120,21 +120,6 @@ function changeSelAttention(serviceId) {
   selectedAppointment.selectedServiceId = serviceId;
 }
 
-function removeClass(className) {
-  html.classList.remove(className);
-}
-
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  html.classList.add("modal-is-closing");
-
-  setTimeout(() => {
-    modal.close();
-    html.classList.remove("modal-is-closing");
-    html.classList.remove("modal-is-open");
-  }, 400);
-}
-
 createAttBtn.addEventListener("click", () => {
   let openModal = false;
   const serviceSelect = document.getElementById("service");

@@ -1,5 +1,4 @@
 const html = document.getElementsByTagName("html")[0];
-let selectedId;
 
 const typeModal = document.getElementById("type-modal");
 const deleteModal = document.getElementById("delete-modal");
@@ -7,31 +6,6 @@ const deleteModal = document.getElementById("delete-modal");
 const newTypeBtn = document.getElementById("new-type");
 const updateBtn = document.getElementById("update-type");
 const deleteBtn = document.getElementById("delete-type");
-
-function changeSelectedRow(id) {
-  if (selectedId)
-    document
-      .getElementById("type-id:" + selectedId)
-      .classList.remove("selected-row");
-
-  document.getElementById(id).classList.add("selected-row");
-  selectedId = id.replace("type-id:", "");
-}
-
-function removeClass(className) {
-  html.classList.remove(className);
-}
-
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  html.classList.add("modal-is-closing");
-
-  setTimeout(() => {
-    modal.close();
-    html.classList.remove("modal-is-closing");
-    html.classList.remove("modal-is-open");
-  }, 400);
-}
 
 newTypeBtn.addEventListener("click", () => {
   document.getElementById("action-modal").value = "create";
@@ -86,3 +60,7 @@ deleteBtn.addEventListener("click", () => {
     });
   }
 });
+
+document
+  .getElementById("description")
+  .addEventListener("change", () => trimInputValue("description"));

@@ -1,5 +1,4 @@
 const html = document.getElementsByTagName("html")[0];
-let selectedId;
 
 const employeeModal = document.getElementById("employee-modal");
 const deleteModal = document.getElementById("delete-modal");
@@ -7,31 +6,6 @@ const deleteModal = document.getElementById("delete-modal");
 const newEmployeeBtn = document.getElementById("new-employee");
 const updateBtn = document.getElementById("update-employee");
 const deleteBtn = document.getElementById("delete-employee");
-
-function changeSelectedRow(id) {
-  if (selectedId)
-    document
-      .getElementById("employee-id:" + selectedId)
-      .classList.remove("selected-row");
-
-  document.getElementById(id).classList.add("selected-row");
-  selectedId = id.replace("employee-id:", "");
-}
-
-function removeClass(className) {
-  html.classList.remove(className);
-}
-
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  html.classList.add("modal-is-closing");
-
-  setTimeout(() => {
-    modal.close();
-    html.classList.remove("modal-is-closing");
-    html.classList.remove("modal-is-open");
-  }, 400);
-}
 
 newEmployeeBtn.addEventListener("click", () => {
   document.getElementById("action-modal").value = "create";
@@ -46,6 +20,7 @@ newEmployeeBtn.addEventListener("click", () => {
   employeeModal.querySelector("[name='is-admin']").value = "";
 
   document.getElementById("password").required = true;
+  document.getElementById("password").setCustomValidity("");
   document.getElementById("password").value = "";
 
   html.classList.add("modal-is-open");
@@ -75,6 +50,7 @@ updateBtn.addEventListener("click", () => {
 
     document.getElementById("password").required = false;
     document.getElementById("password").placeholder = "Sin modificación";
+    document.getElementById("password").setCustomValidity("");
     document.getElementById("password").value = "";
 
     html.classList.add("modal-is-open");
@@ -104,4 +80,29 @@ deleteBtn.addEventListener("click", () => {
       confirmButtonColor: "#f0ad4e",
     });
   }
+});
+
+document
+  .getElementById("firstname")
+  .addEventListener("change", () => trimInputValue("firstname"));
+document
+  .getElementById("lastname")
+  .addEventListener("change", () => trimInputValue("lastname"));
+document
+  .getElementById("email")
+  .addEventListener("input", () => trimInputValue("email"));
+document
+  .getElementById("user")
+  .addEventListener("change", () => trimInputValue("user"));
+document
+  .getElementById("password")
+  .addEventListener("change", () => trimInputValue("password"));
+
+document.getElementById("password").addEventListener("change", () => {
+  const password = document.getElementById("password");
+  if (password.value !== "" && password.value.length < 4) {
+    password.setCustomValidity(
+      "La contraseña debe tener al menos 4 caracteres."
+    );
+  } else password.setCustomValidity("");
 });

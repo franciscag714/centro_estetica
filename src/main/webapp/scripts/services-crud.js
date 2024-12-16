@@ -1,37 +1,11 @@
-let selectedId;
-
 const html = document.getElementsByTagName("html")[0];
+
 const serviceModal = document.getElementById("service-modal");
 const deleteModal = document.getElementById("delete-modal");
 
 const newBtn = document.getElementById("new-service");
 const updateBtn = document.getElementById("update-service");
 const deleteBtn = document.getElementById("delete-service");
-
-function changeSelectedRow(id) {
-  if (selectedId)
-    document
-      .getElementById("service-id:" + selectedId)
-      .classList.remove("selected-row");
-
-  document.getElementById(id).classList.add("selected-row");
-  selectedId = id.replace("service-id:", "");
-}
-
-function removeClass(className) {
-  html.classList.remove(className);
-}
-
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  html.classList.add("modal-is-closing");
-
-  setTimeout(() => {
-    modal.close();
-    html.classList.remove("modal-is-closing");
-    html.classList.remove("modal-is-open");
-  }, 400);
-}
 
 newBtn.addEventListener("click", () => {
   document.getElementById("action-modal").value = "create";
@@ -93,3 +67,7 @@ deleteBtn.addEventListener("click", () => {
     });
   }
 });
+
+document
+  .getElementById("description")
+  .addEventListener("change", () => trimInputValue("description"));

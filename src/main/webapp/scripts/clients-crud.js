@@ -1,5 +1,4 @@
 const html = document.getElementsByTagName("html")[0];
-let selectedId;
 
 const clientModal = document.getElementById("client-modal");
 const deleteModal = document.getElementById("delete-modal");
@@ -7,31 +6,6 @@ const deleteModal = document.getElementById("delete-modal");
 const newClientBtn = document.getElementById("new-client");
 const updateBtn = document.getElementById("update-client");
 const deleteBtn = document.getElementById("delete-client");
-
-function changeSelectedRow(id) {
-  if (selectedId)
-    document
-      .getElementById("client-id:" + selectedId)
-      .classList.remove("selected-row");
-
-  document.getElementById(id).classList.add("selected-row");
-  selectedId = id.replace("client-id:", "");
-}
-
-function removeClass(className) {
-  html.classList.remove(className);
-}
-
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  html.classList.add("modal-is-closing");
-
-  setTimeout(() => {
-    modal.close();
-    html.classList.remove("modal-is-closing");
-    html.classList.remove("modal-is-open");
-  }, 400);
-}
 
 newClientBtn.addEventListener("click", () => {
   document.getElementById("action-modal").value = "create";
@@ -45,6 +19,7 @@ newClientBtn.addEventListener("click", () => {
 
   document.getElementById("password").required = true;
   document.getElementById("password").value = "";
+  document.getElementById("password").setCustomValidity("");
   document.getElementById("password").minlength = "4";
 
   html.classList.add("modal-is-open");
@@ -71,6 +46,7 @@ updateBtn.addEventListener("click", () => {
 
     document.getElementById("password").required = false;
     document.getElementById("password").placeholder = "Sin modificación";
+    document.getElementById("password").setCustomValidity("");
     document.getElementById("password").value = "";
 
     html.classList.add("modal-is-open");
@@ -100,4 +76,29 @@ deleteBtn.addEventListener("click", () => {
       confirmButtonColor: "#f0ad4e",
     });
   }
+});
+
+document
+  .getElementById("firstname")
+  .addEventListener("change", () => trimInputValue("firstname"));
+document
+  .getElementById("lastname")
+  .addEventListener("change", () => trimInputValue("lastname"));
+document
+  .getElementById("email")
+  .addEventListener("input", () => trimInputValue("email"));
+document
+  .getElementById("user")
+  .addEventListener("change", () => trimInputValue("user"));
+document
+  .getElementById("password")
+  .addEventListener("change", () => trimInputValue("password"));
+
+document.getElementById("password").addEventListener("change", () => {
+  const password = document.getElementById("password");
+  if (password.value !== "" && password.value.length < 4) {
+    password.setCustomValidity(
+      "La contraseña debe tener al menos 4 caracteres."
+    );
+  } else password.setCustomValidity("");
 });

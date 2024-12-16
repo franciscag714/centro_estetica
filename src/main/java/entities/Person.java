@@ -35,4 +35,12 @@ public class Person {
 		
 		return this.getLastname() + ' ' + this.getFirstname();
 	}
+	
+	public void trimFields() {
+		this.user = this.user.trim();
+		this.password = this.password.trim();
+		this.firstname = this.firstname.trim();
+		this.lastname = this.lastname.trim();
+		this.email = this.email.trim();
+	}
 }

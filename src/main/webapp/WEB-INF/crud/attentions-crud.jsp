@@ -24,6 +24,7 @@
 	
 	<div class="container-fluid main-container">
 		<jsp:include page="../common/sidebar.jsp"/>
+		
 		<div class="content-div">
 			<div id="appointments-div" class="table-div">
 				<table>
@@ -145,6 +146,7 @@ if (attentions == null) {	%>
 	</dialog>
 	
 	<jsp:include page="../common/show-alert.jsp"/>
+	<script src="scripts/utils.js"></script>
 	<script src="scripts/sidebar.js"></script>
 	<script src="scripts/attentions-crud.js"></script>
 </body>
